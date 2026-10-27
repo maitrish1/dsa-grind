@@ -374,6 +374,14 @@
       "at": 1793098368086,
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let i=0, j=s.length-1\n    while(i<=j){\n        if(/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            [s[i],s[j]]=[s[j],s[i]]\n            i++\n            j--\n        }\n        else if(/^[aeiou]$/i.test(s[i]) && !/^[aeiou]$/i.test(s[j])){\n            j--\n        }\n        else if(!/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            i++\n        }\n        else {\n            i++\n            j--\n        }\n    }\n  s=s.join('')\n  return s\n};"
     },
+    "392": {
+      "id": 392,
+      "lang": "JavaScript",
+      "runtime": "56 ms",
+      "ts": 1692623985000,
+      "at": 1793098379144,
+      "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar isSubsequence = function(s, t) {\n    let i=0, j=0, op=false\n    if(s.length>t.length){\n        op=false\n    }\n    else {\n        while(i<=s.length && j<=t.length){\n            if(s.charAt(i)===t.charAt(j)){\n                j++\n                i++\n                op=true\n            }else if(s.charAt(i)!=t.charAt(j) ){\n                j++\n                op=false\n            }\n        }\n    }\n        \n    return op\n};"
+    },
     "557": {
       "id": 557,
       "lang": "JavaScript",
