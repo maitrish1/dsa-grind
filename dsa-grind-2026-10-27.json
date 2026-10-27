@@ -285,6 +285,25 @@
       "due": "2026-10-30",
       "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {boolean}\n */\nvar containsNearbyDuplicate = function(nums, k) {\n    for(let i=0;i<nums.length-1;i++){\n        for(let j=i+1;j<nums.length;j++){\n            if(nums[i]==nums[j] && j<=i+k){\n                return true\n            }\n        }\n    }\n    return false\n};"
     },
+    "239": {
+      "id": 239,
+      "h": [
+        {
+          "at": 1793098512250,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number[]}\n */\nvar maxSlidingWindow = function(nums, k) {\n    const q = [];  \n    const res = [];\n    for (let i = 0; i < nums.length; i++) {\n        while (q && nums[q[q.length - 1]] <= nums[i]) {\n            q.pop();\n        }\n        q.push(i);\n        if (q[0] === i - k) {\n            q.shift();\n        }\n        if (i >= k - 1) {\n            res.push(nums[q[0]]);\n        }\n    }\n    return res; \n};",
+          "k": "s",
+          "ts": 1712898533000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-30",
+      "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number[]}\n */\nvar maxSlidingWindow = function(nums, k) {\n    const q = [];  \n    const res = [];\n    for (let i = 0; i < nums.length; i++) {\n        while (q && nums[q[q.length - 1]] <= nums[i]) {\n            q.pop();\n        }\n        q.push(i);\n        if (q[0] === i - k) {\n            q.shift();\n        }\n        if (i >= k - 1) {\n            res.push(nums[q[0]]);\n        }\n    }\n    return res; \n};"
+    },
     "283": {
       "id": 283,
       "h": [
@@ -787,7 +806,8 @@
       "ids": [],
       "f": 0,
       "qids": [
-        42
+        42,
+        239
       ]
     },
     "2023-10-03": {
@@ -946,6 +966,14 @@
       "ts": 1675847494000,
       "at": 1793098494933,
       "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {boolean}\n */\nvar containsNearbyDuplicate = function(nums, k) {\n    for(let i=0;i<nums.length-1;i++){\n        for(let j=i+1;j<nums.length;j++){\n            if(nums[i]==nums[j] && j<=i+k){\n                return true\n            }\n        }\n    }\n    return false\n};"
+    },
+    "239": {
+      "id": 239,
+      "lang": "JavaScript",
+      "runtime": "344 ms",
+      "ts": 1712898533000,
+      "at": 1793098512247,
+      "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number[]}\n */\nvar maxSlidingWindow = function(nums, k) {\n    const q = [];  \n    const res = [];\n    for (let i = 0; i < nums.length; i++) {\n        while (q && nums[q[q.length - 1]] <= nums[i]) {\n            q.pop();\n        }\n        q.push(i);\n        if (q[0] === i - k) {\n            q.shift();\n        }\n        if (i >= k - 1) {\n            res.push(nums[q[0]]);\n        }\n    }\n    return res; \n};"
     },
     "283": {
       "id": 283,
