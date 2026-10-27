@@ -228,6 +228,25 @@
       "due": "2026-10-27",
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};"
     },
+    "844": {
+      "id": 844,
+      "h": [
+        {
+          "at": 1793098386411,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar backspaceCompare = function(s, t) {\n    function compare(str){\n        let hash=0\n        let returnstr=''\n\n        for(let i=str.length-1;i>=0;i--){\n            if(str[i]=='#'){\n                hash++\n            }\n            else {\n                if(hash<=0){\n                    returnstr+=str[i]\n                }\n                else if(hash>0){\n                    hash--\n                    continue\n                }\n            }\n        }\n        return returnstr\n    }\n\n    return compare(s)==compare(t)\n};",
+          "k": "s",
+          "ts": 1792738587000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-28",
+      "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar backspaceCompare = function(s, t) {\n    function compare(str){\n        let hash=0\n        let returnstr=''\n\n        for(let i=str.length-1;i>=0;i--){\n            if(str[i]=='#'){\n                hash++\n            }\n            else {\n                if(hash<=0){\n                    returnstr+=str[i]\n                }\n                else if(hash>0){\n                    hash--\n                    continue\n                }\n            }\n        }\n        return returnstr\n    }\n\n    return compare(s)==compare(t)\n};"
+    },
     "1047": {
       "id": 1047,
       "h": [
@@ -399,6 +418,16 @@
       "qids": [
         350
       ]
+    },
+    "2026-10-23": {
+      "n": 0,
+      "r": 0,
+      "s": 0,
+      "ids": [],
+      "f": 0,
+      "qids": [
+        844
+      ]
     }
   },
   "c": {
@@ -456,6 +485,14 @@
       "ts": 1791898334000,
       "at": 1793098372183,
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    s = s.trim().split(/\\s+/)\n    let i=0, j=s.length-1\n    while(i<j){\n        [s[i],s[j]]=[s[j],s[i]]\n        i++\n        j--\n    }\n    s=s.join(' ')\n    return s\n};"
+    },
+    "165": {
+      "id": 165,
+      "lang": "JavaScript",
+      "runtime": "0 ms",
+      "ts": 1792761040000,
+      "at": 1793098387744,
+      "code": "/**\n * @param {string} version1\n * @param {string} version2\n * @return {number}\n */\nvar compareVersion = function(version1, version2) {\n    let split1=version1.split('.')\n    let split2=version2.split('.')\n    let len=Math.max(split1.length, split2.length)\n    let i=0\n    \n    while(i<len){\n        if( ((Number(split1[i]))||0) < ((Number(split2[i]))||0) ){\n            return -1\n        }\n        else if( ((Number(split1[i]))||0) > ((Number(split2[i]))||0) ){\n            return 1\n        }\n        i++\n    }\n    return 0\n};"
     },
     "189": {
       "id": 189,
