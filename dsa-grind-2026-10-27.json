@@ -4,7 +4,7 @@
       "id": 26,
       "h": [
         {
-          "at": 1793098355800,
+          "at": 1793098369148,
           "g": "synced",
           "s": 0,
           "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=nums[i+1]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};",
@@ -23,7 +23,7 @@
       "id": 27,
       "h": [
         {
-          "at": 1793098354060,
+          "at": 1793098367008,
           "g": "synced",
           "s": 0,
           "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let i=0, j=nums.length-1\n    while(i<=j){\n        if(nums[i]==val){\n            let temp=nums[i]\n            nums[i]=nums[j]\n            nums[j]=temp\n            j--\n        }\n        else i++\n    }\n    return i\n};",
@@ -42,7 +42,7 @@
       "id": 80,
       "h": [
         {
-          "at": 1793098357137,
+          "at": 1793098370839,
           "g": "synced",
           "s": 0,
           "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(k<2 || nums[i]!=nums[k-2]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};",
@@ -57,49 +57,11 @@
       "due": "2026-10-27",
       "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(k<2 || nums[i]!=nums[k-2]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};"
     },
-    "88": {
-      "id": 88,
-      "h": [
-        {
-          "at": 1793098382629,
-          "g": "synced",
-          "s": 0,
-          "code": "/**\n * @param {number[]} nums1\n * @param {number} m\n * @param {number[]} nums2\n * @param {number} n\n * @return {void} Do not return anything, modify nums1 in-place instead.\n */\n\n \nvar merge = function(nums1, m, nums2, n) {\n    nums1.splice(m)\n    nums1.push(...nums2)\n    for(let i=0;i<nums1.length-1;i++){\n        for(let j=0;j<nums1.length-i-1;j++){\n            if(nums1[j]>nums1[j+1]){\n                let temp=nums1[j]\n                nums1[j]=nums1[j+1]\n                nums1[j+1]=temp\n            }\n        }\n    }\n};",
-          "k": "s",
-          "ts": 1692258770000
-        }
-      ],
-      "b": 0,
-      "old": 1,
-      "fromLc": 1,
-      "first": "before",
-      "due": "2026-10-28",
-      "code": "/**\n * @param {number[]} nums1\n * @param {number} m\n * @param {number[]} nums2\n * @param {number} n\n * @return {void} Do not return anything, modify nums1 in-place instead.\n */\n\n \nvar merge = function(nums1, m, nums2, n) {\n    nums1.splice(m)\n    nums1.push(...nums2)\n    for(let i=0;i<nums1.length-1;i++){\n        for(let j=0;j<nums1.length-i-1;j++){\n            if(nums1[j]>nums1[j+1]){\n                let temp=nums1[j]\n                nums1[j]=nums1[j+1]\n                nums1[j+1]=temp\n            }\n        }\n    }\n};"
-    },
-    "125": {
-      "id": 125,
-      "h": [
-        {
-          "at": 1793098394917,
-          "g": "synced",
-          "s": 0,
-          "code": "/**\n * @param {string} s\n * @return {boolean}\n */\nvar isPalindrome = function(s) {\n    s=s.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()\n\n    let i=0,j=s.length-1\n    while(i<=j){\n        if(s[i]!=s[j]) return false\n        i++\n        j--\n    }\n    return true\n};",
-          "k": "s",
-          "ts": 1791111032000
-        }
-      ],
-      "b": 0,
-      "old": 1,
-      "fromLc": 1,
-      "first": "before",
-      "due": "2026-10-28",
-      "code": "/**\n * @param {string} s\n * @return {boolean}\n */\nvar isPalindrome = function(s) {\n    s=s.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()\n\n    let i=0,j=s.length-1\n    while(i<=j){\n        if(s[i]!=s[j]) return false\n        i++\n        j--\n    }\n    return true\n};"
-    },
     "151": {
       "id": 151,
       "h": [
         {
-          "at": 1793098372188,
+          "at": 1793098391030,
           "g": "synced",
           "s": 0,
           "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    s = s.trim().split(/\\s+/)\n    let i=0, j=s.length-1\n    while(i<j){\n        [s[i],s[j]]=[s[j],s[i]]\n        i++\n        j--\n    }\n    s=s.join(' ')\n    return s\n};",
@@ -114,30 +76,11 @@
       "due": "2026-10-27",
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    s = s.trim().split(/\\s+/)\n    let i=0, j=s.length-1\n    while(i<j){\n        [s[i],s[j]]=[s[j],s[i]]\n        i++\n        j--\n    }\n    s=s.join(' ')\n    return s\n};"
     },
-    "165": {
-      "id": 165,
-      "h": [
-        {
-          "at": 1793098387750,
-          "g": "synced",
-          "s": 0,
-          "code": "/**\n * @param {string} version1\n * @param {string} version2\n * @return {number}\n */\nvar compareVersion = function(version1, version2) {\n    let split1=version1.split('.')\n    let split2=version2.split('.')\n    let len=Math.max(split1.length, split2.length)\n    let i=0\n    \n    while(i<len){\n        if( ((Number(split1[i]))||0) < ((Number(split2[i]))||0) ){\n            return -1\n        }\n        else if( ((Number(split1[i]))||0) > ((Number(split2[i]))||0) ){\n            return 1\n        }\n        i++\n    }\n    return 0\n};",
-          "k": "s",
-          "ts": 1792761040000
-        }
-      ],
-      "b": 0,
-      "old": 1,
-      "fromLc": 1,
-      "first": "before",
-      "due": "2026-10-28",
-      "code": "/**\n * @param {string} version1\n * @param {string} version2\n * @return {number}\n */\nvar compareVersion = function(version1, version2) {\n    let split1=version1.split('.')\n    let split2=version2.split('.')\n    let len=Math.max(split1.length, split2.length)\n    let i=0\n    \n    while(i<len){\n        if( ((Number(split1[i]))||0) < ((Number(split2[i]))||0) ){\n            return -1\n        }\n        else if( ((Number(split1[i]))||0) > ((Number(split2[i]))||0) ){\n            return 1\n        }\n        i++\n    }\n    return 0\n};"
-    },
     "189": {
       "id": 189,
       "h": [
         {
-          "at": 1793098373621,
+          "at": 1793098393067,
           "g": "synced",
           "s": 0,
           "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar rotate = function(nums, k) {\n    k=k%nums.length\n    let i=0\n    let j=nums.length-1\n\n    reverse(nums,0,nums.length-k-1)\n    reverse(nums,nums.length-k, nums.length-1)\n    reverse(nums,0,nums.length-1)\n    function reverse(arr,x,y){\n        while(x<y){\n            [arr[x],arr[y]]=[arr[y],arr[x]]\n            x++\n            y--\n        }\n        return arr\n    }\n};",
@@ -156,7 +99,7 @@
       "id": 283,
       "h": [
         {
-          "at": 1793098352629,
+          "at": 1793098365065,
           "g": "synced",
           "s": 0,
           "code": "/**\n * @param {number[]} nums\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar moveZeroes = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=0){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    while(k<nums.length){\n        nums[k]=0\n        k++\n    }\n};",
@@ -175,7 +118,7 @@
       "id": 344,
       "h": [
         {
-          "at": 1793098365426,
+          "at": 1793098381203,
           "g": "synced",
           "s": 0,
           "code": "/**\n * @param {character[]} s\n * @return {void} Do not return anything, modify s in-place instead.\n */\nvar reverseString = function(s) {\n    let rev=[]\n    let i=0,j=s.length-1\n    while(i<j){\n        let temp=s[i]\n        s[i]=s[j]\n        s[j]=temp\n        i++\n        j--\n    }\n};",
@@ -194,7 +137,7 @@
       "id": 345,
       "h": [
         {
-          "at": 1793098368090,
+          "at": 1793098385035,
           "g": "synced",
           "s": 0,
           "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let i=0, j=s.length-1\n    while(i<=j){\n        if(/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            [s[i],s[j]]=[s[j],s[i]]\n            i++\n            j--\n        }\n        else if(/^[aeiou]$/i.test(s[i]) && !/^[aeiou]$/i.test(s[j])){\n            j--\n        }\n        else if(!/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            i++\n        }\n        else {\n            i++\n            j--\n        }\n    }\n  s=s.join('')\n  return s\n};",
@@ -209,49 +152,11 @@
       "due": "2026-10-27",
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let i=0, j=s.length-1\n    while(i<=j){\n        if(/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            [s[i],s[j]]=[s[j],s[i]]\n            i++\n            j--\n        }\n        else if(/^[aeiou]$/i.test(s[i]) && !/^[aeiou]$/i.test(s[j])){\n            j--\n        }\n        else if(!/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            i++\n        }\n        else {\n            i++\n            j--\n        }\n    }\n  s=s.join('')\n  return s\n};"
     },
-    "350": {
-      "id": 350,
-      "h": [
-        {
-          "at": 1793098384671,
-          "g": "synced",
-          "s": 0,
-          "code": "/**\n * @param {number[]} nums1\n * @param {number[]} nums2\n * @return {number[]}\n */\nvar intersect = function(nums1, nums2) {\n    let nums3=[]\n     for(let i=0;i<nums1.length;i++){\n         for(let j=0;j<nums2.length;j++){\n             if(nums1[i]==nums2[j]){\n                 nums3.push(nums1[i])\n                 nums2.splice(j,1)\n                 break\n             }\n         }\n     }\n     return nums3\n};",
-          "k": "s",
-          "ts": 1679317758000
-        }
-      ],
-      "b": 0,
-      "old": 1,
-      "fromLc": 1,
-      "first": "before",
-      "due": "2026-10-28",
-      "code": "/**\n * @param {number[]} nums1\n * @param {number[]} nums2\n * @return {number[]}\n */\nvar intersect = function(nums1, nums2) {\n    let nums3=[]\n     for(let i=0;i<nums1.length;i++){\n         for(let j=0;j<nums2.length;j++){\n             if(nums1[i]==nums2[j]){\n                 nums3.push(nums1[i])\n                 nums2.splice(j,1)\n                 break\n             }\n         }\n     }\n     return nums3\n};"
-    },
-    "392": {
-      "id": 392,
-      "h": [
-        {
-          "at": 1793098379149,
-          "g": "synced",
-          "s": 0,
-          "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar isSubsequence = function(s, t) {\n    let i=0, j=0, op=false\n    if(s.length>t.length){\n        op=false\n    }\n    else {\n        while(i<=s.length && j<=t.length){\n            if(s.charAt(i)===t.charAt(j)){\n                j++\n                i++\n                op=true\n            }else if(s.charAt(i)!=t.charAt(j) ){\n                j++\n                op=false\n            }\n        }\n    }\n        \n    return op\n};",
-          "k": "s",
-          "ts": 1692623985000
-        }
-      ],
-      "b": 0,
-      "old": 1,
-      "fromLc": 1,
-      "first": "before",
-      "due": "2026-10-28",
-      "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar isSubsequence = function(s, t) {\n    let i=0, j=0, op=false\n    if(s.length>t.length){\n        op=false\n    }\n    else {\n        while(i<=s.length && j<=t.length){\n            if(s.charAt(i)===t.charAt(j)){\n                j++\n                i++\n                op=true\n            }else if(s.charAt(i)!=t.charAt(j) ){\n                j++\n                op=false\n            }\n        }\n    }\n        \n    return op\n};"
-    },
     "557": {
       "id": 557,
       "h": [
         {
-          "at": 1793098370955,
+          "at": 1793098388788,
           "g": "synced",
           "s": 0,
           "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};",
@@ -266,49 +171,11 @@
       "due": "2026-10-27",
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};"
     },
-    "844": {
-      "id": 844,
-      "h": [
-        {
-          "at": 1793098386411,
-          "g": "synced",
-          "s": 0,
-          "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar backspaceCompare = function(s, t) {\n    function compare(str){\n        let hash=0\n        let returnstr=''\n\n        for(let i=str.length-1;i>=0;i--){\n            if(str[i]=='#'){\n                hash++\n            }\n            else {\n                if(hash<=0){\n                    returnstr+=str[i]\n                }\n                else if(hash>0){\n                    hash--\n                    continue\n                }\n            }\n        }\n        return returnstr\n    }\n\n    return compare(s)==compare(t)\n};",
-          "k": "s",
-          "ts": 1792738587000
-        }
-      ],
-      "b": 0,
-      "old": 1,
-      "fromLc": 1,
-      "first": "before",
-      "due": "2026-10-28",
-      "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar backspaceCompare = function(s, t) {\n    function compare(str){\n        let hash=0\n        let returnstr=''\n\n        for(let i=str.length-1;i>=0;i--){\n            if(str[i]=='#'){\n                hash++\n            }\n            else {\n                if(hash<=0){\n                    returnstr+=str[i]\n                }\n                else if(hash>0){\n                    hash--\n                    continue\n                }\n            }\n        }\n        return returnstr\n    }\n\n    return compare(s)==compare(t)\n};"
-    },
-    "986": {
-      "id": 986,
-      "h": [
-        {
-          "at": 1793098389805,
-          "g": "synced",
-          "s": 0,
-          "code": "/**\n * @param {number[][]} firstList\n * @param {number[][]} secondList\n * @return {number[][]}\n */\n\nvar intervalIntersection = function(firstList, secondList) {\n    if (firstList.length == 0 || secondList.length == 0) return []\n\n    let i = 0\n    let j = 0\n    let res = []\n\n    while (i < firstList.length && j < secondList.length) {\n        if (secondList[j][0] <= firstList[i][1] &&\n            secondList[j][1] >= firstList[i][0]) {\n\n            res.push([\n                Math.max(firstList[i][0], secondList[j][0]),\n                Math.min(firstList[i][1], secondList[j][1])\n            ])\n        }\n\n        if (firstList[i][1] < secondList[j][1]) {\n            i++\n        } else {\n            j++\n        }\n    }\n\n    return res\n};\n",
-          "k": "s",
-          "ts": 1792792961000
-        }
-      ],
-      "b": 0,
-      "old": 1,
-      "fromLc": 1,
-      "first": "before",
-      "due": "2026-10-28",
-      "code": "/**\n * @param {number[][]} firstList\n * @param {number[][]} secondList\n * @return {number[][]}\n */\n\nvar intervalIntersection = function(firstList, secondList) {\n    if (firstList.length == 0 || secondList.length == 0) return []\n\n    let i = 0\n    let j = 0\n    let res = []\n\n    while (i < firstList.length && j < secondList.length) {\n        if (secondList[j][0] <= firstList[i][1] &&\n            secondList[j][1] >= firstList[i][0]) {\n\n            res.push([\n                Math.max(firstList[i][0], secondList[j][0]),\n                Math.min(firstList[i][1], secondList[j][1])\n            ])\n        }\n\n        if (firstList[i][1] < secondList[j][1]) {\n            i++\n        } else {\n            j++\n        }\n    }\n\n    return res\n};\n"
-    },
     "1047": {
       "id": 1047,
       "h": [
         {
-          "at": 1793098359994,
+          "at": 1793098374762,
           "g": "synced",
           "s": 0,
           "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar removeDuplicates = function(s) {\n    let stack = []; // Initialize an empty stack\n    \n    // Iterate through each character in the string\n    for (let char of s) {\n        // If the stack is not empty and the current character is equal to the top element of the stack\n        if (stack.length > 0 && char === stack[stack.length - 1]) {\n            stack.pop(); // Remove the adjacent duplicate by popping the top element\n        } else {\n            stack.push(char); // Push the current character onto the stack\n        }\n    }\n    \n    // Construct the final string by joining the characters in the stack\n    return stack.join('');\n};\n",
@@ -322,44 +189,6 @@
       "first": "before",
       "due": "2026-10-27",
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar removeDuplicates = function(s) {\n    let stack = []; // Initialize an empty stack\n    \n    // Iterate through each character in the string\n    for (let char of s) {\n        // If the stack is not empty and the current character is equal to the top element of the stack\n        if (stack.length > 0 && char === stack[stack.length - 1]) {\n            stack.pop(); // Remove the adjacent duplicate by popping the top element\n        } else {\n            stack.push(char); // Push the current character onto the stack\n        }\n    }\n    \n    // Construct the final string by joining the characters in the stack\n    return stack.join('');\n};\n"
-    },
-    "1768": {
-      "id": 1768,
-      "h": [
-        {
-          "at": 1793098377510,
-          "g": "synced",
-          "s": 0,
-          "code": "/**\n * @param {string} word1\n * @param {string} word2\n * @return {string}\n */\nvar mergeAlternately = function(word1, word2) {\n    let range=word1.length>word2.length?word2.length:word1.length\n    let i=0\n    let merged=''\n    while(i<range){\n        merged+=word1[i]+word2[i]\n        i++\n    }\n    if(i<word1.length){\n        merged+=word1.slice(i,word1.length)\n    }\n     if(i<word2.length){\n        merged+=word2.slice(i,word2.length)\n    }\n    return merged\n};",
-          "k": "s",
-          "ts": 1792161440000
-        }
-      ],
-      "b": 0,
-      "old": 1,
-      "fromLc": 1,
-      "first": "before",
-      "due": "2026-10-28",
-      "code": "/**\n * @param {string} word1\n * @param {string} word2\n * @return {string}\n */\nvar mergeAlternately = function(word1, word2) {\n    let range=word1.length>word2.length?word2.length:word1.length\n    let i=0\n    let merged=''\n    while(i<range){\n        merged+=word1[i]+word2[i]\n        i++\n    }\n    if(i<word1.length){\n        merged+=word1.slice(i,word1.length)\n    }\n     if(i<word2.length){\n        merged+=word2.slice(i,word2.length)\n    }\n    return merged\n};"
-    },
-    "2570": {
-      "id": 2570,
-      "h": [
-        {
-          "at": 1793098380787,
-          "g": "synced",
-          "s": 0,
-          "code": "/**\n * @param {number[][]} nums1\n * @param {number[][]} nums2\n * @return {number[][]}\n */\nvar mergeArrays = function(nums1, nums2) {\n    let i=0, j=0\n    let res=[]\n    while(i<nums1.length && j<nums2.length){\n        if(nums1[i][0]==nums2[j][0]){\n            res.push([nums1[i][0], nums1[i][1] + nums2[j][1]]);\n            i++\n            j++\n        }\n        else if(nums1[i][0]<nums2[j][0]){\n            res.push(nums1[i])\n            i++\n        }\n        else {\n            res.push(nums2[j])\n            j++\n        }\n    }\n    while (i < nums1.length) {\n        res.push(nums1[i]);\n        i++;\n    }\n\n    while (j < nums2.length) {\n        res.push(nums2[j]);\n        j++;\n    }\n    return res\n};",
-          "k": "s",
-          "ts": 1791880668000
-        }
-      ],
-      "b": 0,
-      "old": 1,
-      "fromLc": 1,
-      "first": "before",
-      "due": "2026-10-28",
-      "code": "/**\n * @param {number[][]} nums1\n * @param {number[][]} nums2\n * @return {number[][]}\n */\nvar mergeArrays = function(nums1, nums2) {\n    let i=0, j=0\n    let res=[]\n    while(i<nums1.length && j<nums2.length){\n        if(nums1[i][0]==nums2[j][0]){\n            res.push([nums1[i][0], nums1[i][1] + nums2[j][1]]);\n            i++\n            j++\n        }\n        else if(nums1[i][0]<nums2[j][0]){\n            res.push(nums1[i])\n            i++\n        }\n        else {\n            res.push(nums2[j])\n            j++\n        }\n    }\n    while (i < nums1.length) {\n        res.push(nums1[i]);\n        i++;\n    }\n\n    while (j < nums2.length) {\n        res.push(nums2[j]);\n        j++;\n    }\n    return res\n};"
     }
   },
   "d": {
@@ -410,8 +239,7 @@
       "ids": [],
       "f": 0,
       "qids": [
-        344,
-        125
+        344
       ]
     },
     "2026-10-13": {
@@ -423,8 +251,7 @@
       "qids": [
         345,
         557,
-        151,
-        2570
+        151
       ]
     },
     "2026-10-14": {
@@ -435,67 +262,6 @@
       "f": 0,
       "qids": [
         189
-      ]
-    },
-    "2026-10-16": {
-      "n": 0,
-      "r": 0,
-      "s": 0,
-      "ids": [],
-      "f": 0,
-      "qids": [
-        1768
-      ]
-    },
-    "2023-08-21": {
-      "n": 0,
-      "r": 0,
-      "s": 0,
-      "ids": [],
-      "f": 0,
-      "qids": [
-        392
-      ]
-    },
-    "2023-08-17": {
-      "n": 0,
-      "r": 0,
-      "s": 0,
-      "ids": [],
-      "f": 0,
-      "qids": [
-        88
-      ]
-    },
-    "2023-03-20": {
-      "n": 0,
-      "r": 0,
-      "s": 0,
-      "ids": [],
-      "f": 0,
-      "qids": [
-        350
-      ]
-    },
-    "2026-10-23": {
-      "n": 0,
-      "r": 0,
-      "s": 0,
-      "ids": [],
-      "f": 0,
-      "qids": [
-        844,
-        165
-      ]
-    },
-    "2026-10-24": {
-      "n": 0,
-      "r": 0,
-      "s": 0,
-      "ids": [],
-      "f": 0,
-      "qids": [
-        986
       ]
     }
   },
@@ -520,7 +286,7 @@
       "lang": "JavaScript",
       "runtime": "0 ms",
       "ts": 1791668568000,
-      "at": 1793098355796,
+      "at": 1793098369146,
       "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=nums[i+1]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};"
     },
     "27": {
@@ -528,7 +294,7 @@
       "lang": "JavaScript",
       "runtime": "0 ms",
       "ts": 1791661170000,
-      "at": 1793098354057,
+      "at": 1793098367007,
       "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let i=0, j=nums.length-1\n    while(i<=j){\n        if(nums[i]==val){\n            let temp=nums[i]\n            nums[i]=nums[j]\n            nums[j]=temp\n            j--\n        }\n        else i++\n    }\n    return i\n};"
     },
     "80": {
@@ -536,47 +302,23 @@
       "lang": "JavaScript",
       "runtime": "45 ms",
       "ts": 1791792107000,
-      "at": 1793098357133,
+      "at": 1793098370838,
       "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(k<2 || nums[i]!=nums[k-2]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};"
-    },
-    "88": {
-      "id": 88,
-      "lang": "JavaScript",
-      "runtime": "48 ms",
-      "ts": 1692258770000,
-      "at": 1793098382625,
-      "code": "/**\n * @param {number[]} nums1\n * @param {number} m\n * @param {number[]} nums2\n * @param {number} n\n * @return {void} Do not return anything, modify nums1 in-place instead.\n */\n\n \nvar merge = function(nums1, m, nums2, n) {\n    nums1.splice(m)\n    nums1.push(...nums2)\n    for(let i=0;i<nums1.length-1;i++){\n        for(let j=0;j<nums1.length-i-1;j++){\n            if(nums1[j]>nums1[j+1]){\n                let temp=nums1[j]\n                nums1[j]=nums1[j+1]\n                nums1[j+1]=temp\n            }\n        }\n    }\n};"
-    },
-    "125": {
-      "id": 125,
-      "lang": "JavaScript",
-      "runtime": "4 ms",
-      "ts": 1791111032000,
-      "at": 1793098394911,
-      "code": "/**\n * @param {string} s\n * @return {boolean}\n */\nvar isPalindrome = function(s) {\n    s=s.replace(/[^a-zA-Z0-9]/g, '').toLowerCase()\n\n    let i=0,j=s.length-1\n    while(i<=j){\n        if(s[i]!=s[j]) return false\n        i++\n        j--\n    }\n    return true\n};"
     },
     "151": {
       "id": 151,
       "lang": "JavaScript",
       "runtime": "1 ms",
       "ts": 1791898334000,
-      "at": 1793098372183,
+      "at": 1793098391029,
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    s = s.trim().split(/\\s+/)\n    let i=0, j=s.length-1\n    while(i<j){\n        [s[i],s[j]]=[s[j],s[i]]\n        i++\n        j--\n    }\n    s=s.join(' ')\n    return s\n};"
-    },
-    "165": {
-      "id": 165,
-      "lang": "JavaScript",
-      "runtime": "0 ms",
-      "ts": 1792761040000,
-      "at": 1793098387744,
-      "code": "/**\n * @param {string} version1\n * @param {string} version2\n * @return {number}\n */\nvar compareVersion = function(version1, version2) {\n    let split1=version1.split('.')\n    let split2=version2.split('.')\n    let len=Math.max(split1.length, split2.length)\n    let i=0\n    \n    while(i<len){\n        if( ((Number(split1[i]))||0) < ((Number(split2[i]))||0) ){\n            return -1\n        }\n        else if( ((Number(split1[i]))||0) > ((Number(split2[i]))||0) ){\n            return 1\n        }\n        i++\n    }\n    return 0\n};"
     },
     "189": {
       "id": 189,
       "lang": "JavaScript",
       "runtime": "16 ms",
       "ts": 1791962251000,
-      "at": 1793098373614,
+      "at": 1793098393066,
       "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar rotate = function(nums, k) {\n    k=k%nums.length\n    let i=0\n    let j=nums.length-1\n\n    reverse(nums,0,nums.length-k-1)\n    reverse(nums,nums.length-k, nums.length-1)\n    reverse(nums,0,nums.length-1)\n    function reverse(arr,x,y){\n        while(x<y){\n            [arr[x],arr[y]]=[arr[y],arr[x]]\n            x++\n            y--\n        }\n        return arr\n    }\n};"
     },
     "283": {
@@ -584,7 +326,7 @@
       "lang": "JavaScript",
       "runtime": "0 ms",
       "ts": 1791667012000,
-      "at": 1793098352625,
+      "at": 1793098365061,
       "code": "/**\n * @param {number[]} nums\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar moveZeroes = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=0){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    while(k<nums.length){\n        nums[k]=0\n        k++\n    }\n};"
     },
     "344": {
@@ -592,7 +334,7 @@
       "lang": "JavaScript",
       "runtime": "0 ms",
       "ts": 1791108365000,
-      "at": 1793098365422,
+      "at": 1793098381202,
       "code": "/**\n * @param {character[]} s\n * @return {void} Do not return anything, modify s in-place instead.\n */\nvar reverseString = function(s) {\n    let rev=[]\n    let i=0,j=s.length-1\n    while(i<j){\n        let temp=s[i]\n        s[i]=s[j]\n        s[j]=temp\n        i++\n        j--\n    }\n};"
     },
     "345": {
@@ -600,55 +342,23 @@
       "lang": "JavaScript",
       "runtime": "7 ms",
       "ts": 1791870547000,
-      "at": 1793098368086,
+      "at": 1793098385034,
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let i=0, j=s.length-1\n    while(i<=j){\n        if(/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            [s[i],s[j]]=[s[j],s[i]]\n            i++\n            j--\n        }\n        else if(/^[aeiou]$/i.test(s[i]) && !/^[aeiou]$/i.test(s[j])){\n            j--\n        }\n        else if(!/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            i++\n        }\n        else {\n            i++\n            j--\n        }\n    }\n  s=s.join('')\n  return s\n};"
-    },
-    "350": {
-      "id": 350,
-      "lang": "JavaScript",
-      "runtime": "65 ms",
-      "ts": 1679317758000,
-      "at": 1793098384669,
-      "code": "/**\n * @param {number[]} nums1\n * @param {number[]} nums2\n * @return {number[]}\n */\nvar intersect = function(nums1, nums2) {\n    let nums3=[]\n     for(let i=0;i<nums1.length;i++){\n         for(let j=0;j<nums2.length;j++){\n             if(nums1[i]==nums2[j]){\n                 nums3.push(nums1[i])\n                 nums2.splice(j,1)\n                 break\n             }\n         }\n     }\n     return nums3\n};"
-    },
-    "392": {
-      "id": 392,
-      "lang": "JavaScript",
-      "runtime": "56 ms",
-      "ts": 1692623985000,
-      "at": 1793098379144,
-      "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar isSubsequence = function(s, t) {\n    let i=0, j=0, op=false\n    if(s.length>t.length){\n        op=false\n    }\n    else {\n        while(i<=s.length && j<=t.length){\n            if(s.charAt(i)===t.charAt(j)){\n                j++\n                i++\n                op=true\n            }else if(s.charAt(i)!=t.charAt(j) ){\n                j++\n                op=false\n            }\n        }\n    }\n        \n    return op\n};"
     },
     "557": {
       "id": 557,
       "lang": "JavaScript",
       "runtime": "13 ms",
       "ts": 1791874648000,
-      "at": 1793098370950,
+      "at": 1793098388786,
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};"
-    },
-    "844": {
-      "id": 844,
-      "lang": "JavaScript",
-      "runtime": "0 ms",
-      "ts": 1792738587000,
-      "at": 1793098386409,
-      "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar backspaceCompare = function(s, t) {\n    function compare(str){\n        let hash=0\n        let returnstr=''\n\n        for(let i=str.length-1;i>=0;i--){\n            if(str[i]=='#'){\n                hash++\n            }\n            else {\n                if(hash<=0){\n                    returnstr+=str[i]\n                }\n                else if(hash>0){\n                    hash--\n                    continue\n                }\n            }\n        }\n        return returnstr\n    }\n\n    return compare(s)==compare(t)\n};"
-    },
-    "986": {
-      "id": 986,
-      "lang": "JavaScript",
-      "runtime": "1 ms",
-      "ts": 1792792961000,
-      "at": 1793098389801,
-      "code": "/**\n * @param {number[][]} firstList\n * @param {number[][]} secondList\n * @return {number[][]}\n */\n\nvar intervalIntersection = function(firstList, secondList) {\n    if (firstList.length == 0 || secondList.length == 0) return []\n\n    let i = 0\n    let j = 0\n    let res = []\n\n    while (i < firstList.length && j < secondList.length) {\n        if (secondList[j][0] <= firstList[i][1] &&\n            secondList[j][1] >= firstList[i][0]) {\n\n            res.push([\n                Math.max(firstList[i][0], secondList[j][0]),\n                Math.min(firstList[i][1], secondList[j][1])\n            ])\n        }\n\n        if (firstList[i][1] < secondList[j][1]) {\n            i++\n        } else {\n            j++\n        }\n    }\n\n    return res\n};\n"
     },
     "1047": {
       "id": 1047,
       "lang": "JavaScript",
       "runtime": "66 ms",
       "ts": 1712852872000,
-      "at": 1793098359990,
+      "at": 1793098374761,
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar removeDuplicates = function(s) {\n    let stack = []; // Initialize an empty stack\n    \n    // Iterate through each character in the string\n    for (let char of s) {\n        // If the stack is not empty and the current character is equal to the top element of the stack\n        if (stack.length > 0 && char === stack[stack.length - 1]) {\n            stack.pop(); // Remove the adjacent duplicate by popping the top element\n        } else {\n            stack.push(char); // Push the current character onto the stack\n        }\n    }\n    \n    // Construct the final string by joining the characters in the stack\n    return stack.join('');\n};\n"
     },
     "1768": {
@@ -656,16 +366,8 @@
       "lang": "JavaScript",
       "runtime": "42 ms",
       "ts": 1792161440000,
-      "at": 1793098377507,
+      "at": 1793098397265,
       "code": "/**\n * @param {string} word1\n * @param {string} word2\n * @return {string}\n */\nvar mergeAlternately = function(word1, word2) {\n    let range=word1.length>word2.length?word2.length:word1.length\n    let i=0\n    let merged=''\n    while(i<range){\n        merged+=word1[i]+word2[i]\n        i++\n    }\n    if(i<word1.length){\n        merged+=word1.slice(i,word1.length)\n    }\n     if(i<word2.length){\n        merged+=word2.slice(i,word2.length)\n    }\n    return merged\n};"
-    },
-    "2570": {
-      "id": 2570,
-      "lang": "JavaScript",
-      "runtime": "0 ms",
-      "ts": 1791880668000,
-      "at": 1793098380783,
-      "code": "/**\n * @param {number[][]} nums1\n * @param {number[][]} nums2\n * @return {number[][]}\n */\nvar mergeArrays = function(nums1, nums2) {\n    let i=0, j=0\n    let res=[]\n    while(i<nums1.length && j<nums2.length){\n        if(nums1[i][0]==nums2[j][0]){\n            res.push([nums1[i][0], nums1[i][1] + nums2[j][1]]);\n            i++\n            j++\n        }\n        else if(nums1[i][0]<nums2[j][0]){\n            res.push(nums1[i])\n            i++\n        }\n        else {\n            res.push(nums2[j])\n            j++\n        }\n    }\n    while (i < nums1.length) {\n        res.push(nums1[i]);\n        i++;\n    }\n\n    while (j < nums2.length) {\n        res.push(nums2[j]);\n        j++;\n    }\n    return res\n};"
     },
     "s": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfYXV0aF91c2VyX2lkIjoiMzExMDk3MiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImFsbGF1dGguYWNjb3VudC5hdXRoX2JhY2tlbmRzLkF1dGhlbnRpY2F0aW9uQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6ImRjYzUwOWQ0NzFiZGE4ZGY1MGViNGIyMmVmNmFiZDMyNjI2MWQ2NGUyN2U4MWFiOTUwYzRlMTEzNGZlODFlYWYiLCJzZXNzaW9uX3V1aWQiOiI1YmRmZjJjNiIsImlkIjozMTEwOTcyLCJlbWFpbCI6Im1haXRyaXNoMDNAZ21haWwuY29tIiwidXNlcm5hbWUiOiJtYWl0cmlzaDAzIiwidXNlcl9zbHVnIjoibWFpdHJpc2gwMyIsImF2YXRhciI6Imh0dHBzOi8vYXNzZXRzLmxlZXRjb2RlLmNvbS91c2Vycy9tYWl0cmlzaDAzL2F2YXRhcl8xNTkzNzAwNjgyLnBuZyIsInJlZnJlc2hlZF9hdCI6MTc5MzA5NzM5NSwiaXAiOiIxMDMuMjUyLjE2NS4yNTAiLCJpZGVudGl0eSI6IjVkMGRkNDI1MDA4ZDczMjhjZmY5Y2NlNDg5ZmI1NWY3IiwiZGV2aWNlX3dpdGhfaXAiOlsiMWFkY2Q2YWNkNGJjMDljODE3ODk4NjQ4YmEyODY4MGQiLCIxMDMuMjUyLjE2NS4yNTAiXX0.2lW9zV3jKqOo1urtVULzBnR365TTq-P7hkmtTejDkrU",
     "c": "a1ocyUyjIxbTxiK3WpFBzDv3EIzpOtVo"
