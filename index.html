@@ -157,7 +157,7 @@ details[open] .cap-sum::before{content:"▾ "}
 .gbtn[data-g="failed"]{color:var(--h);border-color:var(--h);background:color-mix(in srgb,var(--h) 8%,var(--sf))}
 
 .bnav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--bg);background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-top:1px solid var(--ln);padding-bottom:env(safe-area-inset-bottom,0px)}
-.bnav-in{max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px 12px 10px}
+.bnav-in{max-width:880px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:8px 12px 10px}
 .bnav button{display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:none;color:var(--mu);font:inherit;font-size:11px;font-weight:700;letter-spacing:.02em;padding:6px 4px;border-radius:12px;cursor:pointer}
 .bnav svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .bnav button[aria-selected="true"]{color:var(--ac);background:var(--acs)}
@@ -180,7 +180,7 @@ details[open] .cap-sum::before{content:"▾ "}
  h1{font-size:26px}
 }
 /* ===== v3: pomodoro • profile • modal tabs • review badges • calendar ===== */
-.bnav-in{grid-template-columns:repeat(4,1fr)}
+.bnav-in{grid-template-columns:repeat(5,1fr)}
 .top{flex-wrap:nowrap}
 .ppill{flex:none;display:flex;align-items:center;gap:4px;margin-left:auto;background:var(--sf);border:1px solid var(--ln);border-radius:999px;padding:4px 5px 4px 10px;box-shadow:var(--sh)}
 .ppill .pk{font-size:10.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--mu)}
@@ -329,7 +329,7 @@ details.sub pre{margin:0;padding:10px 12px;border-top:1px dashed var(--ln);overf
 .btn.ghost{background:transparent;border-color:transparent;color:var(--mu);text-decoration:underline;padding:8px 10px;font-weight:600}
 .btn.ghost:hover{color:var(--m)}
 /* alignment polish */
-.app{max-width:640px}
+.app{max-width:880px}
 #v>.hero,.nudge,.card,.stats{scroll-margin-top:70px}
 .stats{gap:10px}
 .st{align-items:flex-start}
@@ -991,165 +991,273 @@ function sett(){
  '<section class="card"><h3 class="lbl">Backup</h3><p class="chip">Back up every night — browser storage can be wiped.</p>'+
  '<div class="btns two"><button class="btn p" data-a="exp">Export backup</button><label class="btn imp">Import<input type="file" id="im" hidden accept=".json"></label></div></section>'}
 // ============================================
-// STRIVERS A2Z SHEET — separate JSON (strivers-a2z.json)
-// Does NOT touch dsa-grind-2026-10-27.json (your ladder)
 // ============================================
-var A2Z_STATS = null, A2Z_SHEET = null, A2Z_PROGRESS = {}, A2Z_LOADED = false, A2Z_TOPIC_FILTER = null, A2Z_SUBTOPIC_FILTER = null;
+// STRIVERS A2Z SHEET — full features in strivers-a2z.json
+// Timer, solution saving, revision, pomodoro, streak, day tracking — all separate from ladder
+// Codolio APIs called ONLY on refresh — everything else reads/writes JSON file
+// ============================================
+var A2Z = {p:{}, d:{}, c:{nt:8,rt:10}, bk:"", pi:{0:0,1:0}, dr:{}, ses:[], lock:{}, pom:{ph:"idle",st:0,rem:0,pa:false}};
+var A2Z_LOADED = false;
+var A2Z_CUR = 0, A2Z_T0 = 0, A2Z_TM = null;
+var A2Z_MODE = false;
 
-async function codolioFetch(endpoint, params) {
-  var qs = [];
-  for (var k in (params || {})) qs.push(k + '=' + encodeURIComponent(params[k]));
-  var url = '/api/codolio?endpoint=' + encodeURIComponent(endpoint) + (qs.length ? '&' + qs.join('&') : '');
-  var r = await fetch(url);
+function a2zMergeDefaults(data) {
+  data = data || {};
+  data.p = data.p || {};
+  data.d = data.d || {};
+  data.c = {...DEFAULTS.c, ...(data.c||{})};
+  data.pi = {...DEFAULTS.pi, ...(data.pi||{})};
+  data.dr = data.dr || {};
+  data.ses = data.ses || [];
+  data.lock = data.lock || {};
+  data.pom = data.pom || {ph:"idle",st:0,rem:0,pa:false};
+  data.bk = data.bk || "";
+  data.problems = data.problems || [];
+  data.stats = data.stats || {};
+  return data;
+}
+
+async function codolioFetch(endpoint, method, body) {
+  var url = '/api/codolio?endpoint=' + encodeURIComponent(endpoint);
+  var opts = { method: method || 'GET', headers: {} };
+  if (body) { opts.headers['Content-Type'] = 'application/json'; opts.body = JSON.stringify(body); }
+  var r = await fetch(url, opts);
   if (!r.ok) throw new Error('Codolio API ' + r.status);
   return r.json();
 }
 
-async function loadA2zData() {
+async function loadA2zState() {
   if (A2Z_LOADED) return;
   try {
-    A2Z_STATS = await codolioFetch('stats', { slug: 'strivers-a2z-dsa-sheet' });
-    A2Z_SHEET = await codolioFetch('sheet', { slug: 'strivers-a2z-dsa-sheet', limit: 200 });
-    A2Z_PROGRESS = await codolioFetch('progress', { slug: 'strivers-a2z-dsa-sheet' });
+    var data = await codolioFetch('read', 'GET');
+    A2Z = a2zMergeDefaults(data);
     A2Z_LOADED = true;
-  } catch (e) {
-    console.warn('A2Z load failed:', e);
-  }
-}
-
-async function saveA2zProgress(problemId, status, code, timeSpent, note) {
-  try {
-    await codolioFetch('progress', {});
-    var r = await fetch('/api/codolio?endpoint=progress', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ problemId: problemId, status: status, solutionCode: code || '', timeSpent: timeSpent || 0, note: note || '' })
-    });
-    if (r.ok) {
-      A2Z_PROGRESS[problemId] = { problemId: problemId, status: status, solutionCode: code || '', timeSpent: timeSpent || 0, note: note || '', updatedAt: Date.now() };
-      toast('Progress saved ✓');
-      render();
+    // If no problems yet, auto-fetch from Codolio once
+    if (!A2Z.problems || A2Z.problems.length === 0) {
+      toast('Fetching A2Z sheet from Codolio (one-time)…');
+      A2Z = await codolioFetch('refresh', 'GET');
+      A2Z = a2zMergeDefaults(A2Z);
+      await saveA2zState();
+      toast('A2Z sheet loaded — ' + (A2Z.problems || []).length + ' problems');
     }
   } catch (e) {
-    console.warn('A2Z save failed:', e);
-    toast('Save failed — check connection');
+    console.warn('A2Z load failed:', e);
+    toast('A2Z load failed — check connection');
   }
 }
 
-function diffBadge(d) {
-  var c = { easy: 'e', medium: 'm', hard: 'h' }[(d || '').toLowerCase()] || 'm';
-  var t = (d || 'Medium').toUpperCase();
-  return '<span class="dchip ' + c + '">' + esc(t) + '</span>';
+async function saveA2zState() {
+  try {
+    await codolioFetch('write', 'POST', A2Z);
+  } catch (e) {
+    console.warn('A2Z save failed:', e);
+  }
 }
 
-function probStatus(id) {
-  var p = A2Z_PROGRESS[id];
-  if (!p) return '<span class="rbadge mild">Not started</span>';
-  var s = { attempted: 'Attempted', easy: 'Easy ✓', ok: 'OK ✓', hard: 'Hard ✓', failed: 'Failed' }[p.status] || p.status;
-  return '<span class="rbadge ' + (p.status === 'easy' ? 'ok' : p.status === 'failed' ? 'bad' : 'soon') + '">' + esc(s) + '</span>';
+function a2zDay(k){return A2Z.d[k]||(A2Z.d[k]={n:0,r:0,s:0,ids:[],f:0,qids:[]})}
+function a2zStreak(){var n=0;for(var i=0;i<400;i++){var x=A2Z.d[plus(-i)];if(x&&(x.n>=A2Z.c.nt||x.f>=1500))n++;else if(i>0)break}return n}
+
+function a2zFinish(id,g,code,note,sec,timeIn){
+  var t=ymd(),dd=a2zDay(t),first=!A2Z.p[id],p=A2Z.p[id]||(A2Z.p[id]={id:id,h:[],b:0,first:t});
+  timeIn=timeIn||sec;
+  p.code=code;if(note)p.note=note;p.time=(p.time||0)+timeIn;
+  p.h.push({at:Date.now(),g:g,s:sec||0,code:code,k:first?"n":"r",src:"a2z"});
+  if(first){p.b=g==="easy"?1:0;p.due=plus(INT[p.b]);dd.n++}else{p.b=g==="easy"?Math.min(5,p.b+2):g==="ok"?Math.min(5,p.b+1):g==="hard"?p.b:0;p.due=plus(g==="failed"?1:g==="hard"?2:INT[p.b]);dd.r++}
+  dd.s+=timeIn;dd.ids.push({id:id,k:first?"n":"r"});saveA2zState();
 }
 
-function a2z() {
-  if (!A2Z_LOADED) return '<p class="empty">Loading A2Z sheet…</p>';
-  var h = '<div class="hero"><div><p class="eyebrow">Strivers A2Z DSA Sheet</p><h1>A2Z Sheet</h1></div></div>';
+function a2zPomLen(ph){return ((ph==="rest")?(+A2Z.c.pr||5):(+A2Z.c.pf||25))*60}
+function a2zPomLeft(){var d=A2Z.pom||{},ph=d.ph||"idle",len=a2zPomLen(ph==="rest"?"rest":"focus");
+  if(ph==="idle")return a2zPomLen("focus");
+  return Math.max(0,len-(d.pa?len-(d.rem||0):Math.floor((Date.now()-d.st)/1000)))}
+function a2zPomRender(){var d=A2Z.pom||{},ph=d.ph||"idle",b=$("pomBox");if(!b)return;
+  $("pPh").textContent=ph==="focus"?"Focus":ph==="rest"?"Rest":"Idle";
+  $("pTm").textContent=mmss(a2zPomLeft());
+  $("pBtn").innerHTML=d.pa?ICO.pause:(ph==="idle"?ICO.play:ICO.pause);
+  b.className="ppill"+(ph==="focus"?" f":ph==="rest"?" r":"")}
+function a2zPomBtn(){var d=A2Z.pom||{},len;
+  if(d.ph==="idle"){A2Z.pom={ph:"focus",st:Date.now(),rem:0,pa:false};saveA2zState()}
+  else if(d.pa){len=a2zPomLen(d.ph);A2Z.pom.st=Date.now()-(len-(d.rem||0))*1000;A2Z.pom.pa=false;saveA2zState()}
+  else{len=a2zPomLen(d.ph);A2Z.pom.rem=Math.max(0,len-Math.floor((Date.now()-d.st)/1000));A2Z.pom.pa=true;saveA2zState()}
+  a2zPomTick()}
+function a2zPomRs(){var d=A2Z.pom||{};
+  if(d.ph==="focus"&&!d.pa&&d.st){var el=Math.floor((Date.now()-d.st)/1000);
+    if(el>60){logSes("focus",el);toast("Partial pomodoro logged — "+mm(el))}}
+  A2Z.pom={ph:"idle",st:0,rem:0,pa:false};saveA2zState();a2zPomRender()}
+function a2zPomTick(){var d=A2Z.pom||{};if(d.ph==="idle"){a2zPomRender();return}
+  var len=a2zPomLen(d.ph),el=d.pa?(len-(d.rem||0)):Math.floor((Date.now()-d.st)/1000);
+  if(el>=len){logSes(d.ph,len);
+    if(d.ph==="focus"){alarm();toast("Pomodoro done ✓ "+mm(Math.round(len*CMUL()))+" credited — rest starting");
+      A2Z.pom={ph:"rest",st:Date.now(),rem:0,pa:false}}
+    else{alarm();toast("Break over — back to A2Z");A2Z.pom={ph:"idle",st:0,rem:0,pa:false}}
+    saveA2zState();a2zPomRender();return}
+  a2zPomRender()}
+function a2zLogSes(ph,du){A2Z.ses.push({at:Date.now(),ph:ph,du:du});if(ph==="focus"){a2zDay(ymd()).f+=du}saveA2zState()}
+
+function a2zDiffBadge(d){
+  var c={easy:'e',medium:'m',hard:'h',basic:'b'}[(d||'').toLowerCase()]||'m';
+  var t=(d||'Medium').toUpperCase();
+  return '<span class="dchip '+c+'">'+esc(t)+'</span>';
+}
+function a2zProbStatus(id){
+  if(!A2Z.p||!A2Z.p[id])return '<span class="rbadge mild">Not started</span>';
+  var p=A2Z.p[id],t=ymd();
+  if(!p.due)return '<span class="rbadge mild">Not started</span>';
+  var last=p.h&&p.h[p.h.length-1],done=last&&last.at&&ymd(new Date(last.at))===t;
+  if(done&&p.due>=t)return '<span class="rbadge ok">revised</span>';
+  else if(p.due<t)return '<span class="rbadge bad">'+gap(p.due,t)+'d overdue</span>';
+  else{var u=gap(t,p.due);return '<span class="rbadge '+(u<=3?'soon':'')+'">'+p.due.slice(5)+'</span>'}
+}
+
+function a2zRowHTML(p){
+  var prog=A2Z.p[p.id]||{};
+  var statusCls=prog.code?'saved':'';
+  var leetcodeUrl=p.problemUrl||('https://leetcode.com/problems/'+(p.slug||p.id)+'/');
+  var dueBadge='';
+  if(prog.due){var t=ymd();var last=prog.h&&prog.h[prog.h.length-1];var done=last&&last.at&&ymd(new Date(last.at))===t;
+    if(done&&prog.due>=t)dueBadge='<span class="rbadge ok">revised</span>';
+    else if(prog.due<t)dueBadge='<span class="rbadge bad">'+gap(prog.due,t)+'d overdue</span>';
+    else{var u=gap(t,prog.due);dueBadge='<span class="rbadge '+(u<=3?'soon':'')+'">'+prog.due.slice(5)+'</span>'}}
+  return '<div class="row" data-id="'+esc(p.id)+'" role="button" tabindex="0" aria-label="Open '+esc(p.title)+'">'
+    +'<span class="tick" data-s="'+(prog.code?statusCls:'none')+'">'+tick()+'</span>'
+    +dueBadge
+    +'<span class="row-main"><span class="row-t">'+esc(p.title)+' '+a2zDiffBadge(p.difficulty)+'</span>'
+    +'<span class="row-m">'+(p.topic?p.topic+' › ':'')+(p.subTopic?p.subTopic:'')+'</span></span>'
+    +'<div class="a2z-actions">'
+    +'<a href="'+esc(leetcodeUrl)+'" target="_blank" class="mini" style="margin-right:4px">Problem</a>'
+    +'<button class="mini sb" onclick="event.stopPropagation();a2zOpen('+p.id+');" style="font-size:11px;padding:6px 8px">Open</button>'
+    +'</div>'
+    +'</div>';
+}
+
+function a2zView(){
+  if(!A2Z_LOADED)return '<p class="empty">Loading A2Z sheet…</p>';
+  var problems=A2Z.problems||[];
+  var stats=A2Z.stats||{};
+  var h='<div class="hero"><div><p class="eyebrow">Strivers A2Z DSA Sheet</p><h1>A2Z Sheet</h1></div></div>';
 
   // Stats
-  if (A2Z_STATS) {
-    var total = A2Z_STATS.totalQuestions || A2Z_STATS.total || 0;
-    var solved = A2Z_STATS.solvedQuestions || A2Z_STATS.solved || Object.keys(A2Z_PROGRESS).length;
-    h += '<div class="stats">'
-      + '<div class="st"><span>Total Questions</span><b>' + total + '</b></div>'
-      + '<div class="st"><span>Solved</span><b>' + solved + '</b></div>'
-      + '<div class="st"><span>Progress</span><b>' + (total ? Math.round(100 * solved / total) : 0) + '%</b></div>'
-      + '</div>';
-  }
+  var total=stats.total||problems.length;
+  var streak=a2zStreak();
+  var solvedCount=Object.keys(A2Z.p||{}).filter(function(k){var p=A2Z.p[k];var h=p.h&&p.h[p.h.length-1];return h&&(h.g==="easy"||h.g==="ok"||h.g==="hard");}).length;
+  h+='<div class="stats">'
+    +'<div class="st"><span>Total Questions</span><b>'+total+'</b></div>'
+    +'<div class="st"><span>Solved</span><b>'+solvedCount+'</b></div>'
+    +'<div class="st"><span>Streak</span><b>'+streak+'</b></div>'
+    +'<div class="st"><span>Progress</span><b>'+(total?Math.round(100*solvedCount/total):0)+'%</b></div>'
+    +'</div>';
+
+  // Pomodoro pill (same as main app)
+  h+='<div class="ppill" id="a2zPomBox"><span class="pk" id="a2zPPh">Focus</span><b id="a2zPTm">25:00</b><button class="pi" id="a2zPBtn" aria-label="Start or pause pomodoro"></button><button class="pi" id="a2zPRs" aria-label="Reset pomodoro"></button></div>';
 
   // Topic filters
-  h += '<div class="seg" role="group" aria-label="Filter by topic">';
-  var topics = extractTopics(A2Z_SHEET);
-  h += '<button data-a2z-topic="" aria-pressed="true">All Topics</button>';
-  topics.forEach(function(t) {
-    h += '<button data-a2z-topic="' + esc(t) + '" aria-pressed="false">' + esc(t) + '</button>';
+  var topics=stats.topics?Object.keys(stats.topics):[];
+  h+='<div class="seg" role="group" aria-label="Filter by topic">';
+  h+='<button data-a2z-topic="" aria-pressed="true">All Topics ('+problems.length+')</button>';
+  topics.forEach(function(t){
+    var cnt=problems.filter(function(p){return p.topic===t;}).length;
+    h+='<button data-a2z-topic="'+esc(t)+'" aria-pressed="false">'+esc(t)+' ('+cnt+')</button>';
   });
-  h += '</div>';
+  h+='</div>';
+
+  // Export/Import
+  h+='<div class="btns" style="margin:12px 0">';
+  h+='<button class="btn" onclick="exportA2z()">Export A2Z Backup</button>';
+  h+='<label class="btn imp">Import<input type="file" id="a2zIm" hidden accept=".json"></label>';
+  h+='</div>';
 
   // Problems list
-  var problems = extractProblems(A2Z_SHEET, A2Z_TOPIC_FILTER, A2Z_SUBTOPIC_FILTER);
-  if (!problems.length) {
-    h += '<p class="empty">No problems found for this filter.</p>';
+  var filtered=problems.filter(function(p){
+    if(A2Z_TOPIC_FILTER&&p.topic!==A2Z_TOPIC_FILTER)return false;
+    if(A2Z_SUBTOPIC_FILTER&&p.subTopic!==A2Z_SUBTOPIC_FILTER)return false;
+    return true;
+  });
+
+  if(!filtered.length){
+    h+='<p class="empty">No problems found for this filter.</p>';
   } else {
-    h += '<div class="list">';
-    problems.forEach(function(p) {
-      var prog = A2Z_PROGRESS[p.id] || {};
-      var statusCls = prog.status === 'easy' ? 'saved' : (prog.status === 'failed' || prog.status === 'hard') ? '' : '';
-      var leetcodeUrl = p.leetcodeUrl || p.url || ('https://leetcode.com/problems/' + (p.slug || p.id) + '/');
-      var codolioUrl = p.codolioUrl || p.link || '#';
-      h += '<div class="row" data-id="' + esc(p.id) + '" role="button" tabindex="0" aria-label="Open ' + esc(p.title) + '">';
-      h += '<span class="tick" data-s="' + (prog.status ? 'saved' : 'none') + '">' + tick() + '</span>';
-      h += probStatus(p.id);
-      h += '<span class="row-main"><span class="row-t">' + esc(p.title) + ' ' + diffBadge(p.difficulty) + '</span>';
-      h += '<span class="row-m">' + (p.topic ? p.topic + ' › ' : '') + (p.subTopic ? p.subTopic : '') + '</span></span>';
-      h += '<div class="a2z-actions">';
-      h += '<a href="' + esc(leetcodeUrl) + '" target="_blank" class="mini" style="margin-right:4px">LeetCode</a>';
-      h += '<a href="' + esc(codolioUrl) + '" target="_blank" class="mini" style="margin-right:4px">Codolio</a>';
-      h += '<button class="mini sb a2z-grade" data-grade="easy" style="font-size:11px;padding:6px 8px">Easy</button>';
-      h += '<button class="mini sb a2z-grade" data-grade="ok" style="font-size:11px;padding:6px 8px">OK</button>';
-      h += '<button class="mini sb a2z-grade" data-grade="hard" style="font-size:11px;padding:6px 8px">Hard</button>';
-      h += '</div>';
-      h += '</div>';
-    });
-    h += '</div>';
+    h+='<div class="list">';
+    filtered.forEach(function(p){h+=a2zRowHTML(p);});
+    h+='</div>';
   }
-  h += '<p class="hint">Solutions and grades are saved to strivers-a2z.json (separate from your ladder data).</p>';
+  h+='<p class="hint">All data stored in strivers-a2z.json (separate from your ladder). Timer, solutions, revisions — full feature parity.</p>';
   return h;
 }
 
-function extractTopics(sheet) {
-  var topics = [];
-  if (!sheet) return topics;
-  var walk = function(obj) {
-    if (Array.isArray(obj)) { obj.forEach(walk); return; }
-    if (obj && typeof obj === 'object') {
-      if (obj.name && !topics.includes(obj.name)) topics.push(obj.name);
-      for (var k in obj) walk(obj[k]);
-    }
-  };
-  walk(sheet);
-  return topics;
+function a2zOpen(id){
+  var p=A2Z.p[id];
+  // Find problem from the problems list
+  var prob=A2Z.problems.find(function(x){return x.id===id;});
+  if(!prob){
+    toast('Problem not found');
+    return;
+  }
+  A2Z_MODE=true;
+  A2Z_CUR=id;A2Z_T0=Date.now();
+  var ov=$("ov"),dr=A2Z.dr[id]||{};
+  $("shEy").textContent="#"+id+" · "+(p?"Recall":"New")+" · "+(prob.difficulty||"Medium");
+  $("shTitle").textContent=prob.title||prob.name;
+  $("shLink").href=prob.problemUrl||('https://leetcode.com/problems/'+(prob.slug||prob.id)+'/');
+  $("idea").textContent="(A2Z problem — no hint available)";
+  $("ideaD").open=false;
+  $("ptime").textContent="Time on this problem: "+(p&&p.time?hm(p.time):"not tracked yet");
+  var geo=(p&&p.h||[]).filter(function(x){return x.g==="easy"||x.g==="ok"||x.g==="hard"||x.g==="failed"});
+  $("recC").textContent=geo.length?("Recall iterations: "+geo.length+" · last "+({easy:"easy ✓",ok:"OK ✓",hard:"hard ✓",failed:"failed"}[geo[geo.length-1].g])+" on "+new Date(geo[geo.length-1].at).toLocaleDateString()):"Recall iterations: 0 — grade below to start tracking";
+  $("lcSub").innerHTML='<p class="chip">A2Z revision tracking — grade below to schedule next review.</p>';
+  $("lockChip").hidden=true;
+  $("lk").hidden=true;
+  $("sb").disabled=false;$("sb").textContent="Submit";
+  $("cd").value=dr.code!=null?dr.code:((p&&p.code)||"");
+  $("nt").value=dr.note!=null?dr.note:(p&&p.note||"");
+  $("pv").textContent=p&&p.code?p.code:"(none saved yet)";
+  $("cd").disabled=false;
+  $("w").textContent="";$("w").className="warn";$("pl").disabled=false;$("pl").textContent="Pull from LeetCode";
+  var pill=$("svPill");pill.textContent=dr.at?"Draft saved":"Auto-save on";pill.classList.toggle("on",!!dr.at);
+  var dv=$("dv");if(dv)dv.textContent=dr.at?"Draft stored on this device since "+fmtTs(dr.at):"Auto-saves to this device as you type";
+  ov.hidden=false;document.body.style.overflow="hidden";
+  requestAnimationFrame(function(){ov.classList.add("open");});
+  clearInterval(A2Z_TM);$("tm").textContent="00:00";
+  var tm=function(){var s=Math.round((Date.now()-A2Z_T0)/1000);$("tm").textContent=("0"+(s/60|0)).slice(-2)+":"+("0"+s%60).slice(-2);};
+  tm();A2Z_TM=setInterval(tm,1000);
+  setTimeout(function(){$("sheet").focus();},50);
 }
 
-function extractProblems(sheet, topicFilter, subTopicFilter) {
-  var out = [];
-  if (!sheet) return out;
-  var walk = function(obj, curTopic, curSubTopic) {
-    if (Array.isArray(obj)) { obj.forEach(function(x) { walk(x, curTopic, curSubTopic); }); return; }
-    if (obj && typeof obj === 'object') {
-      if (obj.id && obj.title) {
-        var t = obj.topic || curTopic || (obj.topics && obj.topics[0]) || '';
-        var s = obj.subTopic || curSubTopic || '';
-        if ((!topicFilter || t === topicFilter) && (!subTopicFilter || s === subTopicFilter)) {
-          out.push({
-            id: obj.id || obj.questionId || obj.qid,
-            title: obj.title || obj.name || 'Unknown',
-            difficulty: obj.difficulty || obj.level || 'Medium',
-            topic: t,
-            subTopic: s,
-            slug: obj.slug || obj.questionSlug || '',
-            leetcodeUrl: obj.leetcodeUrl || obj.url || obj.link || '',
-            codolioUrl: obj.codolioUrl || ''
-          });
-        }
-      }
-      for (var k in obj) {
-        var nt = curTopic, ns = curSubTopic;
-        if (k === 'topic' || k === 'name') nt = obj[k];
-        if (k === 'subTopic') ns = obj[k];
-        walk(obj[k], nt, ns);
-      }
-    }
-  };
-  walk(sheet);
-  return out;
+function a2zDraftSave(){clearTimeout(A2Z_DT);A2Z_DT=setTimeout(function(){
+  if(A2Z_CUR&&$("cd")&&$("nt")){var c=$("cd").value,n=$("nt").value.trim();
+    if(!c.replace(/\s/g,"")&&!n){if(A2Z.dr[A2Z_CUR]){delete A2Z.dr[A2Z_CUR];saveA2zState()}return}
+    A2Z.dr[A2Z_CUR]={code:c,note:n,at:Date.now()};saveA2zState();
+    var pill=$("svPill");if(pill){pill.textContent="Draft saved ✓";pill.classList.add("on")}}
+  },400)}
+var A2Z_DT=null;
+function a2zDrFlush(){clearTimeout(A2Z_DT);if($("ov").hidden||!A2Z_CUR)return;
+  var c=$("cd").value,n=$("nt").value.trim();
+  if(!c.replace(/\s/g,"")&&!n){if(A2Z.dr[A2Z_CUR]){delete A2Z.dr[A2Z_CUR];saveA2zState()}return}
+  A2Z.dr[A2Z_CUR]={code:c,note:n,at:Date.now()};saveA2zState();
+  var pill=$("svPill");if(pill){pill.textContent="Draft saved ✓";pill.classList.add("on")}}
+function a2zShut(flush){if(flush!==false)a2zDrFlush();clearInterval(A2Z_TM);A2Z_TM=null;A2Z_MODE=false;
+  var ov=$("ov");ov.classList.remove("open");document.body.style.overflow="";
+  setTimeout(function(){if(!ov.classList.contains("open"))ov.hidden=true},320);render()}
+
+async function exportA2z(){
+  try{
+    var data=await codolioFetch('read','GET');
+    var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    var a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download='strivers-a2z-'+(new Date().toISOString().slice(0,10))+'.json';a.click();
+    toast('A2Z backup exported ✓');
+  }catch(e){toast('Export failed');}
+}
+
+async function importA2z(file){
+  var r=new FileReader();r.onload=function(){
+    try{
+      var s=JSON.parse(r.result);
+      if(!s.problems)throw 0;
+      await codolioFetch('write','POST',s);
+      A2Z=a2zMergeDefaults(s);A2Z_LOADED=true;
+      toast('A2Z backup imported ✓');render();
+    }catch(e){alert('Not a valid A2Z backup file');}
+  };r.readAsText(file);
 }
 function render(){
  while(CHARTS.length){try{CHARTS.pop().destroy()}catch(e){}}
@@ -1157,6 +1265,7 @@ function render(){
  var sk=streak(),s=$("strk");s.innerHTML=ICO.flame+"<b>"+sk+"</b>";s.className="streak-chip"+(sk>0?" on":"");
  $("v").innerHTML=V==="today"?today():V==="ladder"?ladder():V==="profile"?prof():V==="set"?sett():V==="a2z"?a2z():"";
  if($("im"))$("im").onchange=function(){imp(this.files[0])};
+if($("a2zIm"))$("a2zIm").onchange=function(){importA2z(this.files[0])};
  if(V==="set"&&$("svr")&&!$("svr").dataset.done){$("svr").dataset.done="1";
   fetch("/sw.js").then(function(r){return r.text()}).then(function(s){var m=String(s).match(/dsa-v\d+/),e=$("svr");
    if(e&&e.dataset.done==="1")e.textContent=m?m[0]:"unknown"}).catch(function(){})}
@@ -1333,14 +1442,14 @@ function subRender(id){
   :'<p class="empty">No submissions yet — Submit here, or load your LeetCode history.</p>'}
 function shut(flush){if(flush!==false)drFlush();clearInterval(TM);TM=null;var ov=$("ov");ov.classList.remove("open");document.body.style.overflow="";
  setTimeout(function(){if(!ov.classList.contains("open"))ov.hidden=true},320);render()}
-$("bnav").onclick=async function(e){var b=e.target.closest("button");if(b){V=b.dataset.v;if(V==="a2z")await loadA2zData();render();window.scrollTo(0,0)}};
+$("bnav").onclick=async function(e){var b=e.target.closest("button");if(b){V=b.dataset.v;if(V==="a2z")await loadA2zState();render();window.scrollTo(0,0)}};
 $("v").addEventListener("click",async function(e){var b=e.target.closest("[data-bf],[data-tp],[data-pi],[data-a],[data-id],[data-acc],[data-pom],[data-pk],[data-grade],[data-a2z-topic]");if(!b)return;var d=b.dataset;
  if(d.bf){backfill(+d.bf);render()}
  else if(d.tp){TP=+d.tp;render()}
  else if(d.pi){ST.pi[TP]=+d.pi;save();render()}
  else if(d.a)act(d.a,b)
- else if(d.id)openP(+d.id)
- else if(d.pom){if(d.pom==="toggle")pomBtn();else{pomRs();render()}}
+ else if(d.id){if(A2Z_MODE){a2zOpen(+d.id);}else{openP(+d.id);}}
+ else if(d.pom){if(d.pom==="toggle"){if(A2Z_MODE){a2zPomBtn();}else{pomBtn();}}else{if(A2Z_MODE){a2zPomRs();}else{pomRs();render()}}}
  else if(d.acc){var sec=e.target.closest(".acc"),bb=sec.querySelector(".acc-b"),ic=sec.querySelector(".acc-ic");ACC[d.acc]=!ACC[d.acc];
   if(bb)bb.hidden=!ACC[d.acc];sec.classList.toggle("open",ACC[d.acc]);ic&&ic.classList.toggle("flip",ACC[d.acc]);
   var ah=sec.querySelector(".acc-h");ah&&ah.setAttribute("aria-expanded",!!ACC[d.acc])}
@@ -1348,21 +1457,36 @@ $("v").addEventListener("click",async function(e){var b=e.target.closest("[data-
   if(/^\d{4}-/.test(pk))dayOpen(pk);
   else if(pk==="x"){var dlg=$("pdDlg");if(dlg)dlg.hidden=true}
   else{PC={y:PC.y,m:PC.m+(+pk)};if(PC.m<0){PC.m=11;PC.y--}if(PC.m>11){PC.m=0;PC.y++}render()}}
- else if(d.grade){var row=b.closest(".row"),id=row?row.dataset.id:null;if(id)await saveA2zProgress(id,d.grade,"",0,"");}
+ else if(d.grade){var row=b.closest(".row"),id=row?row.dataset.id:null;if(id){
+   if(A2Z_MODE){var p=A2Z.p[id]||{},sec=Math.round((Date.now()-A2Z_T0)/1000);a2zFinish(id,d.grade,$("cd").value,$("nt").value.trim(),sec);a2zShut(false);}
+   else{finish(id,d.grade,$("cd").value,$("nt").value.trim(),Math.round((Date.now()-T0)/1000));}}
+ }
  else if(d.a2zTopic!==undefined){A2Z_TOPIC_FILTER=d.a2zTopic||null;A2Z_SUBTOPIC_FILTER=null;render();}});
-$("v").addEventListener("keydown",function(e){if(e.key!=="Enter"&&e.key!==" ")return;var r=e.target.closest(".row,.nudge");if(r){e.preventDefault();if(r.dataset.id)openP(+r.dataset.id);else if(r.dataset.a)act(r.dataset.a,r)}});
-$("scrim").onclick=shut;$("shX").onclick=shut;
+$("v").addEventListener("keydown",function(e){if(e.key!=="Enter"&&e.key!==" ")return;var r=e.target.closest(".row,.nudge");if(r){e.preventDefault();if(r.dataset.id){if(A2Z_MODE){a2zOpen(+r.dataset.id);}else{openP(+r.dataset.id);}}else if(r.dataset.a)act(r.dataset.a,r)}});
+$("scrim").onclick=function(){if(A2Z_MODE){a2zShut();}else{shut();}};$("shX").onclick=function(){if(A2Z_MODE){a2zShut();}else{shut();}};
 $("pdX").onclick=function(){$("pdDlg").hidden=true};
 $("pdDlg").onclick=function(e){if(e.target===this)this.hidden=true};
 document.addEventListener("click",function(e){var r=e.target.closest(".row[data-id]");if(!r||r.closest("#v"))return;
- if(BY[r.dataset.id])openP(+r.dataset.id)});
-document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("ov").hidden)shut()});
+ if(A2Z_MODE){a2zOpen(+r.dataset.id);}else{if(BY[r.dataset.id])openP(+r.dataset.id);}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("ov").hidden){if(A2Z_MODE){a2zShut();}else{shut();}}});
 $("xtab").onclick=function(e){var b=e.target.closest("button");if(b)xtShow(b.dataset.xt)};
 $("lk").onclick=function(){ST.lock[CUR]=ST.lock[CUR]?0:1;save();var lock=isLock(CUR);
  $("lockChip").hidden=!lock;this.textContent=lock?"Mark as available":"Mark as subscription needed";
  $("sb").disabled=lock;$("sb").textContent=lock?"Locked":"Submit";
  $("cd").disabled=lock;render();toast(lock?"Marked 🔒 subscription-needed — it leaves the New queue":"Unlocked — back in the rotation")};
-$("sb").onclick=function(){var code=$("cd"),id=CUR,sec=Math.round((Date.now()-T0)/1000);
+$("sb").onclick=function(){if(A2Z_MODE){var code=$("cd"),id=A2Z_CUR,sec=Math.round((Date.now()-A2Z_T0)/1000);
+  if(!code.value||code.value.replace(/\s/g,"").length<15){$("w").className="warn";$("w").textContent="Nothing to submit — paste your code first.";code.focus();return}
+  var t=ymd(),dd=a2zDay(t),first=!A2Z.p[id],p=A2Z.p[id]||(A2Z.p[id]={id:id,h:[],b:0,first:t});
+  p.code=code.value;var note=$("nt").value.trim();if(note)p.note=note;
+  p.time=(p.time||0)+sec;
+  p.h.push({at:Date.now(),g:"local",s:sec,code:code.value,k:first?"n":"r",src:"a2z"});
+  dd.s+=sec;dd.ids.push({id:id,k:first?"n":"r"});delete A2Z.dr[id];saveA2zState();
+  A2Z_T0=Date.now();$("tm").textContent="00:00";
+  var pill=$("svPill");pill.textContent="Saved ✓";pill.classList.remove("on");
+  $("w").className="warn ok-msg";$("w").textContent="Submitted ✓ saved to A2Z — "+mm(sec)+" logged for today. Grading below still schedules the review.";
+  toast("Submitted ✓ — "+mm(sec)+" logged");
+  render();return}
+var code=$("cd"),id=CUR,sec=Math.round((Date.now()-T0)/1000);
  if(isLock(id)){$("w").className="warn";$("w").textContent="Marked as subscription-needed — unlock it in Details to submit.";return}
  if(!code.value||code.value.replace(/\s/g,"").length<15){$("w").className="warn";$("w").textContent="Nothing to submit — paste your code first.";code.focus();return}
  var t=ymd(),dd=day(t),first=!ST.p[id],p=ST.p[id]||(ST.p[id]={id:id,h:[],b:0,first:t});
@@ -1377,7 +1501,16 @@ $("sb").onclick=function(){var code=$("cd"),id=CUR,sec=Math.round((Date.now()-T0
  $("w").className="warn ok-msg";$("w").textContent="Submitted ✓ saved on this device — "+mm(sec)+" logged for today. Grading below still schedules the review.";
  toast("Submitted ✓ — "+mm(sec)+" logged");
  render()};
-$("pl").onclick=function(){var id=CUR,btn=this;btn.disabled=true;$("w").className="warn";$("w").textContent="Pulling from LeetCode…";
+$("pl").onclick=function(){if(A2Z_MODE){var id=A2Z_CUR,btn=this;btn.disabled=true;$("w").className="warn";$("w").textContent="Pulling from LeetCode…";
+  pull(id).then(function(r){btn.disabled=false;if(r.error){$("w").textContent=r.error;return}
+   var known=!!A2Z.lc[id],sec=Math.round((Date.now()-A2Z_T0)/1000),t=ymd(),dd=a2zDay(t),p=A2Z.p[id];
+   applySub(id,r,sec);countNewDay(id,r.ts,known);
+   if(sec&&p){dd.s+=sec;p.time=(p.time||0)+sec;dd.ids.push({id:id,k:p.old||p.due?"r":"n"})}
+   saveA2zState();A2Z_T0=Date.now();$("tm").textContent="00:00";
+   $("cd").value=r.code;$("lcSub").innerHTML='<p class="chip">Pulled from LeetCode — grade below to schedule A2Z review.</p>';
+   $("w").className="warn ok-msg";$("w").textContent="Pulled "+r.lang+", "+r.runtime+" · submitted "+fmtTs(r.ts);a2zDrSave()})
+  .catch(function(e){btn.disabled=false;btn.textContent="Try again";$("w").textContent=e.message})};return}
+var id=CUR,btn=this;btn.disabled=true;$("w").className="warn";$("w").textContent="Pulling from LeetCode…";
  pull(id).then(function(r){btn.disabled=false;if(r.error){$("w").textContent=r.error;return}
   var known=!!ST.lc[id],sec=Math.round((Date.now()-T0)/1000),t=ymd(),dd=day(t),p=ST.p[id];
   applySub(id,r,sec);countNewDay(id,r.ts,known);applyLsub(id,r);
@@ -1393,24 +1526,31 @@ $("lhs").onclick=function(){var id=CUR,btn=this;btn.disabled=true;btn.textConten
   else{$("w").textContent=(r&&r.error)||"No submissions returned for this problem."}})
  .catch(function(e){btn.disabled=false;btn.textContent="Load history from LeetCode";$("w").textContent=e.message})};
 Array.prototype.forEach.call(document.querySelectorAll("#shGr [data-g]"),function(b){b.onclick=function(){
- var code=$("cd").value;
- if(code.replace(/\s/g,"").length<15){$("w").className="warn";$("w").textContent="Solution is empty — paste your accepted code first.";$("cd").focus();return}
- var id=CUR;
- finish(id,b.dataset.g,code,$("nt").value.trim(),Math.round((Date.now()-T0)/1000));
- delete ST.dr[id];save();shut(false)}});
-$("cd").addEventListener("input",drSave);
-$("nt").addEventListener("input",drSave);
-window.addEventListener("pagehide",function(){drFlush();save()});
-document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden"){drFlush();save()}});
-$("pBtn").onclick=pomBtn;$("pRs").onclick=pomRs;$("pRs").innerHTML=ICO.rst;
+  if(A2Z_MODE){var code=$("cd"),id=A2Z_CUR,sec=Math.round((Date.now()-A2Z_T0)/1000);
+   if(code.value.replace(/\s/g,"").length<15){$("w").className="warn";$("w").textContent="Solution is empty — paste your accepted code first.";$("cd").focus();return}
+   a2zFinish(id,b.dataset.g,code.value,$("nt").value.trim(),sec);
+   delete A2Z.dr[id];saveA2zState();a2zShut(false);return}
+  var code=$("cd").value;
+  if(code.replace(/\s/g,"").length<15){$("w").className="warn";$("w").textContent="Solution is empty — paste your accepted code first.";$("cd").focus();return}
+  var id=CUR;
+  finish(id,b.dataset.g,code,$("nt").value.trim(),Math.round((Date.now()-T0)/1000));
+  delete ST.dr[id];save();shut(false)}});
+$("cd").addEventListener("input",function(){if(A2Z_MODE){a2zDraftSave();}else{drSave();}});
+$("nt").addEventListener("input",function(){if(A2Z_MODE){a2zDraftSave();}else{drSave();}});
+window.addEventListener("pagehide",function(){if(A2Z_MODE){a2zDrFlush();saveA2zState()}else{drFlush();save()}});
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden"){if(A2Z_MODE){a2zDrFlush();saveA2zState()}else{drFlush();save()}}});
+$("pBtn").onclick=function(){if(A2Z_MODE){a2zPomBtn();}else{pomBtn();}};$("pRs").onclick=function(){if(A2Z_MODE){a2zPomRs();}else{pomRs();}};$("pRs").innerHTML=ICO.rst;
 if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();
 
 // Initialize: load from API (single source of truth) then render
 async function init() {
   await loadFromAPI();
+  await loadA2zState();
   render();
   pomTick();
+  a2zPomRender();
   setInterval(pomTick, 1000);
+  setInterval(a2zPomTick, 1000);
   setInterval(autoSync, 60000);
   setTimeout(autoSync, 20000);
 }

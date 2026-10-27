@@ -8,7 +8,8 @@
     { "src": "chart.umd.min.js", "use": "@vercel/static" },
     { "src": "icon-192.png", "use": "@vercel/static" },
     { "src": "icon-512.png", "use": "@vercel/static" },
-    { "src": "dsa-grind-2026-10-27.json", "use": "@vercel/static" }
+    { "src": "dsa-grind-2026-10-27.json", "use": "@vercel/static" },
+    { "src": "strivers-a2z.json", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/api/data", "methods": ["GET", "PUT", "POST", "OPTIONS"], "dest": "/api/data.js" },
@@ -21,6 +22,7 @@
     { "src": "/icon-192.png", "dest": "/icon-192.png" },
     { "src": "/icon-512.png", "dest": "/icon-512.png" },
     { "src": "/dsa-grind-2026-10-27.json", "dest": "/dsa-grind-2026-10-27.json" },
+    { "src": "/strivers-a2z.json", "dest": "/strivers-a2z.json" },
     { "src": "(.*)", "dest": "/index.html" }
   ]
 }
