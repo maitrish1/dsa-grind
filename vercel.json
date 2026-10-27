@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/*.js", "use": "@vercel/node" },
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "sw.js", "use": "@vercel/static" },
+    { "src": "manifest.webmanifest", "use": "@vercel/static" },
+    { "src": "chart.umd.min.js", "use": "@vercel/static" },
+    { "src": "icon-192.png", "use": "@vercel/static" },
+    { "src": "icon-512.png", "use": "@vercel/static" },
+    { "src": "dsa-grind-2026-10-27.json", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/data", "methods": ["GET", "PUT", "POST", "OPTIONS"], "dest": "/api/data.js" },
+    { "src": "/api/sync", "methods": ["POST", "OPTIONS"], "dest": "/api/sync.js" },
+    { "src": "/api/lc", "methods": ["POST", "OPTIONS"], "dest": "/api/lc.js" },
+    { "src": "/sw.js", "dest": "/sw.js" },
+    { "src": "/manifest.webmanifest", "dest": "/manifest.webmanifest" },
+    { "src": "/chart.umd.min.js", "dest": "/chart.umd.min.js" },
+    { "src": "/icon-192.png", "dest": "/icon-192.png" },
+    { "src": "/icon-512.png", "dest": "/icon-512.png" },
+    { "src": "/dsa-grind-2026-10-27.json", "dest": "/dsa-grind-2026-10-27.json" },
+    { "src": "(.*)", "dest": "/index.html" }
+  ]
+}
