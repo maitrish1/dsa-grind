@@ -95,6 +95,25 @@
       "due": "2026-10-27",
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    s = s.trim().split(/\\s+/)\n    let i=0, j=s.length-1\n    while(i<j){\n        [s[i],s[j]]=[s[j],s[i]]\n        i++\n        j--\n    }\n    s=s.join(' ')\n    return s\n};"
     },
+    "165": {
+      "id": 165,
+      "h": [
+        {
+          "at": 1793098387750,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {string} version1\n * @param {string} version2\n * @return {number}\n */\nvar compareVersion = function(version1, version2) {\n    let split1=version1.split('.')\n    let split2=version2.split('.')\n    let len=Math.max(split1.length, split2.length)\n    let i=0\n    \n    while(i<len){\n        if( ((Number(split1[i]))||0) < ((Number(split2[i]))||0) ){\n            return -1\n        }\n        else if( ((Number(split1[i]))||0) > ((Number(split2[i]))||0) ){\n            return 1\n        }\n        i++\n    }\n    return 0\n};",
+          "k": "s",
+          "ts": 1792761040000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-28",
+      "code": "/**\n * @param {string} version1\n * @param {string} version2\n * @return {number}\n */\nvar compareVersion = function(version1, version2) {\n    let split1=version1.split('.')\n    let split2=version2.split('.')\n    let len=Math.max(split1.length, split2.length)\n    let i=0\n    \n    while(i<len){\n        if( ((Number(split1[i]))||0) < ((Number(split2[i]))||0) ){\n            return -1\n        }\n        else if( ((Number(split1[i]))||0) > ((Number(split2[i]))||0) ){\n            return 1\n        }\n        i++\n    }\n    return 0\n};"
+    },
     "189": {
       "id": 189,
       "h": [
@@ -426,7 +445,8 @@
       "ids": [],
       "f": 0,
       "qids": [
-        844
+        844,
+        165
       ]
     }
   },
@@ -557,6 +577,14 @@
       "ts": 1792738587000,
       "at": 1793098386409,
       "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar backspaceCompare = function(s, t) {\n    function compare(str){\n        let hash=0\n        let returnstr=''\n\n        for(let i=str.length-1;i>=0;i--){\n            if(str[i]=='#'){\n                hash++\n            }\n            else {\n                if(hash<=0){\n                    returnstr+=str[i]\n                }\n                else if(hash>0){\n                    hash--\n                    continue\n                }\n            }\n        }\n        return returnstr\n    }\n\n    return compare(s)==compare(t)\n};"
+    },
+    "986": {
+      "id": 986,
+      "lang": "JavaScript",
+      "runtime": "1 ms",
+      "ts": 1792792961000,
+      "at": 1793098389801,
+      "code": "/**\n * @param {number[][]} firstList\n * @param {number[][]} secondList\n * @return {number[][]}\n */\n\nvar intervalIntersection = function(firstList, secondList) {\n    if (firstList.length == 0 || secondList.length == 0) return []\n\n    let i = 0\n    let j = 0\n    let res = []\n\n    while (i < firstList.length && j < secondList.length) {\n        if (secondList[j][0] <= firstList[i][1] &&\n            secondList[j][1] >= firstList[i][0]) {\n\n            res.push([\n                Math.max(firstList[i][0], secondList[j][0]),\n                Math.min(firstList[i][1], secondList[j][1])\n            ])\n        }\n\n        if (firstList[i][1] < secondList[j][1]) {\n            i++\n        } else {\n            j++\n        }\n    }\n\n    return res\n};\n"
     },
     "1047": {
       "id": 1047,
