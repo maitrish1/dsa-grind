@@ -171,6 +171,25 @@
       "due": "2026-10-28",
       "code": "/**\n * @param {number[]} nums1\n * @param {number} m\n * @param {number[]} nums2\n * @param {number} n\n * @return {void} Do not return anything, modify nums1 in-place instead.\n */\n\n \nvar merge = function(nums1, m, nums2, n) {\n    nums1.splice(m)\n    nums1.push(...nums2)\n    for(let i=0;i<nums1.length-1;i++){\n        for(let j=0;j<nums1.length-i-1;j++){\n            if(nums1[j]>nums1[j+1]){\n                let temp=nums1[j]\n                nums1[j]=nums1[j+1]\n                nums1[j+1]=temp\n            }\n        }\n    }\n};"
     },
+    "121": {
+      "id": 121,
+      "h": [
+        {
+          "at": 1793098480840,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} prices\n * @return {number}\n */\nvar maxProfit = function(prices) {\n    let profit=0\n    let max=0\n\n    let buy=0, sell=1\n    while(sell<prices.length){\n        if(prices[buy]<prices[sell]){\n            profit=prices[sell]-prices[buy]\n            max=Math.max(max,profit)\n        }\n        else buy=sell\n        sell++\n    }\n    return max\n\n};",
+          "k": "s",
+          "ts": 1715000642000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-30",
+      "code": "/**\n * @param {number[]} prices\n * @return {number}\n */\nvar maxProfit = function(prices) {\n    let profit=0\n    let max=0\n\n    let buy=0, sell=1\n    while(sell<prices.length){\n        if(prices[buy]<prices[sell]){\n            profit=prices[sell]-prices[buy]\n            max=Math.max(max,profit)\n        }\n        else buy=sell\n        sell++\n    }\n    return max\n\n};"
+    },
     "125": {
       "id": 125,
       "h": [
@@ -284,6 +303,25 @@
       "first": "before",
       "due": "2026-10-30",
       "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {boolean}\n */\nvar containsNearbyDuplicate = function(nums, k) {\n    for(let i=0;i<nums.length-1;i++){\n        for(let j=i+1;j<nums.length;j++){\n            if(nums[i]==nums[j] && j<=i+k){\n                return true\n            }\n        }\n    }\n    return false\n};"
+    },
+    "239": {
+      "id": 239,
+      "h": [
+        {
+          "at": 1793098475310,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number[]}\n */\nvar maxSlidingWindow = function(nums, k) {\n    const q = [];  \n    const res = [];\n    for (let i = 0; i < nums.length; i++) {\n        while (q && nums[q[q.length - 1]] <= nums[i]) {\n            q.pop();\n        }\n        q.push(i);\n        if (q[0] === i - k) {\n            q.shift();\n        }\n        if (i >= k - 1) {\n            res.push(nums[q[0]]);\n        }\n    }\n    return res; \n};",
+          "k": "s",
+          "ts": 1712898533000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-30",
+      "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number[]}\n */\nvar maxSlidingWindow = function(nums, k) {\n    const q = [];  \n    const res = [];\n    for (let i = 0; i < nums.length; i++) {\n        while (q && nums[q[q.length - 1]] <= nums[i]) {\n            q.pop();\n        }\n        q.push(i);\n        if (q[0] === i - k) {\n            q.shift();\n        }\n        if (i >= k - 1) {\n            res.push(nums[q[0]]);\n        }\n    }\n    return res; \n};"
     },
     "283": {
       "id": 283,
@@ -787,7 +825,8 @@
       "ids": [],
       "f": 0,
       "qids": [
-        42
+        42,
+        239
       ]
     },
     "2023-10-03": {
@@ -808,6 +847,16 @@
       "f": 0,
       "qids": [
         219
+      ]
+    },
+    "2024-05-06": {
+      "n": 0,
+      "r": 0,
+      "s": 0,
+      "ids": [],
+      "f": 0,
+      "qids": [
+        121
       ]
     }
   },
@@ -898,6 +947,14 @@
       "ts": 1692258770000,
       "at": 1793098382625,
       "code": "/**\n * @param {number[]} nums1\n * @param {number} m\n * @param {number[]} nums2\n * @param {number} n\n * @return {void} Do not return anything, modify nums1 in-place instead.\n */\n\n \nvar merge = function(nums1, m, nums2, n) {\n    nums1.splice(m)\n    nums1.push(...nums2)\n    for(let i=0;i<nums1.length-1;i++){\n        for(let j=0;j<nums1.length-i-1;j++){\n            if(nums1[j]>nums1[j+1]){\n                let temp=nums1[j]\n                nums1[j]=nums1[j+1]\n                nums1[j+1]=temp\n            }\n        }\n    }\n};"
+    },
+    "121": {
+      "id": 121,
+      "lang": "JavaScript",
+      "runtime": "71 ms",
+      "ts": 1715000642000,
+      "at": 1793098480831,
+      "code": "/**\n * @param {number[]} prices\n * @return {number}\n */\nvar maxProfit = function(prices) {\n    let profit=0\n    let max=0\n\n    let buy=0, sell=1\n    while(sell<prices.length){\n        if(prices[buy]<prices[sell]){\n            profit=prices[sell]-prices[buy]\n            max=Math.max(max,profit)\n        }\n        else buy=sell\n        sell++\n    }\n    return max\n\n};"
     },
     "125": {
       "id": 125,
