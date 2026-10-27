@@ -977,6 +977,14 @@
       "at": 1793098374761,
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar removeDuplicates = function(s) {\n    let stack = []; // Initialize an empty stack\n    \n    // Iterate through each character in the string\n    for (let char of s) {\n        // If the stack is not empty and the current character is equal to the top element of the stack\n        if (stack.length > 0 && char === stack[stack.length - 1]) {\n            stack.pop(); // Remove the adjacent duplicate by popping the top element\n        } else {\n            stack.push(char); // Push the current character onto the stack\n        }\n    }\n    \n    // Construct the final string by joining the characters in the stack\n    return stack.join('');\n};\n"
     },
+    "1456": {
+      "id": 1456,
+      "lang": "JavaScript",
+      "runtime": "72 ms",
+      "ts": 1696315989000,
+      "at": 1793098493213,
+      "code": "/**\n * @param {string} s\n * @param {number} k\n * @return {number}\n */\nvar maxVowels = function(s, k) {\n    let left=right=c=maxc=0\n\n    while(right<s.length){\n        if(isVowel(s[right])){\n            c++\n        }\n        if(right-left+1>k){\n            if(isVowel(s[left])){\n                c--\n            }\n            left++\n        }\n        right++\n        maxc=Math.max(maxc,c)\n    }\n    return maxc\n}\n\nconst isVowel = (char) => {\n    return char === 'a' || char === 'e' || char === 'i' || char === 'o' || char === 'u';\n}\n"
+    },
     "1768": {
       "id": 1768,
       "lang": "JavaScript",
