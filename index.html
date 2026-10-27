@@ -1000,6 +1000,7 @@ var A2Z = {p:{}, d:{}, c:{nt:8,rt:10}, bk:"", pi:{0:0,1:0}, dr:{}, ses:[], lock:
 var A2Z_LOADED = false;
 var A2Z_CUR = 0, A2Z_T0 = 0, A2Z_TM = null;
 var A2Z_MODE = false;
+var A2Z_TOPIC_FILTER = null, A2Z_SUBTOPIC_FILTER = null;
 
 function a2zMergeDefaults(data) {
   data = data || {};
@@ -1130,7 +1131,7 @@ function a2zRowHTML(p){
     +'</div>';
 }
 
-function a2zView(){
+function a2z(){
   if(!A2Z_LOADED)return '<p class="empty">Loading A2Z sheet…</p>';
   var problems=A2Z.problems||[];
   var stats=A2Z.stats||{};
