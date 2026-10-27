@@ -1249,7 +1249,7 @@ async function exportA2z(){
 }
 
 async function importA2z(file){
-  var r=new FileReader();r.onload=function(){
+  var r=new FileReader();r.onload=async function(){
     try{
       var s=JSON.parse(r.result);
       if(!s.problems)throw 0;
@@ -1509,7 +1509,7 @@ $("pl").onclick=function(){if(A2Z_MODE){var id=A2Z_CUR,btn=this;btn.disabled=tru
    saveA2zState();A2Z_T0=Date.now();$("tm").textContent="00:00";
    $("cd").value=r.code;$("lcSub").innerHTML='<p class="chip">Pulled from LeetCode — grade below to schedule A2Z review.</p>';
    $("w").className="warn ok-msg";$("w").textContent="Pulled "+r.lang+", "+r.runtime+" · submitted "+fmtTs(r.ts);a2zDrSave()})
-  .catch(function(e){btn.disabled=false;btn.textContent="Try again";$("w").textContent=e.message})};return}
+  .catch(function(e){btn.disabled=false;btn.textContent="Try again";$("w").textContent=e.message})}return
 var id=CUR,btn=this;btn.disabled=true;$("w").className="warn";$("w").textContent="Pulling from LeetCode…";
  pull(id).then(function(r){btn.disabled=false;if(r.error){$("w").textContent=r.error;return}
   var known=!!ST.lc[id],sec=Math.round((Date.now()-T0)/1000),t=ymd(),dd=day(t),p=ST.p[id];
