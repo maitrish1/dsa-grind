@@ -19,6 +19,25 @@
       "due": "2026-10-29",
       "code": "/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number[]}\n */\nvar twoSum = function(nums, target) {\n    let map=new Map()\n\n    for(let i=0;i<nums.length;i++){\n        let diff=target-nums[i]\n        if(map.has(diff)){\n            return [i, map.get(diff)]\n        }\n        else map.set(nums[i],i)\n    } \n\n    \n};"
     },
+    "3": {
+      "id": 3,
+      "h": [
+        {
+          "at": 1793098482062,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {string} s\n * @return {number}\n */\nvar lengthOfLongestSubstring = function(s) {\n    let map = new Map();\n    let maxConsecutiveLength = 0;\n    let left = 0;\n\n    for (let right = 0; right < s.length; right++) {\n        if (map.has(s[right])) {\n            left = Math.max(map.get(s[right]), left);\n        }\n        maxConsecutiveLength = Math.max(maxConsecutiveLength, right - left + 1);\n        map.set(s[right], right + 1);\n    }\n\n    return maxConsecutiveLength;\n};\n",
+          "k": "s",
+          "ts": 1696079334000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-30",
+      "code": "/**\n * @param {string} s\n * @return {number}\n */\nvar lengthOfLongestSubstring = function(s) {\n    let map = new Map();\n    let maxConsecutiveLength = 0;\n    let left = 0;\n\n    for (let right = 0; right < s.length; right++) {\n        if (map.has(s[right])) {\n            left = Math.max(map.get(s[right]), left);\n        }\n        maxConsecutiveLength = Math.max(maxConsecutiveLength, right - left + 1);\n        map.set(s[right], right + 1);\n    }\n\n    return maxConsecutiveLength;\n};\n"
+    },
     "5": {
       "id": 5,
       "h": [
@@ -858,6 +877,16 @@
       "qids": [
         121
       ]
+    },
+    "2023-09-30": {
+      "n": 0,
+      "r": 0,
+      "s": 0,
+      "ids": [],
+      "f": 0,
+      "qids": [
+        3
+      ]
     }
   },
   "c": {
@@ -883,6 +912,14 @@
       "ts": 1791222140000,
       "at": 1793098409153,
       "code": "/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number[]}\n */\nvar twoSum = function(nums, target) {\n    let map=new Map()\n\n    for(let i=0;i<nums.length;i++){\n        let diff=target-nums[i]\n        if(map.has(diff)){\n            return [i, map.get(diff)]\n        }\n        else map.set(nums[i],i)\n    } \n\n    \n};"
+    },
+    "3": {
+      "id": 3,
+      "lang": "JavaScript",
+      "runtime": "66 ms",
+      "ts": 1696079334000,
+      "at": 1793098482055,
+      "code": "/**\n * @param {string} s\n * @return {number}\n */\nvar lengthOfLongestSubstring = function(s) {\n    let map = new Map();\n    let maxConsecutiveLength = 0;\n    let left = 0;\n\n    for (let right = 0; right < s.length; right++) {\n        if (map.has(s[right])) {\n            left = Math.max(map.get(s[right]), left);\n        }\n        maxConsecutiveLength = Math.max(maxConsecutiveLength, right - left + 1);\n        map.set(s[right], right + 1);\n    }\n\n    return maxConsecutiveLength;\n};\n"
     },
     "5": {
       "id": 5,
