@@ -57,6 +57,25 @@
       "due": "2026-10-27",
       "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(k<2 || nums[i]!=nums[k-2]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};"
     },
+    "151": {
+      "id": 151,
+      "h": [
+        {
+          "at": 1793098372188,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    s = s.trim().split(/\\s+/)\n    let i=0, j=s.length-1\n    while(i<j){\n        [s[i],s[j]]=[s[j],s[i]]\n        i++\n        j--\n    }\n    s=s.join(' ')\n    return s\n};",
+          "k": "s",
+          "ts": 1791898334000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-27",
+      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    s = s.trim().split(/\\s+/)\n    let i=0, j=s.length-1\n    while(i<j){\n        [s[i],s[j]]=[s[j],s[i]]\n        i++\n        j--\n    }\n    s=s.join(' ')\n    return s\n};"
+    },
     "283": {
       "id": 283,
       "h": [
@@ -212,7 +231,8 @@
       "f": 0,
       "qids": [
         345,
-        557
+        557,
+        151
       ]
     }
   },
@@ -263,6 +283,14 @@
       "ts": 1791898334000,
       "at": 1793098372183,
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    s = s.trim().split(/\\s+/)\n    let i=0, j=s.length-1\n    while(i<j){\n        [s[i],s[j]]=[s[j],s[i]]\n        i++\n        j--\n    }\n    s=s.join(' ')\n    return s\n};"
+    },
+    "189": {
+      "id": 189,
+      "lang": "JavaScript",
+      "runtime": "16 ms",
+      "ts": 1791962251000,
+      "at": 1793098373614,
+      "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar rotate = function(nums, k) {\n    k=k%nums.length\n    let i=0\n    let j=nums.length-1\n\n    reverse(nums,0,nums.length-k-1)\n    reverse(nums,nums.length-k, nums.length-1)\n    reverse(nums,0,nums.length-1)\n    function reverse(arr,x,y){\n        while(x<y){\n            [arr[x],arr[y]]=[arr[y],arr[x]]\n            x++\n            y--\n        }\n        return arr\n    }\n};"
     },
     "283": {
       "id": 283,
