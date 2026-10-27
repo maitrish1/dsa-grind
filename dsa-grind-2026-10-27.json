@@ -627,6 +627,14 @@
       "at": 1793098388786,
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};"
     },
+    "680": {
+      "id": 680,
+      "lang": "JavaScript",
+      "runtime": "5 ms",
+      "ts": 1792822755000,
+      "at": 1793098419824,
+      "code": "/**\n * @param {string} s\n * @return {boolean}\n */\nvar validPalindrome = function(s) {\n\n    let i=0\n    let j=s.length-1\n\n    while(i<j){\n        if(s[i]==s[j]){\n            i++\n            j--\n        }\n        else return isPal(s,i+1,j) || isPal(s,i,j-1)\n    }\n\n    return true\n\n    function isPal(str,x,y){\n        while(x<y){\n            if(str[x]!=str[y]){\n                return false\n            }\n            x++\n            y--\n        }\n        return true\n    }\n};"
+    },
     "844": {
       "id": 844,
       "lang": "JavaScript",
