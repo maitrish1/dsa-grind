@@ -189,6 +189,25 @@
       "first": "before",
       "due": "2026-10-27",
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar removeDuplicates = function(s) {\n    let stack = []; // Initialize an empty stack\n    \n    // Iterate through each character in the string\n    for (let char of s) {\n        // If the stack is not empty and the current character is equal to the top element of the stack\n        if (stack.length > 0 && char === stack[stack.length - 1]) {\n            stack.pop(); // Remove the adjacent duplicate by popping the top element\n        } else {\n            stack.push(char); // Push the current character onto the stack\n        }\n    }\n    \n    // Construct the final string by joining the characters in the stack\n    return stack.join('');\n};\n"
+    },
+    "1768": {
+      "id": 1768,
+      "h": [
+        {
+          "at": 1793098397267,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {string} word1\n * @param {string} word2\n * @return {string}\n */\nvar mergeAlternately = function(word1, word2) {\n    let range=word1.length>word2.length?word2.length:word1.length\n    let i=0\n    let merged=''\n    while(i<range){\n        merged+=word1[i]+word2[i]\n        i++\n    }\n    if(i<word1.length){\n        merged+=word1.slice(i,word1.length)\n    }\n     if(i<word2.length){\n        merged+=word2.slice(i,word2.length)\n    }\n    return merged\n};",
+          "k": "s",
+          "ts": 1792161440000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-28",
+      "code": "/**\n * @param {string} word1\n * @param {string} word2\n * @return {string}\n */\nvar mergeAlternately = function(word1, word2) {\n    let range=word1.length>word2.length?word2.length:word1.length\n    let i=0\n    let merged=''\n    while(i<range){\n        merged+=word1[i]+word2[i]\n        i++\n    }\n    if(i<word1.length){\n        merged+=word1.slice(i,word1.length)\n    }\n     if(i<word2.length){\n        merged+=word2.slice(i,word2.length)\n    }\n    return merged\n};"
     }
   },
   "d": {
@@ -262,6 +281,16 @@
       "f": 0,
       "qids": [
         189
+      ]
+    },
+    "2026-10-16": {
+      "n": 0,
+      "r": 0,
+      "s": 0,
+      "ids": [],
+      "f": 0,
+      "qids": [
+        1768
       ]
     }
   },
@@ -344,6 +373,14 @@
       "ts": 1791870547000,
       "at": 1793098385034,
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let i=0, j=s.length-1\n    while(i<=j){\n        if(/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            [s[i],s[j]]=[s[j],s[i]]\n            i++\n            j--\n        }\n        else if(/^[aeiou]$/i.test(s[i]) && !/^[aeiou]$/i.test(s[j])){\n            j--\n        }\n        else if(!/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            i++\n        }\n        else {\n            i++\n            j--\n        }\n    }\n  s=s.join('')\n  return s\n};"
+    },
+    "392": {
+      "id": 392,
+      "lang": "JavaScript",
+      "runtime": "56 ms",
+      "ts": 1692623985000,
+      "at": 1793098399601,
+      "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar isSubsequence = function(s, t) {\n    let i=0, j=0, op=false\n    if(s.length>t.length){\n        op=false\n    }\n    else {\n        while(i<=s.length && j<=t.length){\n            if(s.charAt(i)===t.charAt(j)){\n                j++\n                i++\n                op=true\n            }else if(s.charAt(i)!=t.charAt(j) ){\n                j++\n                op=false\n            }\n        }\n    }\n        \n    return op\n};"
     },
     "557": {
       "id": 557,
