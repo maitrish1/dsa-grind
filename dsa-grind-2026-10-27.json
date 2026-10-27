@@ -1,5 +1,24 @@
 {
   "p": {
+    "26": {
+      "id": 26,
+      "h": [
+        {
+          "at": 1793098355800,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=nums[i+1]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};",
+          "k": "s",
+          "ts": 1791668568000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-27",
+      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=nums[i+1]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};"
+    },
     "27": {
       "id": 27,
       "h": [
@@ -56,7 +75,8 @@
       "f": 0,
       "qids": [
         283,
-        27
+        27,
+        26
       ]
     }
   },
@@ -76,6 +96,14 @@
     "1": 0
   },
   "lc": {
+    "26": {
+      "id": 26,
+      "lang": "JavaScript",
+      "runtime": "0 ms",
+      "ts": 1791668568000,
+      "at": 1793098355796,
+      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=nums[i+1]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};"
+    },
     "27": {
       "id": 27,
       "lang": "JavaScript",
