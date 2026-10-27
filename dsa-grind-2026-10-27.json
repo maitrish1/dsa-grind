@@ -399,6 +399,25 @@
       "due": "2026-10-27",
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};"
     },
+    "643": {
+      "id": 643,
+      "h": [
+        {
+          "at": 1793098457384,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number}\n */\nvar findMaxAverage = function(nums, k) {\n  if(nums.length<k){\n      return 0\n  }  \n  let maxAvg=0\n  let currentSum=0\n  for(let i=0;i<k;i++){\n      currentSum=currentSum+nums[i]\n  }\n  maxAvg=currentSum/k\n  for(let i=k;i<nums.length;i++){\n      currentSum=(currentSum-nums[i-k]+nums[i])\n      maxAvg=Math.max(maxAvg, currentSum/k)\n  }\n  return maxAvg\n};",
+          "k": "s",
+          "ts": 1692629634000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-29",
+      "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number}\n */\nvar findMaxAverage = function(nums, k) {\n  if(nums.length<k){\n      return 0\n  }  \n  let maxAvg=0\n  let currentSum=0\n  for(let i=0;i<k;i++){\n      currentSum=currentSum+nums[i]\n  }\n  maxAvg=currentSum/k\n  for(let i=k;i<nums.length;i++){\n      currentSum=(currentSum-nums[i-k]+nums[i])\n      maxAvg=Math.max(maxAvg, currentSum/k)\n  }\n  return maxAvg\n};"
+    },
     "680": {
       "id": 680,
       "h": [
@@ -625,7 +644,8 @@
       "ids": [],
       "f": 0,
       "qids": [
-        392
+        392,
+        643
       ]
     },
     "2023-08-17": {
@@ -956,6 +976,14 @@
       "ts": 1712852872000,
       "at": 1793098359990,
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar removeDuplicates = function(s) {\n    let stack = []; // Initialize an empty stack\n    \n    // Iterate through each character in the string\n    for (let char of s) {\n        // If the stack is not empty and the current character is equal to the top element of the stack\n        if (stack.length > 0 && char === stack[stack.length - 1]) {\n            stack.pop(); // Remove the adjacent duplicate by popping the top element\n        } else {\n            stack.push(char); // Push the current character onto the stack\n        }\n    }\n    \n    // Construct the final string by joining the characters in the stack\n    return stack.join('');\n};\n"
+    },
+    "1456": {
+      "id": 1456,
+      "lang": "JavaScript",
+      "runtime": "72 ms",
+      "ts": 1696315989000,
+      "at": 1793098459119,
+      "code": "/**\n * @param {string} s\n * @param {number} k\n * @return {number}\n */\nvar maxVowels = function(s, k) {\n    let left=right=c=maxc=0\n\n    while(right<s.length){\n        if(isVowel(s[right])){\n            c++\n        }\n        if(right-left+1>k){\n            if(isVowel(s[left])){\n                c--\n            }\n            left++\n        }\n        right++\n        maxc=Math.max(maxc,c)\n    }\n    return maxc\n}\n\nconst isVowel = (char) => {\n    return char === 'a' || char === 'e' || char === 'i' || char === 'o' || char === 'u';\n}\n"
     },
     "1768": {
       "id": 1768,
