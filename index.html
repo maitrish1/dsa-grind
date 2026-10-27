@@ -427,6 +427,29 @@ details.sub summary .chev svg{width:12px;height:12px;display:block}
 .app>*{scroll-margin-top:72px}
 @media (prefers-reduced-motion:reduce){.pulse{animation:none}}
 
+/* ===== Strivers A2Z Sheet Styles ===== */
+.a2z-search-wrap{position:relative;display:flex;align-items:center;margin:12px 0 10px}
+.a2z-search-wrap input{width:100%;height:42px;padding:0 36px 0 38px;border-radius:12px;border:1px solid var(--ln);background:var(--sf);color:var(--m);font:inherit;font-size:13.5px}
+.a2z-search-wrap input:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 2px var(--acs)}
+.a2z-s-ico{position:absolute;left:12px;width:17px;height:17px;color:var(--mu);pointer-events:none}
+.a2z-clr{position:absolute;right:8px;background:none;border:0;color:var(--mu);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:8px;line-height:1}
+.a2z-clr:hover{color:var(--m)}
+.a2z-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;align-items:center;justify-content:space-between}
+.a2z-filters .seg{margin:0}
+.a2z-actions-row{display:flex;gap:8px;margin:4px 0 14px}
+.a2z-step-card{margin:10px 0;border-radius:14px}
+.a2z-step-h{padding:12px 14px;gap:10px}
+.a2z-step-badge{flex:none;font-size:11px;font-weight:800;letter-spacing:.03em;text-transform:uppercase;color:var(--ac);background:var(--acs);border:1px solid color-mix(in srgb,var(--ac) 20%,transparent);border-radius:8px;padding:3px 7px}
+.a2z-step-prog{width:48px;height:5px;background:var(--ln);border-radius:99px;overflow:hidden;flex:none}
+.a2z-step-prog i{display:block;height:100%;background:var(--ok);border-radius:99px}
+.a2z-step-b{padding:0 12px 12px}
+.a2z-lec{margin-top:14px}
+.a2z-lec:first-child{margin-top:8px}
+.a2z-lec-h{display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:700;color:var(--mu);text-transform:none;letter-spacing:.01em;padding:6px 4px 6px;border-bottom:1px solid var(--ln);margin-bottom:6px}
+.a2z-lec-stat{font-size:11px;font-weight:600;color:var(--mu);background:var(--sf);padding:1px 6px;border-radius:6px;border:1px solid var(--ln)}
+.row-ext{flex:none;color:var(--mu);font-size:13px;font-weight:700;padding:4px 8px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center}
+.row-ext:hover{color:var(--ac);background:var(--acs)}
+
 </style></head><body><div class="app">
 <header class="top"><span class="brand"><img src="/icon-192.png" alt="" width="22" height="22">DSA Grind</span><div class="ppill" id="pomBox"><span class="pk" id="pPh">Focus</span><b id="pTm">25:00</b><button class="pi" id="pBtn" aria-label="Start or pause pomodoro"></button><button class="pi" id="pRs" aria-label="Reset pomodoro"></button></div><span class="streak-chip" id="strk"></span></header>
 <main id="v"></main>
@@ -991,31 +1014,53 @@ function sett(){
  '<section class="card"><h3 class="lbl">Backup</h3><p class="chip">Back up every night — browser storage can be wiped.</p>'+
  '<div class="btns two"><button class="btn p" data-a="exp">Export backup</button><label class="btn imp">Import<input type="file" id="im" hidden accept=".json"></label></div></section>'}
 // ============================================
+// STRIVERS A2Z DSA SHEET
+// Stored in strivers-a2z.json (syncs via /api/codolio)
+// Full parity with ladder: Problem modal, code editor, draft autosave,
+// spaced repetition scheduling (SM-2), submissions history, LeetCode pull.
+// Shared app Pomodoro and Problem stopwatch.
 // ============================================
-// STRIVERS A2Z SHEET — full features in strivers-a2z.json
-// Timer, solution saving, revision, pomodoro, streak, day tracking — all separate from ladder
-// Codolio APIs called ONLY on refresh — everything else reads/writes JSON file
-// ============================================
-var A2Z = {p:{}, d:{}, c:{nt:8,rt:10}, bk:"", pi:{0:0,1:0}, dr:{}, ses:[], lock:{}, pom:{ph:"idle",st:0,rem:0,pa:false}};
+var A2Z = { problems: [], stats: {}, p: {}, dr: {}, d: {}, lc: {}, lsub: {} };
+var A2Z_BY_ID = {};
 var A2Z_LOADED = false;
-var A2Z_CUR = 0, A2Z_T0 = 0, A2Z_TM = null;
+var A2Z_CUR = null;
 var A2Z_MODE = false;
-var A2Z_TOPIC_FILTER = null, A2Z_SUBTOPIC_FILTER = null;
+var A2Z_SEARCH = "";
+var A2Z_DIFF_FILTER = "";
+var A2Z_STATUS_FILTER = "";
+var A2Z_STEP_OPEN = { "1": true };
 
-function a2zMergeDefaults(data) {
+function a2zStepNum(s) {
+  var m = (s || '').match(/Step\s+(\d+)/i);
+  return m ? parseInt(m[1], 10) : 999;
+}
+function a2zLecNum(s) {
+  var m = (s || '').match(/Lec\s+(\d+)/i);
+  return m ? parseInt(m[1], 10) : 999;
+}
+
+function applyA2zData(data) {
   data = data || {};
-  data.p = data.p || {};
-  data.d = data.d || {};
-  data.c = {...DEFAULTS.c, ...(data.c||{})};
-  data.pi = {...DEFAULTS.pi, ...(data.pi||{})};
-  data.dr = data.dr || {};
-  data.ses = data.ses || [];
-  data.lock = data.lock || {};
-  data.pom = data.pom || {ph:"idle",st:0,rem:0,pa:false};
-  data.bk = data.bk || "";
-  data.problems = data.problems || [];
-  data.stats = data.stats || {};
-  return data;
+  A2Z.problems = data.problems || [];
+  A2Z.stats = data.stats || {};
+  A2Z.p = data.p || {};
+  A2Z.dr = data.dr || {};
+  A2Z.d = data.d || {};
+  A2Z.lc = data.lc || {};
+  A2Z.lsub = data.lsub || {};
+
+  A2Z.problems.sort(function(a, b) {
+    var sa = a2zStepNum(a.topic), sb = a2zStepNum(b.topic);
+    if (sa !== sb) return sa - sb;
+    var la = a2zLecNum(a.subTopic), lb = a2zLecNum(b.subTopic);
+    if (la !== lb) return la - lb;
+    return 0;
+  });
+
+  A2Z_BY_ID = {};
+  A2Z.problems.forEach(function(p) {
+    if (p && p.id) A2Z_BY_ID[p.id] = p;
+  });
 }
 
 async function codolioFetch(endpoint, method, body) {
@@ -1030,235 +1075,434 @@ async function codolioFetch(endpoint, method, body) {
 async function loadA2zState() {
   if (A2Z_LOADED) return;
   try {
+    var cached = localStorage.getItem('dsa_a2z_cache');
+    if (cached) {
+      var parsed = JSON.parse(cached);
+      if (parsed && parsed.problems && parsed.problems.length) {
+        applyA2zData(parsed);
+      }
+    }
+  } catch (e) {}
+
+  try {
     var data = await codolioFetch('read', 'GET');
-    A2Z = a2zMergeDefaults(data);
-    A2Z_LOADED = true;
-    // If no problems yet, auto-fetch from Codolio once
-    if (!A2Z.problems || A2Z.problems.length === 0) {
+    if (data && data.problems && data.problems.length) {
+      applyA2zData(data);
+      A2Z_LOADED = true;
+      try { localStorage.setItem('dsa_a2z_cache', JSON.stringify(A2Z)); } catch (e) {}
+    } else if (!A2Z.problems.length) {
       toast('Fetching A2Z sheet from Codolio (one-time)…');
-      A2Z = await codolioFetch('refresh', 'GET');
-      A2Z = a2zMergeDefaults(A2Z);
-      await saveA2zState();
-      toast('A2Z sheet loaded — ' + (A2Z.problems || []).length + ' problems');
+      await codolioFetch('refresh', 'GET');
+      var refreshed = await codolioFetch('read', 'GET');
+      applyA2zData(refreshed);
+      A2Z_LOADED = true;
+      try { localStorage.setItem('dsa_a2z_cache', JSON.stringify(A2Z)); } catch (e) {}
     }
   } catch (e) {
-    console.warn('A2Z load failed:', e);
-    toast('A2Z load failed — check connection');
+    console.warn('A2Z remote load failed:', e);
+    if (A2Z.problems.length) A2Z_LOADED = true;
   }
 }
 
-async function saveA2zState() {
-  try {
-    await codolioFetch('write', 'POST', A2Z);
-  } catch (e) {
-    console.warn('A2Z save failed:', e);
-  }
+var A2Z_SAVE_T = null;
+function saveA2zState() {
+  try { localStorage.setItem('dsa_a2z_cache', JSON.stringify(A2Z)); } catch (e) {}
+  clearTimeout(A2Z_SAVE_T);
+  A2Z_SAVE_T = setTimeout(async function() {
+    try {
+      await codolioFetch('write', 'POST', A2Z);
+    } catch (e) {
+      console.warn('A2Z server save failed:', e);
+    }
+  }, 400);
 }
 
-function a2zDay(k){return A2Z.d[k]||(A2Z.d[k]={n:0,r:0,s:0,ids:[],f:0,qids:[]})}
-function a2zStreak(){var n=0;for(var i=0;i<400;i++){var x=A2Z.d[plus(-i)];if(x&&(x.n>=A2Z.c.nt||x.f>=1500))n++;else if(i>0)break}return n}
-
-function a2zFinish(id,g,code,note,sec,timeIn){
-  var t=ymd(),dd=a2zDay(t),first=!A2Z.p[id],p=A2Z.p[id]||(A2Z.p[id]={id:id,h:[],b:0,first:t});
-  timeIn=timeIn||sec;
-  p.code=code;if(note)p.note=note;p.time=(p.time||0)+timeIn;
-  p.h.push({at:Date.now(),g:g,s:sec||0,code:code,k:first?"n":"r",src:"a2z"});
-  if(first){p.b=g==="easy"?1:0;p.due=plus(INT[p.b]);dd.n++}else{p.b=g==="easy"?Math.min(5,p.b+2):g==="ok"?Math.min(5,p.b+1):g==="hard"?p.b:0;p.due=plus(g==="failed"?1:g==="hard"?2:INT[p.b]);dd.r++}
-  dd.s+=timeIn;dd.ids.push({id:id,k:first?"n":"r"});saveA2zState();
+function a2zDay(k) {
+  return A2Z.d[k] || (A2Z.d[k] = { n: 0, r: 0, s: 0, ids: [] });
 }
 
-function a2zPomLen(ph){return ((ph==="rest")?(+A2Z.c.pr||5):(+A2Z.c.pf||25))*60}
-function a2zPomLeft(){var d=A2Z.pom||{},ph=d.ph||"idle",len=a2zPomLen(ph==="rest"?"rest":"focus");
-  if(ph==="idle")return a2zPomLen("focus");
-  return Math.max(0,len-(d.pa?len-(d.rem||0):Math.floor((Date.now()-d.st)/1000)))}
-function a2zPomRender(){var d=A2Z.pom||{},ph=d.ph||"idle",b=$("pomBox");if(!b)return;
-  $("pPh").textContent=ph==="focus"?"Focus":ph==="rest"?"Rest":"Idle";
-  $("pTm").textContent=mmss(a2zPomLeft());
-  $("pBtn").innerHTML=d.pa?ICO.pause:(ph==="idle"?ICO.play:ICO.pause);
-  b.className="ppill"+(ph==="focus"?" f":ph==="rest"?" r":"")}
-function a2zPomBtn(){var d=A2Z.pom||{},len;
-  if(d.ph==="idle"){A2Z.pom={ph:"focus",st:Date.now(),rem:0,pa:false};saveA2zState()}
-  else if(d.pa){len=a2zPomLen(d.ph);A2Z.pom.st=Date.now()-(len-(d.rem||0))*1000;A2Z.pom.pa=false;saveA2zState()}
-  else{len=a2zPomLen(d.ph);A2Z.pom.rem=Math.max(0,len-Math.floor((Date.now()-d.st)/1000));A2Z.pom.pa=true;saveA2zState()}
-  a2zPomTick()}
-function a2zPomRs(){var d=A2Z.pom||{};
-  if(d.ph==="focus"&&!d.pa&&d.st){var el=Math.floor((Date.now()-d.st)/1000);
-    if(el>60){logSes("focus",el);toast("Partial pomodoro logged — "+mm(el))}}
-  A2Z.pom={ph:"idle",st:0,rem:0,pa:false};saveA2zState();a2zPomRender()}
-function a2zPomTick(){var d=A2Z.pom||{};if(d.ph==="idle"){a2zPomRender();return}
-  var len=a2zPomLen(d.ph),el=d.pa?(len-(d.rem||0)):Math.floor((Date.now()-d.st)/1000);
-  if(el>=len){logSes(d.ph,len);
-    if(d.ph==="focus"){alarm();toast("Pomodoro done ✓ "+mm(Math.round(len*CMUL()))+" credited — rest starting");
-      A2Z.pom={ph:"rest",st:Date.now(),rem:0,pa:false}}
-    else{alarm();toast("Break over — back to A2Z");A2Z.pom={ph:"idle",st:0,rem:0,pa:false}}
-    saveA2zState();a2zPomRender();return}
-  a2zPomRender()}
-function a2zLogSes(ph,du){A2Z.ses.push({at:Date.now(),ph:ph,du:du});if(ph==="focus"){a2zDay(ymd()).f+=du}saveA2zState()}
-
-function a2zDiffBadge(d){
-  var c={easy:'e',medium:'m',hard:'h',basic:'b'}[(d||'').toLowerCase()]||'m';
-  var t=(d||'Medium').toUpperCase();
-  return '<span class="dchip '+c+'">'+esc(t)+'</span>';
-}
-function a2zProbStatus(id){
-  if(!A2Z.p||!A2Z.p[id])return '<span class="rbadge mild">Not started</span>';
-  var p=A2Z.p[id],t=ymd();
-  if(!p.due)return '<span class="rbadge mild">Not started</span>';
-  var last=p.h&&p.h[p.h.length-1],done=last&&last.at&&ymd(new Date(last.at))===t;
-  if(done&&p.due>=t)return '<span class="rbadge ok">revised</span>';
-  else if(p.due<t)return '<span class="rbadge bad">'+gap(p.due,t)+'d overdue</span>';
-  else{var u=gap(t,p.due);return '<span class="rbadge '+(u<=3?'soon':'')+'">'+p.due.slice(5)+'</span>'}
-}
-
-function a2zRowHTML(p){
-  var prog=A2Z.p[p.id]||{};
-  var statusCls=prog.code?'saved':'';
-  var leetcodeUrl=p.problemUrl||('https://leetcode.com/problems/'+(p.slug||p.id)+'/');
-  var dueBadge='';
-  if(prog.due){var t=ymd();var last=prog.h&&prog.h[prog.h.length-1];var done=last&&last.at&&ymd(new Date(last.at))===t;
-    if(done&&prog.due>=t)dueBadge='<span class="rbadge ok">revised</span>';
-    else if(prog.due<t)dueBadge='<span class="rbadge bad">'+gap(prog.due,t)+'d overdue</span>';
-    else{var u=gap(t,prog.due);dueBadge='<span class="rbadge '+(u<=3?'soon':'')+'">'+prog.due.slice(5)+'</span>'}}
-  return '<div class="row" data-id="'+esc(p.id)+'" role="button" tabindex="0" aria-label="Open '+esc(p.title)+'">'
-    +'<span class="tick" data-s="'+(prog.code?statusCls:'none')+'">'+tick()+'</span>'
-    +dueBadge
-    +'<span class="row-main"><span class="row-t">'+esc(p.title)+' '+a2zDiffBadge(p.difficulty)+'</span>'
-    +'<span class="row-m">'+(p.topic?p.topic+' › ':'')+(p.subTopic?p.subTopic:'')+'</span></span>'
-    +'<div class="a2z-actions">'
-    +'<a href="'+esc(leetcodeUrl)+'" target="_blank" class="mini" style="margin-right:4px">Problem</a>'
-    +'<button class="mini sb" onclick="event.stopPropagation();a2zOpen('+p.id+');" style="font-size:11px;padding:6px 8px">Open</button>'
-    +'</div>'
-    +'</div>';
-}
-
-function a2z(){
-  if(!A2Z_LOADED)return '<p class="empty">Loading A2Z sheet…</p>';
-  var problems=A2Z.problems||[];
-  var stats=A2Z.stats||{};
-  var h='<div class="hero"><div><p class="eyebrow">Strivers A2Z DSA Sheet</p><h1>A2Z Sheet</h1></div></div>';
-
-  // Stats
-  var total=stats.total||problems.length;
-  var streak=a2zStreak();
-  var solvedCount=Object.keys(A2Z.p||{}).filter(function(k){var p=A2Z.p[k];var h=p.h&&p.h[p.h.length-1];return h&&(h.g==="easy"||h.g==="ok"||h.g==="hard");}).length;
-  h+='<div class="stats">'
-    +'<div class="st"><span>Total Questions</span><b>'+total+'</b></div>'
-    +'<div class="st"><span>Solved</span><b>'+solvedCount+'</b></div>'
-    +'<div class="st"><span>Streak</span><b>'+streak+'</b></div>'
-    +'<div class="st"><span>Progress</span><b>'+(total?Math.round(100*solvedCount/total):0)+'%</b></div>'
-    +'</div>';
-
-  // Pomodoro pill (same as main app)
-  h+='<div class="ppill" id="a2zPomBox"><span class="pk" id="a2zPPh">Focus</span><b id="a2zPTm">25:00</b><button class="pi" id="a2zPBtn" aria-label="Start or pause pomodoro"></button><button class="pi" id="a2zPRs" aria-label="Reset pomodoro"></button></div>';
-
-  // Topic filters
-  var topics=stats.topics?Object.keys(stats.topics):[];
-  h+='<div class="seg" role="group" aria-label="Filter by topic">';
-  h+='<button data-a2z-topic="" aria-pressed="true">All Topics ('+problems.length+')</button>';
-  topics.forEach(function(t){
-    var cnt=problems.filter(function(p){return p.topic===t;}).length;
-    h+='<button data-a2z-topic="'+esc(t)+'" aria-pressed="false">'+esc(t)+' ('+cnt+')</button>';
-  });
-  h+='</div>';
-
-  // Export/Import
-  h+='<div class="btns" style="margin:12px 0">';
-  h+='<button class="btn" onclick="exportA2z()">Export A2Z Backup</button>';
-  h+='<label class="btn imp">Import<input type="file" id="a2zIm" hidden accept=".json"></label>';
-  h+='</div>';
-
-  // Problems list
-  var filtered=problems.filter(function(p){
-    if(A2Z_TOPIC_FILTER&&p.topic!==A2Z_TOPIC_FILTER)return false;
-    if(A2Z_SUBTOPIC_FILTER&&p.subTopic!==A2Z_SUBTOPIC_FILTER)return false;
-    return true;
-  });
-
-  if(!filtered.length){
-    h+='<p class="empty">No problems found for this filter.</p>';
+function a2zFinish(id, g, code, note, sec) {
+  var t = ymd(), dd = a2zDay(t), first = !A2Z.p[id], p = A2Z.p[id] || (A2Z.p[id] = { id: id, h: [], b: 0, first: t });
+  p.code = code;
+  if (note) p.note = note;
+  p.time = (p.time || 0) + sec;
+  p.h.push({ at: Date.now(), g: g, s: sec || 0, code: code, k: first ? "n" : "r", src: "a2z" });
+  if (first) {
+    p.b = g === "easy" ? 1 : 0;
+    p.due = plus(INT[p.b]);
+    dd.n++;
   } else {
-    h+='<div class="list">';
-    filtered.forEach(function(p){h+=a2zRowHTML(p);});
-    h+='</div>';
+    p.b = g === "easy" ? Math.min(5, p.b + 2) : g === "ok" ? Math.min(5, p.b + 1) : g === "hard" ? p.b : 0;
+    p.due = plus(g === "failed" ? 1 : g === "hard" ? 2 : INT[p.b]);
+    dd.r++;
   }
-  h+='<p class="hint">All data stored in strivers-a2z.json (separate from your ladder). Timer, solutions, revisions — full feature parity.</p>';
+  dd.s += sec;
+  dd.ids.push({ id: id, k: first ? "n" : "r" });
+  day(t).s += sec;
+  saveA2zState();
+  save();
+}
+
+function pullSlug(slug) {
+  if (!LC.s || !LC.c) return Promise.reject(new Error("Add your LeetCode cookies in Settings first"));
+  return fetch("/api/lc", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ session: LC.s, csrf: LC.c, slug: slug })
+  }).then(function(r) { return r.json(); });
+}
+
+function subHTML_A2Z(id, q) {
+  var s = A2Z.lc[id], p = A2Z.p[id];
+  var lcSlug = q.slug || (q.problemUrl && (q.problemUrl.match(/leetcode\.com\/problems\/([^/]+)/) || [])[1]);
+  if (!lcSlug) return '<p class="chip">Practice problem on TakeUForward — solve and paste code above.</p>';
+  if (!s) return '<p class="chip">LeetCode problem — use “Pull from LeetCode” to load your accepted submission.</p>';
+  var h = '<div class="lc-row"><b>' + esc(s.runtime || "—") + '</b><span>' + esc(String(s.lang || "").toUpperCase()) + ' · ' + fmtTs(s.ts) + '</span></div>';
+  if (s.code && p && p.code && s.code !== p.code) h += '<p class="lc-diff">LeetCode has a newer version than your saved one.</p>';
   return h;
 }
 
-function a2zOpen(id){
-  var p=A2Z.p[id];
-  // Find problem from the problems list
-  var prob=A2Z.problems.find(function(x){return x.id===id;});
-  if(!prob){
-    toast('Problem not found');
+function subRenderA2z(id) {
+  var p = A2Z.p[id] || {}, ev = [];
+  var CLS = { easy: ["Easy ✓", "b-ok"], ok: ["OK ✓", "b-lc"], hard: ["Hard ✓", "b-warn"], failed: ["Failed", "b-fail"], synced: ["Synced · LC", "b-lc"], local: ["Submitted here", "b-mu"], a2z: ["Submitted · A2Z", "b-mu"] };
+  (p.h || []).forEach(function(h) {
+    ev.push({ at: h.at || 0, g: h.g, s: h.s || 0, src: h.src || "a2z", code: h.code || "", runtime: "", lang: "" });
+  });
+  (A2Z.lsub[id] || []).forEach(function(s) {
+    ev.push({ at: Number(s.timestamp || 0) * 1000, g: s.statusDisplay || "", s: 0, src: "lch", runtime: s.runtime || "", lang: s.langName || s.lang || "", code: "" });
+  });
+  ev.sort(function(a, b) { return b.at - a.at; });
+  var n = $("subC"); if (n) n.textContent = String(ev.length);
+  var el = $("subL"); if (!el) return;
+  el.innerHTML = ev.length ? ev.map(function(e) {
+    var cls, lbl;
+    if (e.src === "lch") {
+      cls = e.g === "Accepted" ? "b-ok" : "b-fail";
+      lbl = (e.g === "Accepted" ? "Accepted" : "Try " + (e.g || "—")) + " · LC";
+    } else {
+      var m = CLS[e.g] || ["Done", "b-mu"];
+      lbl = m[0]; cls = m[1];
+    }
+    var mt = [];
+    if (e.s) mt.push(mm(e.s));
+    if (e.runtime) mt.push(e.runtime);
+    if (e.lang) mt.push(e.lang);
+    return '<details class="sub' + (e.g === "Accepted" ? " acc" : "") + '"><summary><span class="srcb ' + cls + '">' + esc(lbl) + '</span><span class="sdate">' + fmtTs(e.at) + '</span><span class="smeta">' + esc(mt.join(" · ")) + '</span><i class="chev">' + ICO.chev + '</i></summary>' + (e.code ? '<pre>' + esc(e.code) + '</pre>' : '<p class="chip">Code not stored for this entry.</p>') + '</details>';
+  }).join("") : '<p class="empty">No submissions yet — Submit here, or grade to schedule next review.</p>';
+}
+
+function openA2z(id) {
+  var q = A2Z_BY_ID[id];
+  if (!q) { toast('Problem not found'); return; }
+  A2Z_MODE = true;
+  A2Z_CUR = id;
+  CUR = null;
+  T0 = Date.now();
+
+  var p = A2Z.p[id];
+  var dr = A2Z.dr[id] || {};
+  var ov = $("ov");
+
+  var sNum = (q.topic || '').match(/Step\s+\d+/i)?.[0] || 'Step';
+  var lNum = (q.subTopic || '').match(/Lec\s+\d+/i)?.[0] || '';
+  var statusLbl = p ? (p.due && p.due <= ymd() ? "Due" : "Recall") : "New";
+  $("shEy").textContent = sNum + (lNum ? " · " + lNum : "") + " · " + statusLbl + " · " + (q.difficulty || "Medium");
+  $("shTitle").textContent = q.title || q.name;
+
+  var targetUrl = q.problemUrl || (q.slug ? 'https://leetcode.com/problems/' + q.slug + '/' : '');
+  $("shLink").href = targetUrl || '#';
+  $("shLink").textContent = targetUrl.includes('leetcode.com') ? 'Open on LeetCode ↗' : targetUrl.includes('takeuforward.org') ? 'Open on TakeUForward ↗' : 'Open Problem ↗';
+
+  $("idea").innerHTML = q.resource ? ('<a href="' + esc(q.resource) + '" target="_blank" rel="noopener">TakeUForward Article / Video ↗</a>') : '<span>Strivers A2Z problem — solve, paste code and grade below.</span>';
+  $("ideaD").open = false;
+
+  $("ptime").textContent = "Time on this problem: " + (p && p.time ? hm(p.time) : "not tracked yet");
+  var geo = (p && p.h || []).filter(function(x) { return x.g === "easy" || x.g === "ok" || x.g === "hard" || x.g === "failed"; });
+  $("recC").textContent = geo.length ? ("Recall iterations: " + geo.length + " · last " + ({ easy: "easy ✓", ok: "OK ✓", hard: "hard ✓", failed: "failed" }[geo[geo.length - 1].g] || "done") + " on " + new Date(geo[geo.length - 1].at).toLocaleDateString()) : "Recall iterations: 0 — grade below to start tracking";
+
+  var lcSlug = q.slug || (q.problemUrl && (q.problemUrl.match(/leetcode\.com\/problems\/([^/]+)/) || [])[1]) || null;
+  $("lcSub").innerHTML = subHTML_A2Z(id, q);
+
+  $("lockChip").hidden = true;
+  $("lk").hidden = true;
+  $("sb").disabled = false;
+  $("sb").textContent = "Submit";
+  $("cd").value = dr.code != null ? dr.code : ((p && p.code) || (A2Z.lc[id] && A2Z.lc[id].code) || "");
+  $("nt").value = dr.note != null ? dr.note : ((p && p.note) || "");
+  $("pv").textContent = p && p.code ? p.code : "(none saved yet)";
+  $("cd").disabled = false;
+  $("w").textContent = "";
+  $("w").className = "warn";
+
+  if (lcSlug) {
+    $("pl").disabled = false;
+    $("pl").hidden = false;
+    $("pl").textContent = "Pull from LeetCode";
+  } else {
+    $("pl").hidden = true;
+  }
+
+  subRenderA2z(id);
+  xtShow("det");
+
+  var pill = $("svPill");
+  pill.textContent = dr.at ? "Draft saved" : "Auto-save on";
+  pill.classList.toggle("on", !!dr.at);
+  var dv = $("dv");
+  if (dv) dv.textContent = dr.at ? "Draft stored on this device since " + fmtTs(dr.at) : "Auto-saves to this device as you type";
+
+  ov.hidden = false;
+  document.body.style.overflow = "hidden";
+  requestAnimationFrame(function() { ov.classList.add("open"); });
+
+  clearInterval(TM);
+  $("tm").textContent = "00:00";
+  var tm = function() {
+    var s = Math.round((Date.now() - T0) / 1000);
+    $("tm").textContent = ("0" + (s / 60 | 0)).slice(-2) + ":" + ("0" + s % 60).slice(-2);
+  };
+  tm();
+  TM = setInterval(tm, 1000);
+  setTimeout(function() { $("sheet").focus(); }, 50);
+}
+
+var A2Z_DT = null;
+function a2zDrFlush() {
+  clearTimeout(A2Z_DT);
+  if ($("ov").hidden || !A2Z_CUR) return;
+  var c = $("cd").value, n = $("nt").value.trim();
+  if (!c.replace(/\s/g, "") && !n) {
+    if (A2Z.dr[A2Z_CUR]) { delete A2Z.dr[A2Z_CUR]; saveA2zState(); }
     return;
   }
-  A2Z_MODE=true;
-  A2Z_CUR=id;A2Z_T0=Date.now();
-  var ov=$("ov"),dr=A2Z.dr[id]||{};
-  $("shEy").textContent="#"+id+" · "+(p?"Recall":"New")+" · "+(prob.difficulty||"Medium");
-  $("shTitle").textContent=prob.title||prob.name;
-  $("shLink").href=prob.problemUrl||('https://leetcode.com/problems/'+(prob.slug||prob.id)+'/');
-  $("idea").textContent="(A2Z problem — no hint available)";
-  $("ideaD").open=false;
-  $("ptime").textContent="Time on this problem: "+(p&&p.time?hm(p.time):"not tracked yet");
-  var geo=(p&&p.h||[]).filter(function(x){return x.g==="easy"||x.g==="ok"||x.g==="hard"||x.g==="failed"});
-  $("recC").textContent=geo.length?("Recall iterations: "+geo.length+" · last "+({easy:"easy ✓",ok:"OK ✓",hard:"hard ✓",failed:"failed"}[geo[geo.length-1].g])+" on "+new Date(geo[geo.length-1].at).toLocaleDateString()):"Recall iterations: 0 — grade below to start tracking";
-  $("lcSub").innerHTML='<p class="chip">A2Z revision tracking — grade below to schedule next review.</p>';
-  $("lockChip").hidden=true;
-  $("lk").hidden=true;
-  $("sb").disabled=false;$("sb").textContent="Submit";
-  $("cd").value=dr.code!=null?dr.code:((p&&p.code)||"");
-  $("nt").value=dr.note!=null?dr.note:(p&&p.note||"");
-  $("pv").textContent=p&&p.code?p.code:"(none saved yet)";
-  $("cd").disabled=false;
-  $("w").textContent="";$("w").className="warn";$("pl").disabled=false;$("pl").textContent="Pull from LeetCode";
-  var pill=$("svPill");pill.textContent=dr.at?"Draft saved":"Auto-save on";pill.classList.toggle("on",!!dr.at);
-  var dv=$("dv");if(dv)dv.textContent=dr.at?"Draft stored on this device since "+fmtTs(dr.at):"Auto-saves to this device as you type";
-  ov.hidden=false;document.body.style.overflow="hidden";
-  requestAnimationFrame(function(){ov.classList.add("open");});
-  clearInterval(A2Z_TM);$("tm").textContent="00:00";
-  var tm=function(){var s=Math.round((Date.now()-A2Z_T0)/1000);$("tm").textContent=("0"+(s/60|0)).slice(-2)+":"+("0"+s%60).slice(-2);};
-  tm();A2Z_TM=setInterval(tm,1000);
-  setTimeout(function(){$("sheet").focus();},50);
+  A2Z.dr[A2Z_CUR] = { code: c, note: n, at: Date.now() };
+  saveA2zState();
+  var pill = $("svPill");
+  if (pill) { pill.textContent = "Draft saved ✓"; pill.classList.add("on"); }
+}
+function a2zDrSave() {
+  clearTimeout(A2Z_DT);
+  A2Z_DT = setTimeout(a2zDrFlush, 400);
 }
 
-function a2zDraftSave(){clearTimeout(A2Z_DT);A2Z_DT=setTimeout(function(){
-  if(A2Z_CUR&&$("cd")&&$("nt")){var c=$("cd").value,n=$("nt").value.trim();
-    if(!c.replace(/\s/g,"")&&!n){if(A2Z.dr[A2Z_CUR]){delete A2Z.dr[A2Z_CUR];saveA2zState()}return}
-    A2Z.dr[A2Z_CUR]={code:c,note:n,at:Date.now()};saveA2zState();
-    var pill=$("svPill");if(pill){pill.textContent="Draft saved ✓";pill.classList.add("on")}}
-  },400)}
-var A2Z_DT=null;
-function a2zDrFlush(){clearTimeout(A2Z_DT);if($("ov").hidden||!A2Z_CUR)return;
-  var c=$("cd").value,n=$("nt").value.trim();
-  if(!c.replace(/\s/g,"")&&!n){if(A2Z.dr[A2Z_CUR]){delete A2Z.dr[A2Z_CUR];saveA2zState()}return}
-  A2Z.dr[A2Z_CUR]={code:c,note:n,at:Date.now()};saveA2zState();
-  var pill=$("svPill");if(pill){pill.textContent="Draft saved ✓";pill.classList.add("on")}}
-function a2zShut(flush){if(flush!==false)a2zDrFlush();clearInterval(A2Z_TM);A2Z_TM=null;A2Z_MODE=false;
-  var ov=$("ov");ov.classList.remove("open");document.body.style.overflow="";
-  setTimeout(function(){if(!ov.classList.contains("open"))ov.hidden=true},320);render()}
+function a2zRowHTML(p) {
+  var prog = A2Z.p[p.id] || {};
+  var t = ymd();
+  var isSolved = !!(prog.code || (prog.h && prog.h.length));
+  var dueBadge = '';
+  if (prog.due) {
+    var last = prog.h && prog.h[prog.h.length - 1];
+    var done = last && last.at && ymd(new Date(last.at)) === t;
+    if (done && prog.due >= t) dueBadge = '<span class="rbadge ok">revised</span>';
+    else if (prog.due < t) dueBadge = '<span class="rbadge bad">' + gap(prog.due, t) + 'd overdue</span>';
+    else {
+      var u = gap(t, prog.due);
+      dueBadge = '<span class="rbadge ' + (u <= 3 ? 'soon' : '') + '">' + prog.due.slice(5) + '</span>';
+    }
+  }
+  var targetUrl = p.problemUrl || (p.slug ? 'https://leetcode.com/problems/' + p.slug + '/' : '');
+  var cleanSub = (p.subTopic || '').replace(/^Lec\s+\d+\s*:\s*/, '');
+  var diffLower = (p.difficulty || 'Medium').toLowerCase();
+  var diffClass = { easy: 'e', medium: 'm', hard: 'h', basic: 'e' }[diffLower] || 'm';
 
-async function exportA2z(){
-  try{
-    var data=await codolioFetch('read','GET');
-    var blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-    var a=document.createElement('a');a.href=URL.createObjectURL(blob);
-    a.download='strivers-a2z-'+(new Date().toISOString().slice(0,10))+'.json';a.click();
+  return '<div class="row" data-a2z-id="' + esc(p.id) + '" role="button" tabindex="0" aria-label="Open ' + esc(p.title) + '">'
+    + '<span class="tick" data-s="' + (isSolved ? 'saved' : 'none') + '">' + tick() + '</span>'
+    + dueBadge
+    + '<span class="row-main">'
+    + '<span class="row-t">' + esc(p.title) + ' <span class="dchip ' + diffClass + '">' + esc((p.difficulty || 'Medium').toUpperCase()) + '</span></span>'
+    + '<span class="row-m">' + esc(cleanSub) + '</span>'
+    + '</span>'
+    + (targetUrl ? '<a href="' + esc(targetUrl) + '" target="_blank" rel="noopener" class="row-ext" onclick="event.stopPropagation()" title="Open direct link">↗</a>' : '')
+    + '<span class="chev" aria-hidden="true">' + ICO.chev + '</span>'
+    + '</div>';
+}
+
+function a2z() {
+  if (!A2Z_LOADED) return '<div class="hero"><div><p class="eyebrow">TakeUForward · Strivers A2Z DSA Course</p><h1>A2Z Sheet</h1></div></div><p class="empty">Loading A2Z Sheet…</p>';
+  var problems = A2Z.problems || [];
+  var total = problems.length || 455;
+  var t = ymd();
+  var solvedCount = 0;
+  var dueCount = 0;
+  for (var k in A2Z.p) {
+    var pr = A2Z.p[k];
+    if (pr.code || (pr.h && pr.h.length)) solvedCount++;
+    if (pr.due && pr.due <= t) dueCount++;
+  }
+  var pct = total ? Math.round(100 * solvedCount / total) : 0;
+
+  var h = '<div class="hero"><div><p class="eyebrow">TakeUForward · Strivers A2Z DSA Course</p><h1>A2Z Sheet</h1></div></div>';
+
+  // Overall Progress Bar
+  h += '<div class="prog"><div class="bar"><i style="width:' + pct + '%"></i></div><div class="tot"><span>' + solvedCount + ' of ' + total + ' solved</span><span>' + pct + '%</span></div></div>';
+
+  // Stats Grid
+  h += '<div class="stats">'
+    + '<div class="st"><span>Total Questions</span><b>' + total + '</b></div>'
+    + '<div class="st"><span>Solved</span><b>' + solvedCount + '</b></div>'
+    + '<div class="st"><span>Due for Review</span><b>' + dueCount + '</b></div>'
+    + '<div class="st"><span>Completion</span><b>' + pct + '%</b></div>'
+    + '</div>';
+
+  // Search Input
+  h += '<div class="a2z-search-wrap">'
+    + '<svg class="a2z-s-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>'
+    + '<input type="search" id="a2zSearch" placeholder="Search 455 problems by title or lecture…" value="' + esc(A2Z_SEARCH || '') + '">'
+    + (A2Z_SEARCH ? '<button id="a2zClrSearch" class="a2z-clr" title="Clear search">&times;</button>' : '')
+    + '</div>';
+
+  // Filter Segment Row
+  h += '<div class="a2z-filters">'
+    + '<div class="seg" role="group" aria-label="Difficulty">'
+    + '<button data-a2z-diff="" aria-pressed="' + (!A2Z_DIFF_FILTER) + '">All</button>'
+    + '<button data-a2z-diff="Easy" aria-pressed="' + (A2Z_DIFF_FILTER === 'Easy') + '">Easy</button>'
+    + '<button data-a2z-diff="Medium" aria-pressed="' + (A2Z_DIFF_FILTER === 'Medium') + '">Medium</button>'
+    + '<button data-a2z-diff="Hard" aria-pressed="' + (A2Z_DIFF_FILTER === 'Hard') + '">Hard</button>'
+    + '</div>'
+    + '<div class="seg" role="group" aria-label="Status">'
+    + '<button data-a2z-status="" aria-pressed="' + (!A2Z_STATUS_FILTER) + '">All</button>'
+    + '<button data-a2z-status="unsolved" aria-pressed="' + (A2Z_STATUS_FILTER === 'unsolved') + '">Unsolved</button>'
+    + '<button data-a2z-status="solved" aria-pressed="' + (A2Z_STATUS_FILTER === 'solved') + '">Solved</button>'
+    + '<button data-a2z-status="due" aria-pressed="' + (A2Z_STATUS_FILTER === 'due') + '">Due</button>'
+    + '</div>'
+    + '</div>';
+
+  // Expand / Collapse All buttons
+  h += '<div class="a2z-actions-row">'
+    + '<button class="mini" data-a2z-expand-all="1">Expand All</button>'
+    + '<button class="mini" data-a2z-expand-all="0">Collapse All</button>'
+    + '</div>';
+
+  // Filter problems based on search & filters
+  var query = (A2Z_SEARCH || '').toLowerCase().trim();
+  var filtered = problems.filter(function(p) {
+    if (query) {
+      var match = (p.title || '').toLowerCase().includes(query)
+        || (p.subTopic || '').toLowerCase().includes(query)
+        || (p.topic || '').toLowerCase().includes(query);
+      if (!match) return false;
+    }
+    if (A2Z_DIFF_FILTER && (p.difficulty || 'Medium').toLowerCase() !== A2Z_DIFF_FILTER.toLowerCase()) {
+      return false;
+    }
+    if (A2Z_STATUS_FILTER) {
+      var prog = A2Z.p[p.id] || {};
+      var isSol = !!(prog.code || (prog.h && prog.h.length));
+      if (A2Z_STATUS_FILTER === 'solved' && !isSol) return false;
+      if (A2Z_STATUS_FILTER === 'unsolved' && isSol) return false;
+      if (A2Z_STATUS_FILTER === 'due' && (!prog.due || prog.due > t)) return false;
+    }
+    return true;
+  });
+
+  if (!filtered.length) {
+    h += '<p class="empty">No problems match your current search or filters.</p>';
+  } else {
+    // Group into 18 Steps
+    var stepsMap = {};
+    filtered.forEach(function(p) {
+      var sKey = p.topic || 'Step 0 : Other';
+      var lKey = p.subTopic || 'Lec 0 : General';
+      var sNum = a2zStepNum(sKey);
+      var lNum = a2zLecNum(lKey);
+      if (!stepsMap[sNum]) {
+        stepsMap[sNum] = { num: sNum, rawName: sKey, lecs: {} };
+      }
+      if (!stepsMap[sNum].lecs[lNum]) {
+        stepsMap[sNum].lecs[lNum] = { num: lNum, rawName: lKey, problems: [] };
+      }
+      stepsMap[sNum].lecs[lNum].problems.push(p);
+    });
+
+    var sortedStepNums = Object.keys(stepsMap).map(Number).sort(function(a, b) { return a - b; });
+
+    sortedStepNums.forEach(function(sNum) {
+      var step = stepsMap[sNum];
+      var cleanStepTitle = step.rawName.replace(/^Step\s+\d+\s*:\s*/i, '');
+      var stepProblems = [];
+      var sortedLecNums = Object.keys(step.lecs).map(Number).sort(function(a, b) { return a - b; });
+      sortedLecNums.forEach(function(lNum) {
+        stepProblems = stepProblems.concat(step.lecs[lNum].problems);
+      });
+
+      var stepSolved = stepProblems.filter(function(p) {
+        var prog = A2Z.p[p.id] || {};
+        return !!(prog.code || (prog.h && prog.h.length));
+      }).length;
+      var stepPct = stepProblems.length ? Math.round(100 * stepSolved / stepProblems.length) : 0;
+      var isOpen = !!A2Z_STEP_OPEN[String(sNum)];
+
+      h += '<section class="acc a2z-step-card' + (isOpen ? ' open' : '') + '">';
+      h += '<button class="acc-h a2z-step-h" data-a2z-step="' + sNum + '" aria-expanded="' + isOpen + '">';
+      h += '<div class="a2z-step-badge">Step ' + sNum + '</div>';
+      h += '<span class="acc-t">';
+      h += '<b>' + esc(cleanStepTitle) + '</b>';
+      h += '<small>' + stepSolved + ' of ' + stepProblems.length + ' solved · ' + stepPct + '%</small>';
+      h += '</span>';
+      h += '<div class="a2z-step-prog"><i style="width:' + stepPct + '%"></i></div>';
+      h += '<span class="acc-ic' + (isOpen ? ' flip' : '') + '">' + ICO.chev + '</span>';
+      h += '</button>';
+
+      h += '<div class="acc-b a2z-step-b"' + (isOpen ? '' : ' hidden') + '>';
+      sortedLecNums.forEach(function(lNum) {
+        var lec = step.lecs[lNum];
+        var cleanLecTitle = lec.rawName.replace(/^Lec\s+\d+\s*:\s*/i, '');
+        var lecSolved = lec.problems.filter(function(p) {
+          var prog = A2Z.p[p.id] || {};
+          return !!(prog.code || (prog.h && prog.h.length));
+        }).length;
+
+        h += '<div class="a2z-lec">';
+        h += '<div class="a2z-lec-h">';
+        h += '<span class="a2z-lec-title">Lec ' + lNum + ' · ' + esc(cleanLecTitle) + '</span>';
+        h += '<span class="a2z-lec-stat">' + lecSolved + ' / ' + lec.problems.length + '</span>';
+        h += '</div>';
+        h += '<div class="list">';
+        lec.problems.forEach(function(p) {
+          h += a2zRowHTML(p);
+        });
+        h += '</div>';
+        h += '</div>';
+      });
+      h += '</div>';
+      h += '</section>';
+    });
+  }
+
+  // Backup & Import
+  h += '<div class="btns two" style="margin:20px 0 10px">';
+  h += '<button class="btn" onclick="exportA2z()">Export A2Z Backup</button>';
+  h += '<label class="btn imp">Import A2Z Backup<input type="file" id="a2zIm" hidden accept=".json"></label>';
+  h += '</div>';
+  h += '<p class="hint">Synced with strivers-a2z.json. Every solved problem saves your solution code, logs time, and schedules spaced repetition reviews.</p>';
+  return h;
+}
+
+async function exportA2z() {
+  try {
+    var blob = new Blob([JSON.stringify(A2Z, null, 2)], { type: 'application/json' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'strivers-a2z-' + ymd() + '.json';
+    a.click();
     toast('A2Z backup exported ✓');
-  }catch(e){toast('Export failed');}
+  } catch (e) { toast('Export failed'); }
 }
 
-async function importA2z(file){
-  var r=new FileReader();r.onload=async function(){
-    try{
-      var s=JSON.parse(r.result);
-      if(!s.problems)throw 0;
-      await codolioFetch('write','POST',s);
-      A2Z=a2zMergeDefaults(s);A2Z_LOADED=true;
-      toast('A2Z backup imported ✓');render();
-    }catch(e){alert('Not a valid A2Z backup file');}
-  };r.readAsText(file);
+async function importA2z(file) {
+  var r = new FileReader();
+  r.onload = async function() {
+    try {
+      var s = JSON.parse(r.result);
+      if (!s.problems) throw 0;
+      applyA2zData(s);
+      A2Z_LOADED = true;
+      saveA2zState();
+      toast('A2Z backup imported ✓');
+      render();
+    } catch (e) { alert('Not a valid A2Z backup file'); }
+  };
+  r.readAsText(file);
 }
 function render(){
  while(CHARTS.length){try{CHARTS.pop().destroy()}catch(e){}}
@@ -1441,106 +1685,181 @@ function subRender(id){
   var mt=[];if(e.s)mt.push(mm(e.s));if(e.runtime)mt.push(e.runtime);if(e.lang)mt.push(e.lang);
   return '<details class="sub'+(e.g==="Accepted"?" acc":"")+'"><summary><span class="srcb '+cls+'">'+esc(lbl)+'</span><span class="sdate">'+fmtTs(e.at)+'</span><span class="smeta">'+esc(mt.join(" · "))+'</span><i class="chev">'+ICO.chev+'</i></summary>'+(e.code?'<pre>'+esc(e.code)+'</pre>':'<p class="chip">Code not stored for this entry.</p>')+'</details>'}).join("")
   :'<p class="empty">No submissions yet — Submit here, or load your LeetCode history.</p>'}
-function shut(flush){if(flush!==false)drFlush();clearInterval(TM);TM=null;var ov=$("ov");ov.classList.remove("open");document.body.style.overflow="";
- setTimeout(function(){if(!ov.classList.contains("open"))ov.hidden=true},320);render()}
+function shut(flush){
+  if(flush!==false){
+    if(A2Z_MODE)a2zDrFlush();else drFlush();
+  }
+  clearInterval(TM);TM=null;
+  A2Z_MODE=false;A2Z_CUR=null;CUR=0;
+  var ov=$("ov");ov.classList.remove("open");document.body.style.overflow="";
+  setTimeout(function(){if(!ov.classList.contains("open"))ov.hidden=true},320);
+  render();
+}
 $("bnav").onclick=async function(e){var b=e.target.closest("button");if(b){V=b.dataset.v;if(V==="a2z")await loadA2zState();render();window.scrollTo(0,0)}};
-$("v").addEventListener("click",async function(e){var b=e.target.closest("[data-bf],[data-tp],[data-pi],[data-a],[data-id],[data-acc],[data-pom],[data-pk],[data-grade],[data-a2z-topic]");if(!b)return;var d=b.dataset;
- if(d.bf){backfill(+d.bf);render()}
- else if(d.tp){TP=+d.tp;render()}
- else if(d.pi){ST.pi[TP]=+d.pi;save();render()}
- else if(d.a)act(d.a,b)
- else if(d.id){if(A2Z_MODE){a2zOpen(+d.id);}else{openP(+d.id);}}
- else if(d.pom){if(d.pom==="toggle"){if(A2Z_MODE){a2zPomBtn();}else{pomBtn();}}else{if(A2Z_MODE){a2zPomRs();}else{pomRs();render()}}}
- else if(d.acc){var sec=e.target.closest(".acc"),bb=sec.querySelector(".acc-b"),ic=sec.querySelector(".acc-ic");ACC[d.acc]=!ACC[d.acc];
-  if(bb)bb.hidden=!ACC[d.acc];sec.classList.toggle("open",ACC[d.acc]);ic&&ic.classList.toggle("flip",ACC[d.acc]);
-  var ah=sec.querySelector(".acc-h");ah&&ah.setAttribute("aria-expanded",!!ACC[d.acc])}
- else if(d.pk){var pk=d.pk;
-  if(/^\d{4}-/.test(pk))dayOpen(pk);
-  else if(pk==="x"){var dlg=$("pdDlg");if(dlg)dlg.hidden=true}
-  else{PC={y:PC.y,m:PC.m+(+pk)};if(PC.m<0){PC.m=11;PC.y--}if(PC.m>11){PC.m=0;PC.y++}render()}}
- else if(d.grade){var row=b.closest(".row"),id=row?row.dataset.id:null;if(id){
-   if(A2Z_MODE){var p=A2Z.p[id]||{},sec=Math.round((Date.now()-A2Z_T0)/1000);a2zFinish(id,d.grade,$("cd").value,$("nt").value.trim(),sec);a2zShut(false);}
-   else{finish(id,d.grade,$("cd").value,$("nt").value.trim(),Math.round((Date.now()-T0)/1000));}}
- }
- else if(d.a2zTopic!==undefined){A2Z_TOPIC_FILTER=d.a2zTopic||null;A2Z_SUBTOPIC_FILTER=null;render();}});
-$("v").addEventListener("keydown",function(e){if(e.key!=="Enter"&&e.key!==" ")return;var r=e.target.closest(".row,.nudge");if(r){e.preventDefault();if(r.dataset.id){if(A2Z_MODE){a2zOpen(+r.dataset.id);}else{openP(+r.dataset.id);}}else if(r.dataset.a)act(r.dataset.a,r)}});
-$("scrim").onclick=function(){if(A2Z_MODE){a2zShut();}else{shut();}};$("shX").onclick=function(){if(A2Z_MODE){a2zShut();}else{shut();}};
+$("v").addEventListener("click",async function(e){
+  if(e.target.id==="a2zClrSearch"){A2Z_SEARCH="";render();return}
+  var b=e.target.closest("[data-bf],[data-tp],[data-pi],[data-a],[data-id],[data-a2z-id],[data-acc],[data-a2z-step],[data-a2z-diff],[data-a2z-status],[data-a2z-expand-all],[data-pom],[data-pk],[data-grade]");
+  if(!b)return;var d=b.dataset;
+  if(d.a2zId){openA2z(d.a2zId)}
+  else if(d.a2zStep){
+    A2Z_STEP_OPEN[d.a2zStep]=!A2Z_STEP_OPEN[d.a2zStep];
+    var sec=b.closest(".a2z-step-card");
+    if(sec){
+      var body=sec.querySelector(".a2z-step-b"),ic=sec.querySelector(".acc-ic");
+      if(body)body.hidden=!A2Z_STEP_OPEN[d.a2zStep];
+      sec.classList.toggle("open",!!A2Z_STEP_OPEN[d.a2zStep]);
+      if(ic)ic.classList.toggle("flip",!!A2Z_STEP_OPEN[d.a2zStep]);
+      b.setAttribute("aria-expanded",String(!!A2Z_STEP_OPEN[d.a2zStep]));
+    }
+  }
+  else if(d.a2zDiff!==undefined){A2Z_DIFF_FILTER=d.a2zDiff;render()}
+  else if(d.a2zStatus!==undefined){A2Z_STATUS_FILTER=d.a2zStatus;render()}
+  else if(d.a2zExpandAll!==undefined){
+    var exp=d.a2zExpandAll==="1";
+    for(var k=1;k<=18;k++)A2Z_STEP_OPEN[String(k)]=exp;
+    render();
+  }
+  else if(d.bf){backfill(+d.bf);render()}
+  else if(d.tp){TP=+d.tp;render()}
+  else if(d.pi){ST.pi[TP]=+d.pi;save();render()}
+  else if(d.a)act(d.a,b)
+  else if(d.id){openP(+d.id)}
+  else if(d.pom){if(d.pom==="toggle"){pomBtn();}else{pomRs();render()}}
+  else if(d.acc){var sec=e.target.closest(".acc"),bb=sec.querySelector(".acc-b"),ic=sec.querySelector(".acc-ic");ACC[d.acc]=!ACC[d.acc];
+   if(bb)bb.hidden=!ACC[d.acc];sec.classList.toggle("open",ACC[d.acc]);ic&&ic.classList.toggle("flip",ACC[d.acc]);
+   var ah=sec.querySelector(".acc-h");ah&&ah.setAttribute("aria-expanded",!!ACC[d.acc])}
+  else if(d.pk){var pk=d.pk;
+   if(/^\d{4}-/.test(pk))dayOpen(pk);
+   else if(pk==="x"){var dlg=$("pdDlg");if(dlg)dlg.hidden=true}
+   else{PC={y:PC.y,m:PC.m+(+pk)};if(PC.m<0){PC.m=11;PC.y--}if(PC.m>11){PC.m=0;PC.y++}render()}}
+  else if(d.grade){var row=b.closest(".row"),id=row?row.dataset.id:null;if(id){
+    finish(id,d.grade,$("cd").value,$("nt").value.trim(),Math.round((Date.now()-T0)/1000));
+  }}
+});
+$("v").addEventListener("input",function(e){
+  if(e.target.id==="a2zSearch"){
+    A2Z_SEARCH=e.target.value;
+    clearTimeout(window._a2zSearchT);
+    window._a2zSearchT=setTimeout(function(){
+      render();
+      var inp=$("a2zSearch");
+      if(inp){inp.focus();inp.setSelectionRange(inp.value.length,inp.value.length);}
+    },150);
+  }
+});
+$("v").addEventListener("keydown",function(e){if(e.key!=="Enter"&&e.key!==" ")return;var r=e.target.closest(".row,.nudge");if(r){e.preventDefault();if(r.dataset.a2zId)openA2z(r.dataset.a2zId);else if(r.dataset.id)openP(+r.dataset.id);else if(r.dataset.a)act(r.dataset.a,r)}});
+$("scrim").onclick=function(){shut()};$("shX").onclick=function(){shut()};
 $("pdX").onclick=function(){$("pdDlg").hidden=true};
 $("pdDlg").onclick=function(e){if(e.target===this)this.hidden=true};
-document.addEventListener("click",function(e){var r=e.target.closest(".row[data-id]");if(!r||r.closest("#v"))return;
- if(A2Z_MODE){a2zOpen(+r.dataset.id);}else{if(BY[r.dataset.id])openP(+r.dataset.id);}});
-document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("ov").hidden){if(A2Z_MODE){a2zShut();}else{shut();}}});
+document.addEventListener("click",function(e){var r=e.target.closest(".row[data-id]");if(!r||r.closest("#v"))return;if(BY[r.dataset.id])openP(+r.dataset.id);});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("ov").hidden){shut()}});
 $("xtab").onclick=function(e){var b=e.target.closest("button");if(b)xtShow(b.dataset.xt)};
 $("lk").onclick=function(){ST.lock[CUR]=ST.lock[CUR]?0:1;save();var lock=isLock(CUR);
  $("lockChip").hidden=!lock;this.textContent=lock?"Mark as available":"Mark as subscription needed";
  $("sb").disabled=lock;$("sb").textContent=lock?"Locked":"Submit";
  $("cd").disabled=lock;render();toast(lock?"Marked 🔒 subscription-needed — it leaves the New queue":"Unlocked — back in the rotation")};
-$("sb").onclick=function(){if(A2Z_MODE){var code=$("cd"),id=A2Z_CUR,sec=Math.round((Date.now()-A2Z_T0)/1000);
+$("sb").onclick=function(){
+  var code=$("cd"),sec=Math.round((Date.now()-T0)/1000);
+  if(A2Z_MODE){
+    var id=A2Z_CUR;
+    if(!code.value||code.value.replace(/\s/g,"").length<15){$("w").className="warn";$("w").textContent="Nothing to submit — paste your code first.";code.focus();return}
+    var t=ymd(),dd=a2zDay(t),first=!A2Z.p[id],p=A2Z.p[id]||(A2Z.p[id]={id:id,h:[],b:0,first:t});
+    p.code=code.value;var note=$("nt").value.trim();if(note)p.note=note;
+    p.time=(p.time||0)+sec;
+    p.h.push({at:Date.now(),g:"local",s:sec,code:code.value,k:first?"n":"r",src:"a2z"});
+    dd.s+=sec;dd.ids.push({id:id,k:first?"n":"r"});day(t).s+=sec;delete A2Z.dr[id];saveA2zState();save();
+    T0=Date.now();$("tm").textContent="00:00";
+    subRenderA2z(id);
+    var pill=$("svPill");pill.textContent="Saved ✓";pill.classList.remove("on");
+    $("w").className="warn ok-msg";$("w").textContent="Submitted ✓ saved to A2Z — "+mm(sec)+" logged for today. Grading below still schedules the review.";
+    toast("Submitted ✓ — "+mm(sec)+" logged");
+    render();return;
+  }
+  var id=CUR;
+  if(isLock(id)){$("w").className="warn";$("w").textContent="Marked as subscription-needed — unlock it in Details to submit.";return}
   if(!code.value||code.value.replace(/\s/g,"").length<15){$("w").className="warn";$("w").textContent="Nothing to submit — paste your code first.";code.focus();return}
-  var t=ymd(),dd=a2zDay(t),first=!A2Z.p[id],p=A2Z.p[id]||(A2Z.p[id]={id:id,h:[],b:0,first:t});
+  var t=ymd(),dd=day(t),first=!ST.p[id],p=ST.p[id]||(ST.p[id]={id:id,h:[],b:0,first:t});
   p.code=code.value;var note=$("nt").value.trim();if(note)p.note=note;
   p.time=(p.time||0)+sec;
-  p.h.push({at:Date.now(),g:"local",s:sec,code:code.value,k:first?"n":"r",src:"a2z"});
-  dd.s+=sec;dd.ids.push({id:id,k:first?"n":"r"});delete A2Z.dr[id];saveA2zState();
-  A2Z_T0=Date.now();$("tm").textContent="00:00";
+  p.h.push({at:Date.now(),g:"local",s:sec,code:code.value,k:first?"n":"r",src:"local"});
+  dd.s+=sec;dd.ids.push({id:id,k:first?"n":"r"});
+  delete ST.dr[id];save();
+  T0=Date.now();$("tm").textContent="00:00";
+  subRender(id);
   var pill=$("svPill");pill.textContent="Saved ✓";pill.classList.remove("on");
-  $("w").className="warn ok-msg";$("w").textContent="Submitted ✓ saved to A2Z — "+mm(sec)+" logged for today. Grading below still schedules the review.";
+  $("w").className="warn ok-msg";$("w").textContent="Submitted ✓ saved on this device — "+mm(sec)+" logged for today. Grading below still schedules the review.";
   toast("Submitted ✓ — "+mm(sec)+" logged");
-  render();return}
-var code=$("cd"),id=CUR,sec=Math.round((Date.now()-T0)/1000);
- if(isLock(id)){$("w").className="warn";$("w").textContent="Marked as subscription-needed — unlock it in Details to submit.";return}
- if(!code.value||code.value.replace(/\s/g,"").length<15){$("w").className="warn";$("w").textContent="Nothing to submit — paste your code first.";code.focus();return}
- var t=ymd(),dd=day(t),first=!ST.p[id],p=ST.p[id]||(ST.p[id]={id:id,h:[],b:0,first:t});
- p.code=code.value;var note=$("nt").value.trim();if(note)p.note=note;
- p.time=(p.time||0)+sec;
- p.h.push({at:Date.now(),g:"local",s:sec,code:code.value,k:first?"n":"r",src:"local"});
- dd.s+=sec;dd.ids.push({id:id,k:first?"n":"r"});
- delete ST.dr[id];save();
- T0=Date.now();$("tm").textContent="00:00";
- subRender(id);
- var pill=$("svPill");pill.textContent="Saved ✓";pill.classList.remove("on");
- $("w").className="warn ok-msg";$("w").textContent="Submitted ✓ saved on this device — "+mm(sec)+" logged for today. Grading below still schedules the review.";
- toast("Submitted ✓ — "+mm(sec)+" logged");
- render()};
-$("pl").onclick=function(){if(A2Z_MODE){var id=A2Z_CUR,btn=this;btn.disabled=true;$("w").className="warn";$("w").textContent="Pulling from LeetCode…";
+  render();
+};
+$("pl").onclick=function(){
+  var btn=this;btn.disabled=true;$("w").className="warn";$("w").textContent="Pulling from LeetCode…";
+  if(A2Z_MODE){
+    var id=A2Z_CUR;
+    var q=A2Z_BY_ID[id];
+    var lcSlug=q&&(q.slug||(q.problemUrl&&(q.problemUrl.match(/leetcode\.com\/problems\/([^/]+)/)||[])[1]));
+    if(!lcSlug){btn.disabled=false;$("w").textContent="Not a LeetCode problem — paste your solution directly.";return}
+    pullSlug(lcSlug).then(function(r){
+      btn.disabled=false;if(r.error){$("w").textContent=r.error;return}
+      var sec=Math.round((Date.now()-T0)/1000),t=ymd(),dd=a2zDay(t),p=A2Z.p[id]||(A2Z.p[id]={id:id,h:[],b:0,first:t});
+      A2Z.lc[id]={id:id,lang:r.lang||"",runtime:r.runtime||"",ts:r.ts||0,at:Date.now(),code:r.code||""};
+      if(r.code&&!p.code)p.code=r.code;
+      if(sec){dd.s+=sec;p.time=(p.time||0)+sec;dd.ids.push({id:id,k:p.old||p.due?"r":"n"})}
+      saveA2zState();T0=Date.now();$("tm").textContent="00:00";
+      $("cd").value=r.code;$("lcSub").innerHTML=subHTML_A2Z(id,q);subRenderA2z(id);
+      $("w").className="warn ok-msg";$("w").textContent="Pulled "+r.lang+", "+r.runtime+" · submitted "+fmtTs(r.ts);a2zDrSave();toast("Pulled from LeetCode ✓");
+    }).catch(function(e){btn.disabled=false;btn.textContent="Try again";$("w").textContent=e.message});
+    return;
+  }
+  var id=CUR;
   pull(id).then(function(r){btn.disabled=false;if(r.error){$("w").textContent=r.error;return}
-   var known=!!A2Z.lc[id],sec=Math.round((Date.now()-A2Z_T0)/1000),t=ymd(),dd=a2zDay(t),p=A2Z.p[id];
-   applySub(id,r,sec);countNewDay(id,r.ts,known);
+   var known=!!ST.lc[id],sec=Math.round((Date.now()-T0)/1000),t=ymd(),dd=day(t),p=ST.p[id];
+   applySub(id,r,sec);countNewDay(id,r.ts,known);applyLsub(id,r);
    if(sec&&p){dd.s+=sec;p.time=(p.time||0)+sec;dd.ids.push({id:id,k:p.old||p.due?"r":"n"})}
-   saveA2zState();A2Z_T0=Date.now();$("tm").textContent="00:00";
-   $("cd").value=r.code;$("lcSub").innerHTML='<p class="chip">Pulled from LeetCode — grade below to schedule A2Z review.</p>';
-   $("w").className="warn ok-msg";$("w").textContent="Pulled "+r.lang+", "+r.runtime+" · submitted "+fmtTs(r.ts);a2zDrSave()})
-  .catch(function(e){btn.disabled=false;btn.textContent="Try again";$("w").textContent=e.message})}return
-var id=CUR,btn=this;btn.disabled=true;$("w").className="warn";$("w").textContent="Pulling from LeetCode…";
- pull(id).then(function(r){btn.disabled=false;if(r.error){$("w").textContent=r.error;return}
-  var known=!!ST.lc[id],sec=Math.round((Date.now()-T0)/1000),t=ymd(),dd=day(t),p=ST.p[id];
-  applySub(id,r,sec);countNewDay(id,r.ts,known);applyLsub(id,r);
-  if(sec&&p){dd.s+=sec;p.time=(p.time||0)+sec;dd.ids.push({id:id,k:p.old||p.due?"r":"n"})}
-  save();T0=Date.now();$("tm").textContent="00:00";
-  $("cd").value=r.code;$("lcSub").innerHTML=subHTML(id);subRender(id);
-  $("w").className="warn ok-msg";$("w").textContent="Pulled "+r.lang+", "+r.runtime+" · submitted "+fmtTs(r.ts);drSave()})
- .catch(function(e){btn.disabled=false;btn.textContent="Try again";$("w").textContent=e.message})};
-$("lhs").onclick=function(){var id=CUR,btn=this;btn.disabled=true;btn.textContent="Loading…";
- pull(id).then(function(r){btn.disabled=false;btn.textContent="Load history from LeetCode";
-  var n=applyLsub(id,r);subRender(id);
-  if(n){$("w").className="warn ok-msg";$("w").textContent="Loaded "+n+" LeetCode submissions for this problem."}
-  else{$("w").textContent=(r&&r.error)||"No submissions returned for this problem."}})
- .catch(function(e){btn.disabled=false;btn.textContent="Load history from LeetCode";$("w").textContent=e.message})};
+   save();T0=Date.now();$("tm").textContent="00:00";
+   $("cd").value=r.code;$("lcSub").innerHTML=subHTML(id);subRender(id);
+   $("w").className="warn ok-msg";$("w").textContent="Pulled "+r.lang+", "+r.runtime+" · submitted "+fmtTs(r.ts);drSave()})
+  .catch(function(e){btn.disabled=false;btn.textContent="Try again";$("w").textContent=e.message});
+};
+$("lhs").onclick=function(){
+  if(A2Z_MODE){
+    var id=A2Z_CUR,q=A2Z_BY_ID[id],btn=this;
+    var lcSlug=q&&(q.slug||(q.problemUrl&&(q.problemUrl.match(/leetcode\.com\/problems\/([^/]+)/)||[])[1]));
+    if(!lcSlug){$("w").textContent="Not a LeetCode problem.";return}
+    btn.disabled=true;btn.textContent="Loading…";
+    pullSlug(lcSlug).then(function(r){
+      btn.disabled=false;btn.textContent="Load history from LeetCode";
+      var a=r&&r.subs||[];if(a.length)A2Z.lsub[id]=a;saveA2zState();subRenderA2z(id);
+      if(a.length){$("w").className="warn ok-msg";$("w").textContent="Loaded "+a.length+" LeetCode submissions."}
+      else{$("w").textContent=(r&&r.error)||"No submissions returned for this problem."}
+    }).catch(function(e){btn.disabled=false;btn.textContent="Load history from LeetCode";$("w").textContent=e.message});
+    return;
+  }
+  var id=CUR,btn=this;btn.disabled=true;btn.textContent="Loading…";
+  pull(id).then(function(r){btn.disabled=false;btn.textContent="Load history from LeetCode";
+   var n=applyLsub(id,r);subRender(id);
+   if(n){$("w").className="warn ok-msg";$("w").textContent="Loaded "+n+" LeetCode submissions for this problem."}
+   else{$("w").textContent=(r&&r.error)||"No submissions returned for this problem."}})
+  .catch(function(e){btn.disabled=false;btn.textContent="Load history from LeetCode";$("w").textContent=e.message});
+};
 Array.prototype.forEach.call(document.querySelectorAll("#shGr [data-g]"),function(b){b.onclick=function(){
-  if(A2Z_MODE){var code=$("cd"),id=A2Z_CUR,sec=Math.round((Date.now()-A2Z_T0)/1000);
-   if(code.value.replace(/\s/g,"").length<15){$("w").className="warn";$("w").textContent="Solution is empty — paste your accepted code first.";$("cd").focus();return}
-   a2zFinish(id,b.dataset.g,code.value,$("nt").value.trim(),sec);
-   delete A2Z.dr[id];saveA2zState();a2zShut(false);return}
   var code=$("cd").value;
   if(code.replace(/\s/g,"").length<15){$("w").className="warn";$("w").textContent="Solution is empty — paste your accepted code first.";$("cd").focus();return}
+  var sec=Math.round((Date.now()-T0)/1000);
+  if(A2Z_MODE){
+    a2zFinish(A2Z_CUR,b.dataset.g,code,$("nt").value.trim(),sec);
+    delete A2Z.dr[A2Z_CUR];saveA2zState();shut(false);
+    toast("Graded "+b.dataset.g+" ✓");
+    return;
+  }
   var id=CUR;
-  finish(id,b.dataset.g,code,$("nt").value.trim(),Math.round((Date.now()-T0)/1000));
-  delete ST.dr[id];save();shut(false)}});
-$("cd").addEventListener("input",function(){if(A2Z_MODE){a2zDraftSave();}else{drSave();}});
-$("nt").addEventListener("input",function(){if(A2Z_MODE){a2zDraftSave();}else{drSave();}});
+  finish(id,b.dataset.g,code,$("nt").value.trim(),sec);
+  delete ST.dr[id];save();shut(false);
+}});
+$("cd").addEventListener("input",function(){if(A2Z_MODE){a2zDrSave();}else{drSave();}});
+$("nt").addEventListener("input",function(){if(A2Z_MODE){a2zDrSave();}else{drSave();}});
 window.addEventListener("pagehide",function(){if(A2Z_MODE){a2zDrFlush();saveA2zState()}else{drFlush();save()}});
 document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden"){if(A2Z_MODE){a2zDrFlush();saveA2zState()}else{drFlush();save()}}});
-$("pBtn").onclick=function(){if(A2Z_MODE){a2zPomBtn();}else{pomBtn();}};$("pRs").onclick=function(){if(A2Z_MODE){a2zPomRs();}else{pomRs();}};$("pRs").innerHTML=ICO.rst;
+$("pBtn").onclick=pomBtn;$("pRs").onclick=pomRs;$("pRs").innerHTML=ICO.rst;
 if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();
 
 // Initialize: load from API (single source of truth) then render
@@ -1549,9 +1868,7 @@ async function init() {
   await loadA2zState();
   render();
   pomTick();
-  a2zPomRender();
   setInterval(pomTick, 1000);
-  setInterval(a2zPomTick, 1000);
   setInterval(autoSync, 60000);
   setTimeout(autoSync, 20000);
 }

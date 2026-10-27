@@ -2,12 +2,35 @@
 // Codolio APIs are fetched ONCE and saved to JSON. No constant API calls.
 // Completely separate from dsa-grind-2026-10-27.json (your ladder)
 
+const fs = require('fs');
+const path = require('path');
+
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
 const GITHUB_REPO = process.env.GITHUB_REPO || '';
 const BRANCH = process.env.GITHUB_BRANCH || 'main';
 const DATA_FILE = 'strivers-a2z.json';
 const CODOLIO_BASE = 'https://node.codolio.com/api/question-tracker/v2/sheet';
 const SHEET_SLUG = 'strivers-a2z-dsa-sheet';
+
+function readLocalFile() {
+  try {
+    const filePath = path.join(process.cwd(), DATA_FILE);
+    if (!fs.existsSync(filePath)) return null;
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch (e) {
+    return null;
+  }
+}
+
+function writeLocalFile(data) {
+  try {
+    const filePath = path.join(process.cwd(), DATA_FILE);
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 
 async function githubRequest(url, method, body) {
   const headers = {
@@ -34,6 +57,10 @@ async function githubRequest(url, method, body) {
 }
 
 async function readData() {
+  if (!GITHUB_TOKEN || !GITHUB_REPO) {
+    const local = readLocalFile();
+    if (local) return local;
+  }
   try {
     const data = await githubRequest(
       `https://api.github.com/repos/${GITHUB_REPO}/contents/${DATA_FILE}`,
@@ -42,12 +69,17 @@ async function readData() {
     const content = Buffer.from(data.content, 'base64').toString('utf8');
     return JSON.parse(content);
   } catch (e) {
+    const local = readLocalFile();
+    if (local) return local;
     return {
       sheetSlug: SHEET_SLUG,
       sheetName: 'Strivers A2Z DSA Sheet',
       sheetLink: 'https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/',
       stats: null,
       problems: [],
+      p: {},
+      dr: {},
+      d: {},
       userProgress: {},
       updatedAt: 0,
       fetchedAt: 0
@@ -57,6 +89,10 @@ async function readData() {
 
 async function writeData(data) {
   data.updatedAt = Date.now();
+  if (!GITHUB_TOKEN || !GITHUB_REPO) {
+    writeLocalFile(data);
+    return data;
+  }
   let current;
   try {
     current = await githubRequest(
@@ -164,12 +200,26 @@ async function fetchAllCodolioData() {
     };
   });
 
+  const getStepNum = s => { const m = (s || '').match(/Step\s+(\d+)/i); return m ? parseInt(m[1], 10) : 999; };
+  const getLecNum = s => { const m = (s || '').match(/Lec\s+(\d+)/i); return m ? parseInt(m[1], 10) : 999; };
+
+  problems.sort((a, b) => {
+    const sa = getStepNum(a.topic), sb = getStepNum(b.topic);
+    if (sa !== sb) return sa - sb;
+    const la = getLecNum(a.subTopic), lb = getLecNum(b.subTopic);
+    if (la !== lb) return la - lb;
+    return 0;
+  });
+
   return {
     sheetSlug: SHEET_SLUG,
     sheetName: 'Strivers A2Z DSA Sheet',
     sheetLink: 'https://takeuforward.org/strivers-a2z-dsa-course/strivers-a2z-dsa-course-sheet-2/',
     stats: stats,
     problems: problems,
+    p: {},
+    dr: {},
+    d: {},
     userProgress: {},
     updatedAt: Date.now(),
     fetchedAt: Date.now()
@@ -190,10 +240,6 @@ module.exports = async (req, res) => {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   try {
-    if (!GITHUB_TOKEN || !GITHUB_REPO) {
-      return res.status(500).json({ error: 'GitHub not configured. Set GITHUB_TOKEN and GITHUB_REPO in Vercel.' });
-    }
-
     const { endpoint } = req.query || {};
 
     // --- READ: get all A2Z data from JSON file ---
