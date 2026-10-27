@@ -1,5 +1,24 @@
 {
   "p": {
+    "27": {
+      "id": 27,
+      "h": [
+        {
+          "at": 1793098354060,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let i=0, j=nums.length-1\n    while(i<=j){\n        if(nums[i]==val){\n            let temp=nums[i]\n            nums[i]=nums[j]\n            nums[j]=temp\n            j--\n        }\n        else i++\n    }\n    return i\n};",
+          "k": "s",
+          "ts": 1791661170000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-27",
+      "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let i=0, j=nums.length-1\n    while(i<=j){\n        if(nums[i]==val){\n            let temp=nums[i]\n            nums[i]=nums[j]\n            nums[j]=temp\n            j--\n        }\n        else i++\n    }\n    return i\n};"
+    },
     "283": {
       "id": 283,
       "h": [
@@ -36,7 +55,8 @@
       "ids": [],
       "f": 0,
       "qids": [
-        283
+        283,
+        27
       ]
     }
   },
@@ -56,6 +76,14 @@
     "1": 0
   },
   "lc": {
+    "27": {
+      "id": 27,
+      "lang": "JavaScript",
+      "runtime": "0 ms",
+      "ts": 1791661170000,
+      "at": 1793098354057,
+      "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let i=0, j=nums.length-1\n    while(i<=j){\n        if(nums[i]==val){\n            let temp=nums[i]\n            nums[i]=nums[j]\n            nums[j]=temp\n            j--\n        }\n        else i++\n    }\n    return i\n};"
+    },
     "283": {
       "id": 283,
       "lang": "JavaScript",
