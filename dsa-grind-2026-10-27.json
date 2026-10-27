@@ -76,6 +76,25 @@
       "due": "2026-10-27",
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    s = s.trim().split(/\\s+/)\n    let i=0, j=s.length-1\n    while(i<j){\n        [s[i],s[j]]=[s[j],s[i]]\n        i++\n        j--\n    }\n    s=s.join(' ')\n    return s\n};"
     },
+    "189": {
+      "id": 189,
+      "h": [
+        {
+          "at": 1793098373621,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar rotate = function(nums, k) {\n    k=k%nums.length\n    let i=0\n    let j=nums.length-1\n\n    reverse(nums,0,nums.length-k-1)\n    reverse(nums,nums.length-k, nums.length-1)\n    reverse(nums,0,nums.length-1)\n    function reverse(arr,x,y){\n        while(x<y){\n            [arr[x],arr[y]]=[arr[y],arr[x]]\n            x++\n            y--\n        }\n        return arr\n    }\n};",
+          "k": "s",
+          "ts": 1791962251000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-27",
+      "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar rotate = function(nums, k) {\n    k=k%nums.length\n    let i=0\n    let j=nums.length-1\n\n    reverse(nums,0,nums.length-k-1)\n    reverse(nums,nums.length-k, nums.length-1)\n    reverse(nums,0,nums.length-1)\n    function reverse(arr,x,y){\n        while(x<y){\n            [arr[x],arr[y]]=[arr[y],arr[x]]\n            x++\n            y--\n        }\n        return arr\n    }\n};"
+    },
     "283": {
       "id": 283,
       "h": [
@@ -170,6 +189,25 @@
       "first": "before",
       "due": "2026-10-27",
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar removeDuplicates = function(s) {\n    let stack = []; // Initialize an empty stack\n    \n    // Iterate through each character in the string\n    for (let char of s) {\n        // If the stack is not empty and the current character is equal to the top element of the stack\n        if (stack.length > 0 && char === stack[stack.length - 1]) {\n            stack.pop(); // Remove the adjacent duplicate by popping the top element\n        } else {\n            stack.push(char); // Push the current character onto the stack\n        }\n    }\n    \n    // Construct the final string by joining the characters in the stack\n    return stack.join('');\n};\n"
+    },
+    "1768": {
+      "id": 1768,
+      "h": [
+        {
+          "at": 1793098377510,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {string} word1\n * @param {string} word2\n * @return {string}\n */\nvar mergeAlternately = function(word1, word2) {\n    let range=word1.length>word2.length?word2.length:word1.length\n    let i=0\n    let merged=''\n    while(i<range){\n        merged+=word1[i]+word2[i]\n        i++\n    }\n    if(i<word1.length){\n        merged+=word1.slice(i,word1.length)\n    }\n     if(i<word2.length){\n        merged+=word2.slice(i,word2.length)\n    }\n    return merged\n};",
+          "k": "s",
+          "ts": 1792161440000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-28",
+      "code": "/**\n * @param {string} word1\n * @param {string} word2\n * @return {string}\n */\nvar mergeAlternately = function(word1, word2) {\n    let range=word1.length>word2.length?word2.length:word1.length\n    let i=0\n    let merged=''\n    while(i<range){\n        merged+=word1[i]+word2[i]\n        i++\n    }\n    if(i<word1.length){\n        merged+=word1.slice(i,word1.length)\n    }\n     if(i<word2.length){\n        merged+=word2.slice(i,word2.length)\n    }\n    return merged\n};"
     }
   },
   "d": {
@@ -233,6 +271,26 @@
         345,
         557,
         151
+      ]
+    },
+    "2026-10-14": {
+      "n": 0,
+      "r": 0,
+      "s": 0,
+      "ids": [],
+      "f": 0,
+      "qids": [
+        189
+      ]
+    },
+    "2026-10-16": {
+      "n": 0,
+      "r": 0,
+      "s": 0,
+      "ids": [],
+      "f": 0,
+      "qids": [
+        1768
       ]
     }
   },
@@ -331,6 +389,14 @@
       "ts": 1712852872000,
       "at": 1793098359990,
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar removeDuplicates = function(s) {\n    let stack = []; // Initialize an empty stack\n    \n    // Iterate through each character in the string\n    for (let char of s) {\n        // If the stack is not empty and the current character is equal to the top element of the stack\n        if (stack.length > 0 && char === stack[stack.length - 1]) {\n            stack.pop(); // Remove the adjacent duplicate by popping the top element\n        } else {\n            stack.push(char); // Push the current character onto the stack\n        }\n    }\n    \n    // Construct the final string by joining the characters in the stack\n    return stack.join('');\n};\n"
+    },
+    "1768": {
+      "id": 1768,
+      "lang": "JavaScript",
+      "runtime": "42 ms",
+      "ts": 1792161440000,
+      "at": 1793098377507,
+      "code": "/**\n * @param {string} word1\n * @param {string} word2\n * @return {string}\n */\nvar mergeAlternately = function(word1, word2) {\n    let range=word1.length>word2.length?word2.length:word1.length\n    let i=0\n    let merged=''\n    while(i<range){\n        merged+=word1[i]+word2[i]\n        i++\n    }\n    if(i<word1.length){\n        merged+=word1.slice(i,word1.length)\n    }\n     if(i<word2.length){\n        merged+=word2.slice(i,word2.length)\n    }\n    return merged\n};"
     },
     "s": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfYXV0aF91c2VyX2lkIjoiMzExMDk3MiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImFsbGF1dGguYWNjb3VudC5hdXRoX2JhY2tlbmRzLkF1dGhlbnRpY2F0aW9uQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6ImRjYzUwOWQ0NzFiZGE4ZGY1MGViNGIyMmVmNmFiZDMyNjI2MWQ2NGUyN2U4MWFiOTUwYzRlMTEzNGZlODFlYWYiLCJzZXNzaW9uX3V1aWQiOiI1YmRmZjJjNiIsImlkIjozMTEwOTcyLCJlbWFpbCI6Im1haXRyaXNoMDNAZ21haWwuY29tIiwidXNlcm5hbWUiOiJtYWl0cmlzaDAzIiwidXNlcl9zbHVnIjoibWFpdHJpc2gwMyIsImF2YXRhciI6Imh0dHBzOi8vYXNzZXRzLmxlZXRjb2RlLmNvbS91c2Vycy9tYWl0cmlzaDAzL2F2YXRhcl8xNTkzNzAwNjgyLnBuZyIsInJlZnJlc2hlZF9hdCI6MTc5MzA5NzM5NSwiaXAiOiIxMDMuMjUyLjE2NS4yNTAiLCJpZGVudGl0eSI6IjVkMGRkNDI1MDA4ZDczMjhjZmY5Y2NlNDg5ZmI1NWY3IiwiZGV2aWNlX3dpdGhfaXAiOlsiMWFkY2Q2YWNkNGJjMDljODE3ODk4NjQ4YmEyODY4MGQiLCIxMDMuMjUyLjE2NS4yNTAiXX0.2lW9zV3jKqOo1urtVULzBnR365TTq-P7hkmtTejDkrU",
     "c": "a1ocyUyjIxbTxiK3WpFBzDv3EIzpOtVo"
