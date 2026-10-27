@@ -38,6 +38,25 @@
       "due": "2026-10-29",
       "code": "\n/**\n * @param {string} s\n * @return {string}\n */\nvar longestPalindrome = function(s) {\n    let longest = \"\";\n\n    for (let i = 0; i < s.length; i++) {\n        let odd = expand(s, i, i);\n        let even = expand(s, i, i + 1);\n\n        if (odd.length > longest.length) {\n            longest = odd;\n        }\n\n        if (even.length > longest.length) {\n            longest = even;\n        }\n    }\n\n    function expand(str, left, right) {\n        while (\n            left >= 0 &&\n            right < str.length &&\n            str[left] === str[right]\n        ) {\n            left--;\n            right++;\n        }\n\n        return str.slice(left + 1, right);\n    }\n\n    return longest;\n};\n"
     },
+    "15": {
+      "id": 15,
+      "h": [
+        {
+          "at": 1793098416015,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} nums\n * @return {number[][]}\n */\nvar threeSum = function(nums) {\n    nums.sort((a,b)=>a-b)\n    let res=[]\n    let set=new Set()\n    for(let i=0;i<nums.length;i++){\n        if(i>0 && nums[i]==nums[i-1]) continue\n        let map=new Map()\n        let temp=nums[i]\n        for(let j=i+1;j<nums.length;j++){\n            let diff=0-temp-nums[j]\n            if( map.has(diff)){\n                let k=map.get(diff)\n                if (i !== j && i !== k && j !== k) {\n                    let triplet=[temp,diff,nums[j]]\n                    let key=triplet.sort((a,b)=>a-b).join(',')\n                    if(!set.has(key)){\n                        set.add(key)\n                        res.push(triplet)\n                    }\n                }\n            }\n            map.set(nums[j],j)\n        }\n    }\n    return res\n};",
+          "k": "s",
+          "ts": 1793003174000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-29",
+      "code": "/**\n * @param {number[]} nums\n * @return {number[][]}\n */\nvar threeSum = function(nums) {\n    nums.sort((a,b)=>a-b)\n    let res=[]\n    let set=new Set()\n    for(let i=0;i<nums.length;i++){\n        if(i>0 && nums[i]==nums[i-1]) continue\n        let map=new Map()\n        let temp=nums[i]\n        for(let j=i+1;j<nums.length;j++){\n            let diff=0-temp-nums[j]\n            if( map.has(diff)){\n                let k=map.get(diff)\n                if (i !== j && i !== k && j !== k) {\n                    let triplet=[temp,diff,nums[j]]\n                    let key=triplet.sort((a,b)=>a-b).join(',')\n                    if(!set.has(key)){\n                        set.add(key)\n                        res.push(triplet)\n                    }\n                }\n            }\n            map.set(nums[j],j)\n        }\n    }\n    return res\n};"
+    },
     "26": {
       "id": 26,
       "h": [
@@ -303,6 +322,25 @@
       "first": "before",
       "due": "2026-10-28",
       "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar isSubsequence = function(s, t) {\n    let i=0, j=0, op=false\n    if(s.length>t.length){\n        op=false\n    }\n    else {\n        while(i<=s.length && j<=t.length){\n            if(s.charAt(i)===t.charAt(j)){\n                j++\n                i++\n                op=true\n            }else if(s.charAt(i)!=t.charAt(j) ){\n                j++\n                op=false\n            }\n        }\n    }\n        \n    return op\n};"
+    },
+    "532": {
+      "id": 532,
+      "h": [
+        {
+          "at": 1793098414684,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number}\n */\nvar findPairs = function(nums, k) {\n    let map = new Map()\n    let count = 0\n\n    if(k < 0) return 0\n\n    for(let i = 0; i < nums.length; i++){\n        if(!map.has(nums[i])) {\n            map.set(nums[i], 1)\n        }\n        else {\n            map.set(nums[i], map.get(nums[i]) + 1)\n        }\n    }\n\n    for(let [key, value] of map.entries()){\n        if(k === 0 && value > 1) {\n            count++\n        }\n        else if(k > 0 && map.has(key + k)) {\n            count++\n        }\n    }\n\n    return count\n};",
+          "k": "s",
+          "ts": 1792937849000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-29",
+      "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number}\n */\nvar findPairs = function(nums, k) {\n    let map = new Map()\n    let count = 0\n\n    if(k < 0) return 0\n\n    for(let i = 0; i < nums.length; i++){\n        if(!map.has(nums[i])) {\n            map.set(nums[i], 1)\n        }\n        else {\n            map.set(nums[i], map.get(nums[i]) + 1)\n        }\n    }\n\n    for(let [key, value] of map.entries()){\n        if(k === 0 && value > 1) {\n            count++\n        }\n        else if(k > 0 && map.has(key + k)) {\n            count++\n        }\n    }\n\n    return count\n};"
     },
     "557": {
       "id": 557,
@@ -593,7 +631,18 @@
       "ids": [],
       "f": 0,
       "qids": [
-        167
+        167,
+        532
+      ]
+    },
+    "2026-10-26": {
+      "n": 0,
+      "r": 0,
+      "s": 0,
+      "ids": [],
+      "f": 0,
+      "qids": [
+        15
       ]
     }
   },
@@ -628,6 +677,14 @@
       "ts": 1792826069000,
       "at": 1793098402795,
       "code": "\n/**\n * @param {string} s\n * @return {string}\n */\nvar longestPalindrome = function(s) {\n    let longest = \"\";\n\n    for (let i = 0; i < s.length; i++) {\n        let odd = expand(s, i, i);\n        let even = expand(s, i, i + 1);\n\n        if (odd.length > longest.length) {\n            longest = odd;\n        }\n\n        if (even.length > longest.length) {\n            longest = even;\n        }\n    }\n\n    function expand(str, left, right) {\n        while (\n            left >= 0 &&\n            right < str.length &&\n            str[left] === str[right]\n        ) {\n            left--;\n            right++;\n        }\n\n        return str.slice(left + 1, right);\n    }\n\n    return longest;\n};\n"
+    },
+    "15": {
+      "id": 15,
+      "lang": "JavaScript",
+      "runtime": "580 ms",
+      "ts": 1793003174000,
+      "at": 1793098416007,
+      "code": "/**\n * @param {number[]} nums\n * @return {number[][]}\n */\nvar threeSum = function(nums) {\n    nums.sort((a,b)=>a-b)\n    let res=[]\n    let set=new Set()\n    for(let i=0;i<nums.length;i++){\n        if(i>0 && nums[i]==nums[i-1]) continue\n        let map=new Map()\n        let temp=nums[i]\n        for(let j=i+1;j<nums.length;j++){\n            let diff=0-temp-nums[j]\n            if( map.has(diff)){\n                let k=map.get(diff)\n                if (i !== j && i !== k && j !== k) {\n                    let triplet=[temp,diff,nums[j]]\n                    let key=triplet.sort((a,b)=>a-b).join(',')\n                    if(!set.has(key)){\n                        set.add(key)\n                        res.push(triplet)\n                    }\n                }\n            }\n            map.set(nums[j],j)\n        }\n    }\n    return res\n};"
     },
     "26": {
       "id": 26,
