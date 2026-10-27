@@ -38,6 +38,25 @@
       "due": "2026-10-27",
       "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let i=0, j=nums.length-1\n    while(i<=j){\n        if(nums[i]==val){\n            let temp=nums[i]\n            nums[i]=nums[j]\n            nums[j]=temp\n            j--\n        }\n        else i++\n    }\n    return i\n};"
     },
+    "80": {
+      "id": 80,
+      "h": [
+        {
+          "at": 1793098357137,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(k<2 || nums[i]!=nums[k-2]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};",
+          "k": "s",
+          "ts": 1791792107000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-27",
+      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(k<2 || nums[i]!=nums[k-2]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};"
+    },
     "283": {
       "id": 283,
       "h": [
@@ -78,6 +97,16 @@
         27,
         26
       ]
+    },
+    "2026-10-12": {
+      "n": 0,
+      "r": 0,
+      "s": 0,
+      "ids": [],
+      "f": 0,
+      "qids": [
+        80
+      ]
     }
   },
   "c": {
@@ -111,6 +140,14 @@
       "ts": 1791661170000,
       "at": 1793098354057,
       "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let i=0, j=nums.length-1\n    while(i<=j){\n        if(nums[i]==val){\n            let temp=nums[i]\n            nums[i]=nums[j]\n            nums[j]=temp\n            j--\n        }\n        else i++\n    }\n    return i\n};"
+    },
+    "80": {
+      "id": 80,
+      "lang": "JavaScript",
+      "runtime": "45 ms",
+      "ts": 1791792107000,
+      "at": 1793098357133,
+      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(k<2 || nums[i]!=nums[k-2]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};"
     },
     "283": {
       "id": 283,
