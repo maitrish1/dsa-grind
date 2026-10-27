@@ -95,6 +95,25 @@
       "due": "2026-10-27",
       "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let i=0, j=nums.length-1\n    while(i<=j){\n        if(nums[i]==val){\n            let temp=nums[i]\n            nums[i]=nums[j]\n            nums[j]=temp\n            j--\n        }\n        else i++\n    }\n    return i\n};"
     },
+    "42": {
+      "id": 42,
+      "h": [
+        {
+          "at": 1793098487344,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} height\n * @return {number}\n */\nvar trap = function(height) {\n    let n = height.length;\n    let left = 0, right = n - 1, left_max = 0, right_max = 0, water = 0;\n    while (left <= right) {\n        if (height[left] <= height[right]) {\n            if (height[left] > left_max) left_max = height[left];\n            else water += left_max - height[left];\n            left++;\n        } else {\n            if (height[right] > right_max) right_max = height[right];\n            else water += right_max - height[right];\n            right--;\n        }\n    }\n    return water;\n};",
+          "k": "s",
+          "ts": 1712861980000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-29",
+      "code": "/**\n * @param {number[]} height\n * @return {number}\n */\nvar trap = function(height) {\n    let n = height.length;\n    let left = 0, right = n - 1, left_max = 0, right_max = 0, water = 0;\n    while (left <= right) {\n        if (height[left] <= height[right]) {\n            if (height[left] > left_max) left_max = height[left];\n            else water += left_max - height[left];\n            left++;\n        } else {\n            if (height[right] > right_max) right_max = height[right];\n            else water += right_max - height[right];\n            right--;\n        }\n    }\n    return water;\n};"
+    },
     "75": {
       "id": 75,
       "h": [
@@ -380,6 +399,25 @@
       "due": "2026-10-27",
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};"
     },
+    "643": {
+      "id": 643,
+      "h": [
+        {
+          "at": 1793098490764,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number}\n */\nvar findMaxAverage = function(nums, k) {\n  if(nums.length<k){\n      return 0\n  }  \n  let maxAvg=0\n  let currentSum=0\n  for(let i=0;i<k;i++){\n      currentSum=currentSum+nums[i]\n  }\n  maxAvg=currentSum/k\n  for(let i=k;i<nums.length;i++){\n      currentSum=(currentSum-nums[i-k]+nums[i])\n      maxAvg=Math.max(maxAvg, currentSum/k)\n  }\n  return maxAvg\n};",
+          "k": "s",
+          "ts": 1692629634000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-29",
+      "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number}\n */\nvar findMaxAverage = function(nums, k) {\n  if(nums.length<k){\n      return 0\n  }  \n  let maxAvg=0\n  let currentSum=0\n  for(let i=0;i<k;i++){\n      currentSum=currentSum+nums[i]\n  }\n  maxAvg=currentSum/k\n  for(let i=k;i<nums.length;i++){\n      currentSum=(currentSum-nums[i-k]+nums[i])\n      maxAvg=Math.max(maxAvg, currentSum/k)\n  }\n  return maxAvg\n};"
+    },
     "680": {
       "id": 680,
       "h": [
@@ -606,7 +644,8 @@
       "ids": [],
       "f": 0,
       "qids": [
-        392
+        392,
+        643
       ]
     },
     "2023-08-17": {
@@ -701,6 +740,16 @@
       "f": 0,
       "qids": [
         2149
+      ]
+    },
+    "2024-04-12": {
+      "n": 0,
+      "r": 0,
+      "s": 0,
+      "ids": [],
+      "f": 0,
+      "qids": [
+        42
       ]
     }
   },
@@ -887,6 +936,14 @@
       "ts": 1791874648000,
       "at": 1793098388786,
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};"
+    },
+    "643": {
+      "id": 643,
+      "lang": "JavaScript",
+      "runtime": "85 ms",
+      "ts": 1692629634000,
+      "at": 1793098490762,
+      "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number}\n */\nvar findMaxAverage = function(nums, k) {\n  if(nums.length<k){\n      return 0\n  }  \n  let maxAvg=0\n  let currentSum=0\n  for(let i=0;i<k;i++){\n      currentSum=currentSum+nums[i]\n  }\n  maxAvg=currentSum/k\n  for(let i=k;i<nums.length;i++){\n      currentSum=(currentSum-nums[i-k]+nums[i])\n      maxAvg=Math.max(maxAvg, currentSum/k)\n  }\n  return maxAvg\n};"
     },
     "680": {
       "id": 680,
