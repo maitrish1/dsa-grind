@@ -1,0 +1,394 @@
+{
+  "stats": {
+    "status": {
+      "code": 200,
+      "success": true,
+      "message": "Sheet stats fetched successfully",
+      "error": null
+    },
+    "data": {
+      "total": 455,
+      "solved": 0,
+      "noTopic": {
+        "total": 0,
+        "solved": 0
+      },
+      "topics": {
+        "Step 8 : Bit Manipulation [Concepts & Problems]": {
+          "total": 18,
+          "solved": 0,
+          "subtopics": {
+            "Lec 3 : Advanced Maths": {
+              "total": 5,
+              "solved": 0
+            },
+            "Lec 1 : Learn Bit Manipulation": {
+              "total": 8,
+              "solved": 0
+            },
+            "Lec 2 : Interview Problems": {
+              "total": 5,
+              "solved": 0
+            }
+          }
+        },
+        "Step 13 : Binary Trees [Traversals, Medium and Hard Problems]": {
+          "total": 39,
+          "solved": 0,
+          "subtopics": {
+            "Lec 1 : Traversals": {
+              "total": 13,
+              "solved": 0
+            },
+            "Lec 3: Hard Problems": {
+              "total": 14,
+              "solved": 0
+            },
+            "Lec 2 : Medium Problems": {
+              "total": 12,
+              "solved": 0
+            }
+          }
+        },
+        "Step 6 : Learn LinkedList [Single LL, Double LL, Medium, Hard Problems]": {
+          "total": 31,
+          "solved": 0,
+          "subtopics": {
+            "Lec 5 : Hard Problems of LL": {
+              "total": 4,
+              "solved": 0
+            },
+            "Lec 4 : Medium Problems of DLL": {
+              "total": 3,
+              "solved": 0
+            },
+            "Lec 1 : Learn 1D LinkedList": {
+              "total": 5,
+              "solved": 0
+            },
+            "Lec 2 : Learn Doubly LinkedList": {
+              "total": 4,
+              "solved": 0
+            },
+            "Lec 3 : Medium Problems of LL": {
+              "total": 15,
+              "solved": 0
+            }
+          }
+        },
+        "Step 5 : Strings [Basic and Medium]": {
+          "total": 15,
+          "solved": 0,
+          "subtopics": {
+            "Lec 2 : Medium String Problems": {
+              "total": 8,
+              "solved": 0
+            },
+            "Lec 1 : Basic and Easy String Problems": {
+              "total": 7,
+              "solved": 0
+            }
+          }
+        },
+        "Step 12 : Greedy Algorithms [Easy, Medium/Hard]": {
+          "total": 16,
+          "solved": 0,
+          "subtopics": {
+            "Lec 1 : Easy Problems": {
+              "total": 5,
+              "solved": 0
+            },
+            "Lec 2 : Medium/Hard": {
+              "total": 11,
+              "solved": 0
+            }
+          }
+        },
+        "Step 15 : Graphs [Concepts & Problems]": {
+          "total": 54,
+          "solved": 0,
+          "subtopics": {
+            "Lec 2 : Problems on BFS/DFS": {
+              "total": 14,
+              "solved": 0
+            },
+            "Lec 6 : Other Algorithms": {
+              "total": 3,
+              "solved": 0
+            },
+            "Lec 3 : Topo Sort and Problems": {
+              "total": 7,
+              "solved": 0
+            },
+            "Lec 4 : Shortest Path Algorithms and Problems": {
+              "total": 13,
+              "solved": 0
+            },
+            "Lec 1 : Learning": {
+              "total": 6,
+              "solved": 0
+            },
+            "Lec 5 : MinimumSpanningTree/Disjoint Set and Problems": {
+              "total": 11,
+              "solved": 0
+            }
+          }
+        },
+        "Step 16 : Dynamic Programming [Patterns and Problems]": {
+          "total": 56,
+          "solved": 0,
+          "subtopics": {
+            "Lec 3 : 2D/3D DP and DP on Grids": {
+              "total": 7,
+              "solved": 0
+            },
+            "Lec 2 : 1D DP": {
+              "total": 5,
+              "solved": 0
+            },
+            "Lec 9 : DP on Squares": {
+              "total": 2,
+              "solved": 0
+            },
+            "Lec 8 : MCM DP | Partition DP": {
+              "total": 7,
+              "solved": 0
+            },
+            "Lec 1 : Introduction to DP": {
+              "total": 1,
+              "solved": 0
+            },
+            "Lec 7 : DP on LIS": {
+              "total": 7,
+              "solved": 0
+            },
+            "Lec 6 : DP on Stocks": {
+              "total": 6,
+              "solved": 0
+            },
+            "Lec 4 : DP on Subsequences": {
+              "total": 11,
+              "solved": 0
+            },
+            "Lec 5 : DP on Strings": {
+              "total": 10,
+              "solved": 0
+            }
+          }
+        },
+        "Step 11 : Heaps [Learning, Medium, Hard Problems]": {
+          "total": 17,
+          "solved": 0,
+          "subtopics": {
+            "Lec 2 : Medium Problems": {
+              "total": 7,
+              "solved": 0
+            },
+            "Lec 1 : Learning": {
+              "total": 4,
+              "solved": 0
+            },
+            "Lec 3 : Hard Problems": {
+              "total": 6,
+              "solved": 0
+            }
+          }
+        },
+        "Step 1 : Learn the basics": {
+          "total": 31,
+          "solved": 0,
+          "subtopics": {
+            "Lec 3 : Learn STL/Java-Collections or similar thing in your language": {
+              "total": 2,
+              "solved": 0
+            },
+            "Lec 1 : Things to Know in C++/Java/Python or any language": {
+              "total": 9,
+              "solved": 0
+            },
+            "Lec 6 : Learn Basic Hashing": {
+              "total": 3,
+              "solved": 0
+            },
+            "Lec 2 : Build-up Logical Thinking": {
+              "total": 1,
+              "solved": 0
+            },
+            "Lec 4 : Know Basic Maths": {
+              "total": 7,
+              "solved": 0
+            },
+            "Lec 5 : Learn Basic Recursion": {
+              "total": 9,
+              "solved": 0
+            }
+          }
+        },
+        "Step 7 : Recursion [PatternWise]": {
+          "total": 25,
+          "solved": 0,
+          "subtopics": {
+            "Lec 3 : Trying out all Combos / Hard": {
+              "total": 8,
+              "solved": 0
+            },
+            "Lec 2 : Subsequences Pattern": {
+              "total": 12,
+              "solved": 0
+            },
+            "Lec 1 : Get a Strong Hold": {
+              "total": 5,
+              "solved": 0
+            }
+          }
+        },
+        "Step 3 : Solve Problems on Arrays [Easy -> Medium -> Hard]": {
+          "total": 40,
+          "solved": 0,
+          "subtopics": {
+            "Lec 3 : Hard": {
+              "total": 12,
+              "solved": 0
+            },
+            "Lec 1 : Easy": {
+              "total": 14,
+              "solved": 0
+            },
+            "Lec 2 : Medium": {
+              "total": 14,
+              "solved": 0
+            }
+          }
+        },
+        "Step 17 : Tries": {
+          "total": 7,
+          "solved": 0,
+          "subtopics": {
+            "Lec 2: Problems": {
+              "total": 6,
+              "solved": 0
+            },
+            "Lec 1 : Theory": {
+              "total": 1,
+              "solved": 0
+            }
+          }
+        },
+        "Step 9 : Stack and Queues [Learning, Pre-In-Post-fix, Monotonic Stack, Implementation]": {
+          "total": 30,
+          "solved": 0,
+          "subtopics": {
+            "Lec 3 : Monotonic Stack/Queue Problems [VVV. Imp]": {
+              "total": 11,
+              "solved": 0
+            },
+            "Lec 2 : Prefix, Infix, PostFix Conversion Problems": {
+              "total": 6,
+              "solved": 0
+            },
+            "Lec 4 : Implementation Problems": {
+              "total": 5,
+              "solved": 0
+            },
+            "Lec 1 : Learning": {
+              "total": 8,
+              "solved": 0
+            }
+          }
+        },
+        "Step 2 : Learn Important Sorting Techniques": {
+          "total": 7,
+          "solved": 0,
+          "subtopics": {
+            "Lec 1 : Sorting-I": {
+              "total": 3,
+              "solved": 0
+            },
+            "Lec 2 : Sorting-II": {
+              "total": 4,
+              "solved": 0
+            }
+          }
+        },
+        "Step 18 : Strings": {
+          "total": 9,
+          "solved": 0,
+          "subtopics": {
+            "Lec 1 : Hard Problems": {
+              "total": 9,
+              "solved": 0
+            }
+          }
+        },
+        "Step 4 : Binary Search [1D, 2D Arrays, Search Space]": {
+          "total": 32,
+          "solved": 0,
+          "subtopics": {
+            "Lec 3 : BS on 2D Arrays": {
+              "total": 5,
+              "solved": 0
+            },
+            "Lec 2 : BS on Answers": {
+              "total": 14,
+              "solved": 0
+            },
+            "Lec 1 : BS on 1D Arrays": {
+              "total": 13,
+              "solved": 0
+            }
+          }
+        },
+        "Step 14 : Binary Search Trees [Concept and Problems]": {
+          "total": 16,
+          "solved": 0,
+          "subtopics": {
+            "Lec 2 : Practice Problems": {
+              "total": 13,
+              "solved": 0
+            },
+            "Lec 1 : Concepts": {
+              "total": 3,
+              "solved": 0
+            }
+          }
+        },
+        "Step 10 : Sliding Window & Two Pointer Combined Problems": {
+          "total": 12,
+          "solved": 0,
+          "subtopics": {
+            "Lec 2 : Hard Problems": {
+              "total": 4,
+              "solved": 0
+            },
+            "Lec 1 : Medium Problems": {
+              "total": 8,
+              "solved": 0
+            }
+          }
+        }
+      },
+      "difficultyBreakdown": {
+        "Basic": {
+          "total": 17,
+          "solved": 0
+        },
+        "Medium": {
+          "total": 252,
+          "solved": 0
+        },
+        "Hard": {
+          "total": 57,
+          "solved": 0
+        },
+        "Easy": {
+          "total": 129,
+          "solved": 0
+        }
+      }
+    }
+  },
+  "sheetData": {},
+  "userProgress": {},
+  "updatedAt": 1793100143097,
+  "statsUpdatedAt": 1793100142296
+}
