@@ -615,7 +615,13 @@ var S={"1297":"maximum-number-of-occurrences-of-a-substring","1461":"check-if-a-
 var TOPICS=[P,W],ALLP=[],BY={},SL={};
 TOPICS.forEach(function(T,ti){T.forEach(function(pt){pt.t.forEach(function(q){var o={id:q[1],t:q[0],d:q[2],x:q[3],pat:pt.n};ALLP.push(o);BY[o.id]=o})})});
 Object.keys(S).forEach(function(k){SL[S[k]]=+k});
-var $=function(i){return document.getElementById(i)},K="dsa-grind-v1",INT=[1,3,7,14,30,60],V="today",TP=0,LC={},CUR=0,T0=0,TM=null,PC=null,SYNCING=false;
+var $=function(i){return document.getElementById(i)},K="dsa-grind-v1",INT=[1,3,7,14,30,60],V="today",TP=0,CUR=0,T0=0,TM=null,PC=null,SYNCING=false;
+// ===== HARDCODED LEETCODE COOKIES (same on every device) =====
+// Paste your LEETCODE_SESSION and csrftoken here:
+var LC={
+  s:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfYXV0aF91c2VyX2lkIjoiMzExMDk3MiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImFsbGF1dGguYWNjb3VudC5hdXRoX2JhY2tlbmRzLkF1dGhlbnRpY2F0aW9uQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6ImRjYzUwOWQ0NzFiZGE4ZGY1MGViNGIyMmVmNmFiZDMyNjI2MWQ2NGUyN2U4MWFiOTUwYzRlMTEzNGZlODFlYWYiLCJzZXNzaW9uX3V1aWQiOiI1YmRmZjJjNiIsImlkIjozMTEwOTcyLCJlbWFpbCI6Im1haXRyaXNoMDNAZ21haWwuY29tIiwidXNlcm5hbWUiOiJtYWl0cmlzaDAzIiwidXNlcl9zbHVnIjoibWFpdHJpc2gwMyIsImF2YXRhciI6Imh0dHBzOi8vYXNzZXRzLmxlZXRjb2RlLmNvbS91c2Vycy9tYWl0cmlzaDAzL2F2YXRhcl8xNTkzNzAwNjgyLnBuZyIsInJlZnJlc2hlZF9hdCI6MTc5MzA5NzM5NSwiaXAiOiIxMDMuMjUyLjE2NS4yNTAiLCJpZGVudGl0eSI6IjVkMGRkNDI1MDA4ZDczMjhjZmY5Y2NlNDg5ZmI1NWY3IiwiZGV2aWNlX3dpdGhfaXAiOlsiMWFkY2Q2YWNkNGJjMDljODE3ODk4NjQ4YmEyODY4MGQiLCIxMDMuMjUyLjE2NS4yNTAiXX0.2lW9zV3jKqOo1urtVULzBnR365TTq-P7hkmtTejDkrU",
+  c:"a1ocyUyjIxbTxiK3WpFBzDv3EIzpOtVo"
+};
 
 // ============================================
 // SINGLE SOURCE OF TRUTH: dsa-grind-2026-10-27.json
@@ -654,7 +660,8 @@ async function loadFromAPI() {
     if (res.ok) {
       const data = await res.json();
       ST = mergeDefaults(data);
-      LC = ST.lc || {};
+      // Only override hardcoded cookies if JSON actually has real ones
+      if (ST.lc && ST.lc.s && ST.lc.c) LC = ST.lc;
       // Offline cache (read-only fallback, never written to as primary)
       try { localStorage.setItem(K, JSON.stringify(ST)); } catch(e) {}
       return true;
@@ -667,7 +674,7 @@ async function loadFromAPI() {
     const s = JSON.parse(localStorage.getItem(K) || '{}');
     if (s && s.p) {
       ST = mergeDefaults(s);
-      LC = ST.lc || {};
+      if (s.lc && s.lc.s && s.lc.c) LC = s.lc;
       return true;
     }
   } catch (e) {}
