@@ -1,9 +1,54 @@
 {
-  "p": {},
-  "d": {},
+  "p": {
+    "283": {
+      "id": 283,
+      "h": [
+        {
+          "at": 1793098352629,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} nums\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar moveZeroes = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=0){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    while(k<nums.length){\n        nums[k]=0\n        k++\n    }\n};",
+          "k": "s",
+          "ts": 1791667012000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-27",
+      "code": "/**\n * @param {number[]} nums\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar moveZeroes = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=0){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    while(k<nums.length){\n        nums[k]=0\n        k++\n    }\n};"
+    }
+  },
+  "d": {
+    "2026-10-27": {
+      "n": 0,
+      "r": 0,
+      "s": 0,
+      "ids": [],
+      "f": 0,
+      "qids": []
+    },
+    "2026-10-11": {
+      "n": 0,
+      "r": 0,
+      "s": 0,
+      "ids": [],
+      "f": 0,
+      "qids": [
+        283
+      ]
+    }
+  },
   "c": {
     "nt": 8,
-    "rt": 10
+    "rt": 10,
+    "pf": 25,
+    "pr": 5,
+    "mult": 1.2,
+    "si": 120,
+    "bg": 1,
+    "at": 1
   },
   "bk": "",
   "pi": {
@@ -11,6 +56,14 @@
     "1": 0
   },
   "lc": {
+    "283": {
+      "id": 283,
+      "lang": "JavaScript",
+      "runtime": "0 ms",
+      "ts": 1791667012000,
+      "at": 1793098352625,
+      "code": "/**\n * @param {number[]} nums\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar moveZeroes = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=0){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    while(k<nums.length){\n        nums[k]=0\n        k++\n    }\n};"
+    },
     "s": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfYXV0aF91c2VyX2lkIjoiMzExMDk3MiIsIl9hdXRoX3VzZXJfYmFja2VuZCI6ImFsbGF1dGguYWNjb3VudC5hdXRoX2JhY2tlbmRzLkF1dGhlbnRpY2F0aW9uQmFja2VuZCIsIl9hdXRoX3VzZXJfaGFzaCI6ImRjYzUwOWQ0NzFiZGE4ZGY1MGViNGIyMmVmNmFiZDMyNjI2MWQ2NGUyN2U4MWFiOTUwYzRlMTEzNGZlODFlYWYiLCJzZXNzaW9uX3V1aWQiOiI1YmRmZjJjNiIsImlkIjozMTEwOTcyLCJlbWFpbCI6Im1haXRyaXNoMDNAZ21haWwuY29tIiwidXNlcm5hbWUiOiJtYWl0cmlzaDAzIiwidXNlcl9zbHVnIjoibWFpdHJpc2gwMyIsImF2YXRhciI6Imh0dHBzOi8vYXNzZXRzLmxlZXRjb2RlLmNvbS91c2Vycy9tYWl0cmlzaDAzL2F2YXRhcl8xNTkzNzAwNjgyLnBuZyIsInJlZnJlc2hlZF9hdCI6MTc5MzA5NzM5NSwiaXAiOiIxMDMuMjUyLjE2NS4yNTAiLCJpZGVudGl0eSI6IjVkMGRkNDI1MDA4ZDczMjhjZmY5Y2NlNDg5ZmI1NWY3IiwiZGV2aWNlX3dpdGhfaXAiOlsiMWFkY2Q2YWNkNGJjMDljODE3ODk4NjQ4YmEyODY4MGQiLCIxMDMuMjUyLjE2NS4yNTAiXX0.2lW9zV3jKqOo1urtVULzBnR365TTq-P7hkmtTejDkrU",
     "c": "a1ocyUyjIxbTxiK3WpFBzDv3EIzpOtVo"
   },
