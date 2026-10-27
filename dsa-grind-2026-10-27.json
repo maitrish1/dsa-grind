@@ -649,6 +649,14 @@
       "at": 1793098426431,
       "code": "\n/**\n * @param {string} s\n * @return {string}\n */\nvar longestPalindrome = function(s) {\n    let longest = \"\";\n\n    for (let i = 0; i < s.length; i++) {\n        let odd = expand(s, i, i);\n        let even = expand(s, i, i + 1);\n\n        if (odd.length > longest.length) {\n            longest = odd;\n        }\n\n        if (even.length > longest.length) {\n            longest = even;\n        }\n    }\n\n    function expand(str, left, right) {\n        while (\n            left >= 0 &&\n            right < str.length &&\n            str[left] === str[right]\n        ) {\n            left--;\n            right++;\n        }\n\n        return str.slice(left + 1, right);\n    }\n\n    return longest;\n};\n"
     },
+    "15": {
+      "id": 15,
+      "lang": "JavaScript",
+      "runtime": "580 ms",
+      "ts": 1793003174000,
+      "at": 1793098441991,
+      "code": "/**\n * @param {number[]} nums\n * @return {number[][]}\n */\nvar threeSum = function(nums) {\n    nums.sort((a,b)=>a-b)\n    let res=[]\n    let set=new Set()\n    for(let i=0;i<nums.length;i++){\n        if(i>0 && nums[i]==nums[i-1]) continue\n        let map=new Map()\n        let temp=nums[i]\n        for(let j=i+1;j<nums.length;j++){\n            let diff=0-temp-nums[j]\n            if( map.has(diff)){\n                let k=map.get(diff)\n                if (i !== j && i !== k && j !== k) {\n                    let triplet=[temp,diff,nums[j]]\n                    let key=triplet.sort((a,b)=>a-b).join(',')\n                    if(!set.has(key)){\n                        set.add(key)\n                        res.push(triplet)\n                    }\n                }\n            }\n            map.set(nums[j],j)\n        }\n    }\n    return res\n};"
+    },
     "26": {
       "id": 26,
       "lang": "JavaScript",
