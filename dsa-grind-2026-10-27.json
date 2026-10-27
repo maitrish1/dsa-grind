@@ -304,6 +304,25 @@
       "due": "2026-10-28",
       "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar isSubsequence = function(s, t) {\n    let i=0, j=0, op=false\n    if(s.length>t.length){\n        op=false\n    }\n    else {\n        while(i<=s.length && j<=t.length){\n            if(s.charAt(i)===t.charAt(j)){\n                j++\n                i++\n                op=true\n            }else if(s.charAt(i)!=t.charAt(j) ){\n                j++\n                op=false\n            }\n        }\n    }\n        \n    return op\n};"
     },
+    "532": {
+      "id": 532,
+      "h": [
+        {
+          "at": 1793098440299,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number}\n */\nvar findPairs = function(nums, k) {\n    let map = new Map()\n    let count = 0\n\n    if(k < 0) return 0\n\n    for(let i = 0; i < nums.length; i++){\n        if(!map.has(nums[i])) {\n            map.set(nums[i], 1)\n        }\n        else {\n            map.set(nums[i], map.get(nums[i]) + 1)\n        }\n    }\n\n    for(let [key, value] of map.entries()){\n        if(k === 0 && value > 1) {\n            count++\n        }\n        else if(k > 0 && map.has(key + k)) {\n            count++\n        }\n    }\n\n    return count\n};",
+          "k": "s",
+          "ts": 1792937849000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-29",
+      "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number}\n */\nvar findPairs = function(nums, k) {\n    let map = new Map()\n    let count = 0\n\n    if(k < 0) return 0\n\n    for(let i = 0; i < nums.length; i++){\n        if(!map.has(nums[i])) {\n            map.set(nums[i], 1)\n        }\n        else {\n            map.set(nums[i], map.get(nums[i]) + 1)\n        }\n    }\n\n    for(let [key, value] of map.entries()){\n        if(k === 0 && value > 1) {\n            count++\n        }\n        else if(k > 0 && map.has(key + k)) {\n            count++\n        }\n    }\n\n    return count\n};"
+    },
     "557": {
       "id": 557,
       "h": [
@@ -593,7 +612,8 @@
       "ids": [],
       "f": 0,
       "qids": [
-        167
+        167,
+        532
       ]
     }
   },
@@ -740,6 +760,14 @@
       "ts": 1692623985000,
       "at": 1793098399601,
       "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar isSubsequence = function(s, t) {\n    let i=0, j=0, op=false\n    if(s.length>t.length){\n        op=false\n    }\n    else {\n        while(i<=s.length && j<=t.length){\n            if(s.charAt(i)===t.charAt(j)){\n                j++\n                i++\n                op=true\n            }else if(s.charAt(i)!=t.charAt(j) ){\n                j++\n                op=false\n            }\n        }\n    }\n        \n    return op\n};"
+    },
+    "532": {
+      "id": 532,
+      "lang": "JavaScript",
+      "runtime": "13 ms",
+      "ts": 1792937849000,
+      "at": 1793098440296,
+      "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number}\n */\nvar findPairs = function(nums, k) {\n    let map = new Map()\n    let count = 0\n\n    if(k < 0) return 0\n\n    for(let i = 0; i < nums.length; i++){\n        if(!map.has(nums[i])) {\n            map.set(nums[i], 1)\n        }\n        else {\n            map.set(nums[i], map.get(nums[i]) + 1)\n        }\n    }\n\n    for(let [key, value] of map.entries()){\n        if(k === 0 && value > 1) {\n            count++\n        }\n        else if(k > 0 && map.has(key + k)) {\n            count++\n        }\n    }\n\n    return count\n};"
     },
     "557": {
       "id": 557,
