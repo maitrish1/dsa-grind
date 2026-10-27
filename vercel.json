@@ -14,6 +14,7 @@
     { "src": "/api/data", "methods": ["GET", "PUT", "POST", "OPTIONS"], "dest": "/api/data.js" },
     { "src": "/api/sync", "methods": ["POST", "OPTIONS"], "dest": "/api/sync.js" },
     { "src": "/api/lc", "methods": ["POST", "OPTIONS"], "dest": "/api/lc.js" },
+    { "src": "/api/codolio", "methods": ["GET", "POST", "OPTIONS"], "dest": "/api/codolio.js" },
     { "src": "/sw.js", "dest": "/sw.js" },
     { "src": "/manifest.webmanifest", "dest": "/manifest.webmanifest" },
     { "src": "/chart.umd.min.js", "dest": "/chart.umd.min.js" },
