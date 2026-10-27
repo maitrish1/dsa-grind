@@ -1,5 +1,24 @@
 {
   "p": {
+    "1": {
+      "id": 1,
+      "h": [
+        {
+          "at": 1793098434118,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number[]}\n */\nvar twoSum = function(nums, target) {\n    let map=new Map()\n\n    for(let i=0;i<nums.length;i++){\n        let diff=target-nums[i]\n        if(map.has(diff)){\n            return [i, map.get(diff)]\n        }\n        else map.set(nums[i],i)\n    } \n\n    \n};",
+          "k": "s",
+          "ts": 1791222140000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-29",
+      "code": "/**\n * @param {number[]} nums\n * @param {number} target\n * @return {number[]}\n */\nvar twoSum = function(nums, target) {\n    let map=new Map()\n\n    for(let i=0;i<nums.length;i++){\n        let diff=target-nums[i]\n        if(map.has(diff)){\n            return [i, map.get(diff)]\n        }\n        else map.set(nums[i],i)\n    } \n\n    \n};"
+    },
     "5": {
       "id": 5,
       "h": [
@@ -151,6 +170,25 @@
       "first": "before",
       "due": "2026-10-28",
       "code": "/**\n * @param {string} version1\n * @param {string} version2\n * @return {number}\n */\nvar compareVersion = function(version1, version2) {\n    let split1=version1.split('.')\n    let split2=version2.split('.')\n    let len=Math.max(split1.length, split2.length)\n    let i=0\n    \n    while(i<len){\n        if( ((Number(split1[i]))||0) < ((Number(split2[i]))||0) ){\n            return -1\n        }\n        else if( ((Number(split1[i]))||0) > ((Number(split2[i]))||0) ){\n            return 1\n        }\n        i++\n    }\n    return 0\n};"
+    },
+    "167": {
+      "id": 167,
+      "h": [
+        {
+          "at": 1793098436288,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} numbers\n * @param {number} target\n * @return {number[]}\n */\nvar twoSum = function(numbers, target) {\n    let map=new Map()\n\n    for(let i=0;i<numbers.length;i++){\n        let diff=target-numbers[i]\n        if(map.has(diff)) return [map.get(diff),i+1]\n        else {\n            map.set(numbers[i],i+1)\n        }\n    }\n};",
+          "k": "s",
+          "ts": 1792938892000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-29",
+      "code": "/**\n * @param {number[]} numbers\n * @param {number} target\n * @return {number[]}\n */\nvar twoSum = function(numbers, target) {\n    let map=new Map()\n\n    for(let i=0;i<numbers.length;i++){\n        let diff=target-numbers[i]\n        if(map.has(diff)) return [map.get(diff),i+1]\n        else {\n            map.set(numbers[i],i+1)\n        }\n    }\n};"
     },
     "189": {
       "id": 189,
@@ -537,6 +575,26 @@
         680,
         5
       ]
+    },
+    "2026-10-05": {
+      "n": 0,
+      "r": 0,
+      "s": 0,
+      "ids": [],
+      "f": 0,
+      "qids": [
+        1
+      ]
+    },
+    "2026-10-25": {
+      "n": 0,
+      "r": 0,
+      "s": 0,
+      "ids": [],
+      "f": 0,
+      "qids": [
+        167
+      ]
     }
   },
   "c": {
@@ -626,6 +684,14 @@
       "ts": 1792761040000,
       "at": 1793098410314,
       "code": "/**\n * @param {string} version1\n * @param {string} version2\n * @return {number}\n */\nvar compareVersion = function(version1, version2) {\n    let split1=version1.split('.')\n    let split2=version2.split('.')\n    let len=Math.max(split1.length, split2.length)\n    let i=0\n    \n    while(i<len){\n        if( ((Number(split1[i]))||0) < ((Number(split2[i]))||0) ){\n            return -1\n        }\n        else if( ((Number(split1[i]))||0) > ((Number(split2[i]))||0) ){\n            return 1\n        }\n        i++\n    }\n    return 0\n};"
+    },
+    "167": {
+      "id": 167,
+      "lang": "JavaScript",
+      "runtime": "3 ms",
+      "ts": 1792938892000,
+      "at": 1793098436287,
+      "code": "/**\n * @param {number[]} numbers\n * @param {number} target\n * @return {number[]}\n */\nvar twoSum = function(numbers, target) {\n    let map=new Map()\n\n    for(let i=0;i<numbers.length;i++){\n        let diff=target-numbers[i]\n        if(map.has(diff)) return [map.get(diff),i+1]\n        else {\n            map.set(numbers[i],i+1)\n        }\n    }\n};"
     },
     "189": {
       "id": 189,
