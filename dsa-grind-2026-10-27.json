@@ -1,5 +1,25 @@
 {
-  "p": {},
+  "p": {
+    "283": {
+      "id": 283,
+      "h": [
+        {
+          "at": 1793098365065,
+          "g": "synced",
+          "s": 0,
+          "code": "/**\n * @param {number[]} nums\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar moveZeroes = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=0){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    while(k<nums.length){\n        nums[k]=0\n        k++\n    }\n};",
+          "k": "s",
+          "ts": 1791667012000
+        }
+      ],
+      "b": 0,
+      "old": 1,
+      "fromLc": 1,
+      "first": "before",
+      "due": "2026-10-27",
+      "code": "/**\n * @param {number[]} nums\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar moveZeroes = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=0){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    while(k<nums.length){\n        nums[k]=0\n        k++\n    }\n};"
+    }
+  },
   "d": {
     "2026-10-27": {
       "n": 0,
@@ -8,6 +28,16 @@
       "ids": [],
       "f": 0,
       "qids": []
+    },
+    "2026-10-11": {
+      "n": 0,
+      "r": 0,
+      "s": 0,
+      "ids": [],
+      "f": 0,
+      "qids": [
+        283
+      ]
     }
   },
   "c": {
@@ -26,6 +56,14 @@
     "1": 0
   },
   "lc": {
+    "27": {
+      "id": 27,
+      "lang": "JavaScript",
+      "runtime": "0 ms",
+      "ts": 1791661170000,
+      "at": 1793098367007,
+      "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let i=0, j=nums.length-1\n    while(i<=j){\n        if(nums[i]==val){\n            let temp=nums[i]\n            nums[i]=nums[j]\n            nums[j]=temp\n            j--\n        }\n        else i++\n    }\n    return i\n};"
+    },
     "283": {
       "id": 283,
       "lang": "JavaScript",
