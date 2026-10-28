@@ -1532,9 +1532,9 @@
     ]
   },
   "pom": {
-    "ph": "rest",
-    "st": 1793178511245,
-    "rem": 88,
-    "pa": true
+    "ph": "idle",
+    "st": 0,
+    "rem": 0,
+    "pa": false
   }
 }
