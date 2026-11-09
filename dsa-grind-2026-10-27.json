@@ -1247,7 +1247,7 @@
     "283": {
       "code": "/**\n * @param {number[]} nums\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar moveZeroes = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=0){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    while(k<nums.length){\n        nums[k]=0\n        k++\n    }\n};",
       "note": "",
-      "at": 1794232841045
+      "at": 1794232853327
     },
     "350": {
       "code": "/**\n * @param {number[]} nums1\n * @param {number[]} nums2\n * @return {number[]}\n */\nvar intersect = function(nums1, nums2) {\n    let nums3=[]\n     for(let i=0;i<nums1.length;i++){\n         for(let j=0;j<nums2.length;j++){\n             if(nums1[i]==nums2[j]){\n                 nums3.push(nums1[i])\n                 nums2.splice(j,1)\n                 break\n             }\n         }\n     }\n     return nums3\n};",
