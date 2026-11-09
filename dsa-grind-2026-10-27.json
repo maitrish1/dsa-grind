@@ -401,14 +401,22 @@
           "s": 14,
           "code": "/**\n * @param {number[]} nums\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar moveZeroes = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=0){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    while(k<nums.length){\n        nums[k]=0\n        k++\n    }\n};",
           "k": "r"
+        },
+        {
+          "at": 1794234959013,
+          "g": "easy",
+          "s": 7,
+          "code": "/**\n * @param {number[]} nums\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar moveZeroes = function(nums) {\n    let read=0\n    let write=0\n\n    while(read<nums.length){\n        if(nums[read]!=0){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return nums\n};",
+          "k": "r",
+          "src": "local"
         }
       ],
-      "b": 2,
+      "b": 4,
       "old": 1,
       "first": "before",
-      "due": "2026-10-21",
-      "code": "/**\n * @param {number[]} nums\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar moveZeroes = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=0){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    while(k<nums.length){\n        nums[k]=0\n        k++\n    }\n};",
-      "time": 6
+      "due": "2026-12-09",
+      "code": "/**\n * @param {number[]} nums\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar moveZeroes = function(nums) {\n    let read=0\n    let write=0\n\n    while(read<nums.length){\n        if(nums[read]!=0){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return nums\n};",
+      "time": 13
     },
     "344": {
       "id": 344,
@@ -905,9 +913,13 @@
     },
     "2026-11-09": {
       "n": 0,
-      "r": 0,
-      "s": 6,
+      "r": 1,
+      "s": 13,
       "ids": [
+        {
+          "id": 283,
+          "k": "r"
+        },
         {
           "id": 283,
           "k": "r"
@@ -1251,9 +1263,9 @@
       "at": 1792857709740
     },
     "283": {
-      "code": "/**\n * @param {number[]} nums\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar moveZeroes = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=0){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    while(k<nums.length){\n        nums[k]=0\n        k++\n    }\n};",
+      "code": "/**\n * @param {number[]} nums\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar moveZeroes = function(nums) {\n    let read=0\n    let write=0\n\n    while(read<nums.length){\n        if(nums[read]!=0){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return nums\n};",
       "note": "",
-      "at": 1794232874389
+      "at": 1794234952110
     },
     "350": {
       "code": "/**\n * @param {number[]} nums1\n * @param {number[]} nums2\n * @return {number[]}\n */\nvar intersect = function(nums1, nums2) {\n    let nums3=[]\n     for(let i=0;i<nums1.length;i++){\n         for(let j=0;j<nums2.length;j++){\n             if(nums1[i]==nums2[j]){\n                 nums3.push(nums1[i])\n                 nums2.splice(j,1)\n                 break\n             }\n         }\n     }\n     return nums3\n};",
