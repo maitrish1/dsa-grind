@@ -126,15 +126,23 @@
           "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let read=0\n    let write=0\n    while(read<nums.length){\n        if(nums[read]!=val){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};",
           "k": "r",
           "src": "local"
+        },
+        {
+          "at": 1794236327787,
+          "g": "easy",
+          "s": 4,
+          "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let read=0\n    let write=0\n    while(read<nums.length){\n        if(nums[read]!=val){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};",
+          "k": "r",
+          "src": "local"
         }
       ],
-      "b": 0,
+      "b": 2,
       "old": 1,
       "fromLc": 1,
       "first": "before",
-      "due": "2026-10-16",
+      "due": "2026-11-16",
       "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let read=0\n    let write=0\n    while(read<nums.length){\n        if(nums[read]!=val){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};",
-      "time": 155
+      "time": 159
     },
     "42": {
       "id": 42,
@@ -931,8 +939,8 @@
     },
     "2026-11-09": {
       "n": 0,
-      "r": 1,
-      "s": 168,
+      "r": 2,
+      "s": 172,
       "ids": [
         {
           "id": 283,
@@ -940,6 +948,10 @@
         },
         {
           "id": 283,
+          "k": "r"
+        },
+        {
+          "id": 27,
           "k": "r"
         },
         {
