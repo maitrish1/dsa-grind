@@ -90,6 +90,15 @@
           "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=nums[i+1]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};",
           "k": "s",
           "ts": 1791668568000
+        },
+        {
+          "at": 1794238218673,
+          "g": "synced",
+          "s": 1397,
+          "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let read=0\n    let write=0\n\n    while(read<nums.length){\n        if(nums[read]!=nums[read+1]){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};",
+          "k": "s",
+          "ts": 1794238158000,
+          "src": "lc"
         }
       ],
       "b": 0,
@@ -97,7 +106,8 @@
       "fromLc": 1,
       "first": "before",
       "due": "2026-10-16",
-      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=nums[i+1]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};"
+      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let read=0\n    let write=0\n\n    while(read<nums.length){\n        if(nums[read]!=nums[read+1]){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};",
+      "time": 1397
     },
     "27": {
       "id": 27,
@@ -940,7 +950,7 @@
     "2026-11-09": {
       "n": 0,
       "r": 2,
-      "s": 172,
+      "s": 1569,
       "ids": [
         {
           "id": 283,
@@ -960,6 +970,10 @@
         },
         {
           "id": 27,
+          "k": "r"
+        },
+        {
+          "id": 26,
           "k": "r"
         }
       ],
@@ -1018,10 +1032,10 @@
     "26": {
       "id": 26,
       "lang": "JavaScript",
-      "runtime": "0 ms",
-      "ts": 1791668568000,
-      "at": 1793098369146,
-      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=nums[i+1]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};"
+      "runtime": "2 ms",
+      "ts": 1794238158000,
+      "at": 1794238218673,
+      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let read=0\n    let write=0\n\n    while(read<nums.length){\n        if(nums[read]!=nums[read+1]){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};"
     },
     "27": {
       "id": 27,
@@ -1286,9 +1300,9 @@
       "at": 1792862176139
     },
     "26": {
-      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(nums[i]!=nums[i+1]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};",
+      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let read=0\n    let write=0\n\n    while(read<nums.length){\n        if(nums[read]!=nums[read+1]){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};",
       "note": "",
-      "at": 1794236817843
+      "at": 1794238219091
     },
     "48": {
       "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar rotate = function(nums, k) {\n    k=k%nums.length\n    let i=0\n    let j=nums.length-1\n\n    reverse(nums,0,nums.length-k-1)\n    reverse(nums,nums.length-k, nums.length-1)\n    reverse(nums,0,nums.length-1)\n    function reverse(arr,x,y){\n        while(x<y){\n            [arr[x],arr[y]]=[arr[y],arr[x]]\n            x++\n            y--\n        }\n        return arr\n    }\n};",
@@ -2241,6 +2255,92 @@
         "statusDisplay": "Time Limit Exceeded",
         "lang": "JavaScript",
         "timestamp": "1793002755",
+        "runtime": "N/A"
+      }
+    ],
+    "26": [
+      {
+        "id": "2192573947",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1794238158",
+        "runtime": "2 ms"
+      },
+      {
+        "id": "2168657277",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1791668568",
+        "runtime": "0 ms"
+      },
+      {
+        "id": "2163955308",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1791270300",
+        "runtime": "56 ms"
+      },
+      {
+        "id": "1023783790",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1692262231",
+        "runtime": "64 ms"
+      },
+      {
+        "id": "1020265320",
+        "statusDisplay": "Wrong Answer",
+        "lang": "JavaScript",
+        "timestamp": "1691936414",
+        "runtime": "N/A"
+      },
+      {
+        "id": "889785747",
+        "statusDisplay": "Wrong Answer",
+        "lang": "JavaScript",
+        "timestamp": "1675306659",
+        "runtime": "N/A"
+      },
+      {
+        "id": "889785637",
+        "statusDisplay": "Wrong Answer",
+        "lang": "JavaScript",
+        "timestamp": "1675306641",
+        "runtime": "N/A"
+      },
+      {
+        "id": "889785596",
+        "statusDisplay": "Wrong Answer",
+        "lang": "JavaScript",
+        "timestamp": "1675306633",
+        "runtime": "N/A"
+      },
+      {
+        "id": "889767701",
+        "statusDisplay": "Wrong Answer",
+        "lang": "JavaScript",
+        "timestamp": "1675303652",
+        "runtime": "N/A"
+      },
+      {
+        "id": "889520773",
+        "statusDisplay": "Wrong Answer",
+        "lang": "JavaScript",
+        "timestamp": "1675269952",
+        "runtime": "N/A"
+      },
+      {
+        "id": "889518836",
+        "statusDisplay": "Wrong Answer",
+        "lang": "JavaScript",
+        "timestamp": "1675269762",
+        "runtime": "N/A"
+      },
+      {
+        "id": "889518185",
+        "statusDisplay": "Wrong Answer",
+        "lang": "JavaScript",
+        "timestamp": "1675269701",
         "runtime": "N/A"
       }
     ],
