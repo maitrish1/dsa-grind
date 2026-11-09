@@ -243,6 +243,14 @@
           "k": "s",
           "ts": 1794240158000,
           "src": "lc"
+        },
+        {
+          "at": 1794240220482,
+          "g": "local",
+          "s": 2,
+          "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let read=0\n    let write=0\n    while(read<nums.length){\n        if(nums[read]!=nums[read+2]){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};",
+          "k": "r",
+          "src": "local"
         }
       ],
       "b": 0,
@@ -250,7 +258,8 @@
       "fromLc": 1,
       "first": "before",
       "due": "2026-10-16",
-      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let read=0\n    let write=0\n    while(read<nums.length){\n        if(nums[read]!=nums[read+2]){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};"
+      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let read=0\n    let write=0\n    while(read<nums.length){\n        if(nums[read]!=nums[read+2]){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};",
+      "time": 1863
     },
     "88": {
       "id": 88,
@@ -975,7 +984,7 @@
     "2026-11-09": {
       "n": 0,
       "r": 3,
-      "s": 1576,
+      "s": 3439,
       "ids": [
         {
           "id": 283,
@@ -1007,6 +1016,14 @@
         },
         {
           "id": 26,
+          "k": "r"
+        },
+        {
+          "id": 80,
+          "k": "r"
+        },
+        {
+          "id": 80,
           "k": "r"
         }
       ],
