@@ -109,6 +109,15 @@
           "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let i=0, j=nums.length-1\n    while(i<=j){\n        if(nums[i]==val){\n            let temp=nums[i]\n            nums[i]=nums[j]\n            nums[j]=temp\n            j--\n        }\n        else i++\n    }\n    return i\n};",
           "k": "s",
           "ts": 1791661170000
+        },
+        {
+          "at": 1794236319033,
+          "g": "synced",
+          "s": 150,
+          "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let read=0\n    let write=0\n    while(read<nums.length){\n        if(nums[read]!=val){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};",
+          "k": "s",
+          "ts": 1794236281000,
+          "src": "lc"
         }
       ],
       "b": 0,
@@ -116,7 +125,7 @@
       "fromLc": 1,
       "first": "before",
       "due": "2026-10-16",
-      "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let i=0, j=nums.length-1\n    while(i<=j){\n        if(nums[i]==val){\n            let temp=nums[i]\n            nums[i]=nums[j]\n            nums[j]=temp\n            j--\n        }\n        else i++\n    }\n    return i\n};"
+      "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let read=0\n    let write=0\n    while(read<nums.length){\n        if(nums[read]!=val){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};"
     },
     "42": {
       "id": 42,
@@ -989,9 +998,9 @@
       "id": 27,
       "lang": "JavaScript",
       "runtime": "0 ms",
-      "ts": 1791661170000,
-      "at": 1793098367007,
-      "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let i=0, j=nums.length-1\n    while(i<=j){\n        if(nums[i]==val){\n            let temp=nums[i]\n            nums[i]=nums[j]\n            nums[j]=temp\n            j--\n        }\n        else i++\n    }\n    return i\n};"
+      "ts": 1794236281000,
+      "at": 1794236319033,
+      "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let read=0\n    let write=0\n    while(read<nums.length){\n        if(nums[read]!=val){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};"
     },
     "42": {
       "id": 42,
@@ -2194,6 +2203,43 @@
         "lang": "JavaScript",
         "timestamp": "1793002755",
         "runtime": "N/A"
+      }
+    ],
+    "27": [
+      {
+        "id": "2192554837",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1794236281",
+        "runtime": "0 ms"
+      },
+      {
+        "id": "2168600613",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1791661169",
+        "runtime": "0 ms"
+      },
+      {
+        "id": "2168562429",
+        "statusDisplay": "Wrong Answer",
+        "lang": "JavaScript",
+        "timestamp": "1791657849",
+        "runtime": "N/A"
+      },
+      {
+        "id": "2168560410",
+        "statusDisplay": "Wrong Answer",
+        "lang": "JavaScript",
+        "timestamp": "1791657697",
+        "runtime": "N/A"
+      },
+      {
+        "id": "1193525617",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1709552034",
+        "runtime": "47 ms"
       }
     ],
     "167": [
