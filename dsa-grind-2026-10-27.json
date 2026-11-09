@@ -1247,6 +1247,11 @@
       "note": "",
       "at": 1792862176139
     },
+    "27": {
+      "code": "/**\n * @param {number[]} nums\n * @param {number} val\n * @return {number}\n */\nvar removeElement = function(nums, val) {\n    let i=0, j=nums.length-1\n    while(i<=j){\n        if(nums[i]==val){\n            let temp=nums[i]\n            nums[i]=nums[j]\n            nums[j]=temp\n            j--\n        }\n        else i++\n    }\n    return i\n};",
+      "note": "",
+      "at": 1794236151901
+    },
     "48": {
       "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar rotate = function(nums, k) {\n    k=k%nums.length\n    let i=0\n    let j=nums.length-1\n\n    reverse(nums,0,nums.length-k-1)\n    reverse(nums,nums.length-k, nums.length-1)\n    reverse(nums,0,nums.length-1)\n    function reverse(arr,x,y){\n        while(x<y){\n            [arr[x],arr[y]]=[arr[y],arr[x]]\n            x++\n            y--\n        }\n        return arr\n    }\n};",
       "note": "",
