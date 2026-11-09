@@ -99,6 +99,14 @@
           "k": "s",
           "ts": 1794238158000,
           "src": "lc"
+        },
+        {
+          "at": 1794238222579,
+          "g": "local",
+          "s": 4,
+          "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let read=0\n    let write=0\n\n    while(read<nums.length){\n        if(nums[read]!=nums[read+1]){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};",
+          "k": "r",
+          "src": "local"
         }
       ],
       "b": 0,
@@ -107,7 +115,7 @@
       "first": "before",
       "due": "2026-10-16",
       "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let read=0\n    let write=0\n\n    while(read<nums.length){\n        if(nums[read]!=nums[read+1]){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};",
-      "time": 1397
+      "time": 1401
     },
     "27": {
       "id": 27,
@@ -950,7 +958,7 @@
     "2026-11-09": {
       "n": 0,
       "r": 2,
-      "s": 1569,
+      "s": 1573,
       "ids": [
         {
           "id": 283,
@@ -970,6 +978,10 @@
         },
         {
           "id": 27,
+          "k": "r"
+        },
+        {
+          "id": 26,
           "k": "r"
         },
         {
@@ -1298,11 +1310,6 @@
       "code": "/**\n * @param {string} s\n * @return {number}\n */\nvar lengthOfLongestSubstring = function(s) {\n    let map = new Map();\n    let maxConsecutiveLength = 0;\n    let left = 0;\n\n    for (let right = 0; right < s.length; right++) {\n        if (map.has(s[right])) {\n            left = Math.max(map.get(s[right]), left);\n        }\n        maxConsecutiveLength = Math.max(maxConsecutiveLength, right - left + 1);\n        map.set(s[right], right + 1);\n    }\n\n    return maxConsecutiveLength;\n};\n",
       "note": "",
       "at": 1792862176139
-    },
-    "26": {
-      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let read=0\n    let write=0\n\n    while(read<nums.length){\n        if(nums[read]!=nums[read+1]){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};",
-      "note": "",
-      "at": 1794238219091
     },
     "48": {
       "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar rotate = function(nums, k) {\n    k=k%nums.length\n    let i=0\n    let j=nums.length-1\n\n    reverse(nums,0,nums.length-k-1)\n    reverse(nums,nums.length-k, nums.length-1)\n    reverse(nums,0,nums.length-1)\n    function reverse(arr,x,y){\n        while(x<y){\n            [arr[x],arr[y]]=[arr[y],arr[x]]\n            x++\n            y--\n        }\n        return arr\n    }\n};",
