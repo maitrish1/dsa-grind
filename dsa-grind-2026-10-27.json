@@ -234,6 +234,15 @@
           "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(k<2 || nums[i]!=nums[k-2]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};",
           "k": "s",
           "ts": 1791792107000
+        },
+        {
+          "at": 1794240218553,
+          "g": "synced",
+          "s": 1861,
+          "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let read=0\n    let write=0\n    while(read<nums.length){\n        if(nums[read]!=nums[read+2]){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};",
+          "k": "s",
+          "ts": 1794240158000,
+          "src": "lc"
         }
       ],
       "b": 0,
@@ -241,7 +250,7 @@
       "fromLc": 1,
       "first": "before",
       "due": "2026-10-16",
-      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(k<2 || nums[i]!=nums[k-2]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};"
+      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let read=0\n    let write=0\n    while(read<nums.length){\n        if(nums[read]!=nums[read+2]){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};"
     },
     "88": {
       "id": 88,
@@ -1088,10 +1097,10 @@
     "80": {
       "id": 80,
       "lang": "JavaScript",
-      "runtime": "45 ms",
-      "ts": 1791792107000,
-      "at": 1793098370838,
-      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let k=0\n    for(let i=0;i<nums.length;i++){\n        if(k<2 || nums[i]!=nums[k-2]){\n            nums[k]=nums[i]\n            k++\n        }\n    }\n    return k\n};"
+      "runtime": "56 ms",
+      "ts": 1794240158000,
+      "at": 1794240218553,
+      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let read=0\n    let write=0\n    while(read<nums.length){\n        if(nums[read]!=nums[read+2]){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};"
     },
     "88": {
       "id": 88,
@@ -2408,6 +2417,57 @@
         "lang": "JavaScript",
         "timestamp": "1709552034",
         "runtime": "47 ms"
+      }
+    ],
+    "80": [
+      {
+        "id": "2192595801",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1794240158",
+        "runtime": "56 ms"
+      },
+      {
+        "id": "2169981724",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1791792106",
+        "runtime": "45 ms"
+      },
+      {
+        "id": "1061178678",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1695884644",
+        "runtime": "54 ms"
+      },
+      {
+        "id": "1061178550",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1695884633",
+        "runtime": "54 ms"
+      },
+      {
+        "id": "1059398704",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1695707238",
+        "runtime": "68 ms"
+      },
+      {
+        "id": "1059398511",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1695707218",
+        "runtime": "63 ms"
+      },
+      {
+        "id": "1059398393",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1695707207",
+        "runtime": "61 ms"
       }
     ],
     "167": [
