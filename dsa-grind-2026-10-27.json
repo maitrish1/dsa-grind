@@ -1462,6 +1462,11 @@
       "note": "",
       "at": 1792159578572
     },
+    "80": {
+      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let read=0\n    let write=0\n    while(read<nums.length){\n        if(nums[read]!=nums[read+2]){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};",
+      "note": "",
+      "at": 1794338085702
+    },
     "167": {
       "code": "/**\n * @param {number[]} numbers\n * @param {number} target\n * @return {number[]}\n */\nvar twoSum = function(numbers, target) {\n    let map=new Map()\n    for(let i=0;i<numbers.length;i++){\n        let diff=target-numbers[i]\n        if(map.has(diff)) return [map.get(diff),i+1]\n        else {\n            map.set(numbers[i],i+1)\n        }\n    }\n};",
       "note": "Same as Two Sum, just when adding elements to map, add i+1 instead of i.",
