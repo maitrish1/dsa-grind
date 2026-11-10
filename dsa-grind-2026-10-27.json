@@ -1047,7 +1047,7 @@
       "r": 0,
       "s": 0,
       "ids": [],
-      "f": 10500,
+      "f": 7500,
       "qids": []
     }
   },
@@ -1368,6 +1368,11 @@
       "code": "/**\n * @param {string} s\n * @return {number}\n */\nvar lengthOfLongestSubstring = function(s) {\n    let map = new Map();\n    let maxConsecutiveLength = 0;\n    let left = 0;\n\n    for (let right = 0; right < s.length; right++) {\n        if (map.has(s[right])) {\n            left = Math.max(map.get(s[right]), left);\n        }\n        maxConsecutiveLength = Math.max(maxConsecutiveLength, right - left + 1);\n        map.set(s[right], right + 1);\n    }\n\n    return maxConsecutiveLength;\n};\n",
       "note": "",
       "at": 1792862176139
+    },
+    "26": {
+      "code": "/**\n * @param {number[]} nums\n * @return {number}\n */\nvar removeDuplicates = function(nums) {\n    let read=0\n    let write=0\n\n    while(read<nums.length){\n        if(nums[read]!=nums[read+1]){\n            let temp=nums[write]\n            nums[write]=nums[read]\n            nums[read]=temp\n            write++\n        }\n        read++\n    }\n    return write\n};",
+      "note": "",
+      "at": 1794299012329
     },
     "48": {
       "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {void} Do not return anything, modify nums in-place instead.\n */\nvar rotate = function(nums, k) {\n    k=k%nums.length\n    let i=0\n    let j=nums.length-1\n\n    reverse(nums,0,nums.length-k-1)\n    reverse(nums,nums.length-k, nums.length-1)\n    reverse(nums,0,nums.length-1)\n    function reverse(arr,x,y){\n        while(x<y){\n            [arr[x],arr[y]]=[arr[y],arr[x]]\n            x++\n            y--\n        }\n        return arr\n    }\n};",
@@ -2326,16 +2331,6 @@
       "at": 1794298737406,
       "ph": "focus",
       "du": 1500
-    },
-    {
-      "at": 1794298752264,
-      "ph": "focus",
-      "du": 1500
-    },
-    {
-      "at": 1794298763747,
-      "ph": "focus",
-      "du": 1500
     }
   ],
   "lock": {
@@ -2802,7 +2797,7 @@
   },
   "pom": {
     "ph": "rest",
-    "st": 1794298763758,
+    "st": 1794298737446,
     "rem": 0,
     "pa": false
   }
