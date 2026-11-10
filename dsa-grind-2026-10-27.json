@@ -599,12 +599,21 @@
           "code": "/**\n * @param {character[]} chars\n * @return {number}\n */\nvar compress = function(chars) {\n    let read=0\n    let write=0\n    let start=0\n    while(read<chars.length){\n        if(chars[read]==chars[read+1]){\n            read++\n        }\n        else if(chars[read]!=chars[read+1]){\n            let count=read-start+1\n            chars[write]=chars[start]\n            write++\n            if(count > 1) {\n            let digits = count.toString();\n\n            for(let i = 0; i < digits.length; i++) {\n                chars[write] = digits[i];\n                write++;\n            }\n        }\n            start=read+1\n            read++\n        }\n    }\n    return write\n};",
           "k": "n",
           "src": "local"
+        },
+        {
+          "at": 1794306273955,
+          "g": "hard",
+          "s": 29,
+          "code": "/**\n * @param {character[]} chars\n * @return {number}\n */\nvar compress = function(chars) {\n    let read=0\n    let write=0\n    let start=0\n    while(read<chars.length){\n        if(chars[read]==chars[read+1]){\n            read++\n        }\n        else if(chars[read]!=chars[read+1]){\n            let count=read-start+1\n            chars[write]=chars[start]\n            write++\n            if(count > 1) {\n            let digits = count.toString();\n\n            for(let i = 0; i < digits.length; i++) {\n                chars[write] = digits[i];\n                write++;\n            }\n        }\n            start=read+1\n            read++\n        }\n    }\n    return write\n};",
+          "k": "r",
+          "src": "local"
         }
       ],
       "b": 0,
       "first": "2026-11-10",
       "code": "/**\n * @param {character[]} chars\n * @return {number}\n */\nvar compress = function(chars) {\n    let read=0\n    let write=0\n    let start=0\n    while(read<chars.length){\n        if(chars[read]==chars[read+1]){\n            read++\n        }\n        else if(chars[read]!=chars[read+1]){\n            let count=read-start+1\n            chars[write]=chars[start]\n            write++\n            if(count > 1) {\n            let digits = count.toString();\n\n            for(let i = 0; i < digits.length; i++) {\n                chars[write] = digits[i];\n                write++;\n            }\n        }\n            start=read+1\n            read++\n        }\n    }\n    return write\n};",
-      "time": 5
+      "time": 34,
+      "due": "2026-11-12"
     },
     "532": {
       "id": 532,
@@ -1061,12 +1070,16 @@
     },
     "2026-11-10": {
       "n": 0,
-      "r": 0,
-      "s": 5,
+      "r": 1,
+      "s": 34,
       "ids": [
         {
           "id": 443,
           "k": "n"
+        },
+        {
+          "id": 443,
+          "k": "r"
         }
       ],
       "f": 10500,
