@@ -589,6 +589,23 @@
       "due": "2026-11-01",
       "code": "/**\n * @param {string} s\n * @param {string} p\n * @return {number[]}\n */\nvar findAnagrams = function(s, p) {\n    let res = [];\n    let map = new Map();\n\n    for (let c of p) map.set(c, (map.get(c) || 0) + 1);\n\n    let i = 0, j = 0, count = p.length;\n\n    while (j < s.length) {\n        if (map.has(s[j]) && map.get(s[j]) > 0) count--;\n        map.set(s[j], (map.get(s[j]) || 0) - 1);\n        j++;\n\n        if (j - i === p.length) {\n            if (count === 0) res.push(i);\n            if (map.has(s[i]) && map.get(s[i]) >= 0) count++;\n            map.set(s[i], (map.get(s[i]) || 0) + 1);\n            i++;\n        }\n    }\n\n    return res;\n};"
     },
+    "443": {
+      "id": 443,
+      "h": [
+        {
+          "at": 1794306244580,
+          "g": "local",
+          "s": 5,
+          "code": "/**\n * @param {character[]} chars\n * @return {number}\n */\nvar compress = function(chars) {\n    let read=0\n    let write=0\n    let start=0\n    while(read<chars.length){\n        if(chars[read]==chars[read+1]){\n            read++\n        }\n        else if(chars[read]!=chars[read+1]){\n            let count=read-start+1\n            chars[write]=chars[start]\n            write++\n            if(count > 1) {\n            let digits = count.toString();\n\n            for(let i = 0; i < digits.length; i++) {\n                chars[write] = digits[i];\n                write++;\n            }\n        }\n            start=read+1\n            read++\n        }\n    }\n    return write\n};",
+          "k": "n",
+          "src": "local"
+        }
+      ],
+      "b": 0,
+      "first": "2026-11-10",
+      "code": "/**\n * @param {character[]} chars\n * @return {number}\n */\nvar compress = function(chars) {\n    let read=0\n    let write=0\n    let start=0\n    while(read<chars.length){\n        if(chars[read]==chars[read+1]){\n            read++\n        }\n        else if(chars[read]!=chars[read+1]){\n            let count=read-start+1\n            chars[write]=chars[start]\n            write++\n            if(count > 1) {\n            let digits = count.toString();\n\n            for(let i = 0; i < digits.length; i++) {\n                chars[write] = digits[i];\n                write++;\n            }\n        }\n            start=read+1\n            read++\n        }\n    }\n    return write\n};",
+      "time": 5
+    },
     "532": {
       "id": 532,
       "h": [
@@ -1045,8 +1062,13 @@
     "2026-11-10": {
       "n": 0,
       "r": 0,
-      "s": 0,
-      "ids": [],
+      "s": 5,
+      "ids": [
+        {
+          "id": 443,
+          "k": "n"
+        }
+      ],
       "f": 10500,
       "qids": [
         443
