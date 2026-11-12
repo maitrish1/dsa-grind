@@ -695,15 +695,23 @@
           "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let count=0\n    s=s.split(' ')\n    let start=0\n    let end=s[0].length-1\n    \n    while(count<s.length){\n        let arr=s[count].split('')\n        while(start<end){\n            let temp=arr[start]\n            arr[start]=arr[end]\n            arr[end]=temp\n            start++\n            end--\n        }\n            s[count]=arr.join('')\n            start=0\n            count++\n            if (count < s.length) {\n                end = s[count].length - 1\n            }\n        \n    }\n    return s.join(' ')\n};",
           "k": "r",
           "src": "local"
+        },
+        {
+          "at": 1794472870860,
+          "g": "ok",
+          "s": 1,
+          "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let count=0\n    s=s.split(' ')\n    let start=0\n    let end=s[0].length-1\n    \n    while(count<s.length){\n        let arr=s[count].split('')\n        while(start<end){\n            let temp=arr[start]\n            arr[start]=arr[end]\n            arr[end]=temp\n            start++\n            end--\n        }\n            s[count]=arr.join('')\n            start=0\n            count++\n            if (count < s.length) {\n                end = s[count].length - 1\n            }\n        \n    }\n    return s.join(' ')\n};",
+          "k": "r",
+          "src": "local"
         }
       ],
-      "b": 0,
+      "b": 1,
       "old": 1,
       "fromLc": 1,
       "first": "before",
-      "due": "2026-10-16",
+      "due": "2026-11-15",
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let count=0\n    s=s.split(' ')\n    let start=0\n    let end=s[0].length-1\n    \n    while(count<s.length){\n        let arr=s[count].split('')\n        while(start<end){\n            let temp=arr[start]\n            arr[start]=arr[end]\n            arr[end]=temp\n            start++\n            end--\n        }\n            s[count]=arr.join('')\n            start=0\n            count++\n            if (count < s.length) {\n                end = s[count].length - 1\n            }\n        \n    }\n    return s.join(' ')\n};",
-      "time": 4488
+      "time": 4489
     },
     "643": {
       "id": 643,
@@ -1203,8 +1211,8 @@
     },
     "2026-11-12": {
       "n": 0,
-      "r": 3,
-      "s": 4739,
+      "r": 4,
+      "s": 4740,
       "ids": [
         {
           "id": 344,
@@ -1224,6 +1232,10 @@
         },
         {
           "id": 345,
+          "k": "r"
+        },
+        {
+          "id": 557,
           "k": "r"
         },
         {
