@@ -1214,6 +1214,16 @@
         917,
         345
       ]
+    },
+    "2026-10-13": {
+      "n": 0,
+      "r": 0,
+      "s": 0,
+      "ids": [],
+      "f": 0,
+      "qids": [
+        557
+      ]
     }
   },
   "c": {
@@ -1239,6 +1249,14 @@
       "ts": 1794466959000,
       "at": 1794466982618,
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let start=0\n    let end=s.length-1\n\n    while(start<end){\n        if(/[aeiou]/i.test(s[start]) && /[aeiou]/i.test(s[end])){\n            let temp=s[start]\n            s[start]=s[end]\n            s[end]=temp\n            start++\n            end--\n        }\n        else if(!/[aeiou]/i.test(s[start])){\n            start++\n        }\n        else if(!/[aeiou]/i.test(s[end])){\n            end--\n        }\n    }\n    return s.join('')\n};"
+    },
+    "557": {
+      "id": 557,
+      "lang": "JavaScript",
+      "runtime": "13 ms",
+      "ts": 1791874648000,
+      "at": 1794472669454,
+      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};"
     },
     "917": {
       "id": 917,
