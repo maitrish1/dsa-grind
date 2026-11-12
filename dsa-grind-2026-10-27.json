@@ -540,6 +540,15 @@
           "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let i=0, j=s.length-1\n    while(i<=j){\n        if(/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            [s[i],s[j]]=[s[j],s[i]]\n            i++\n            j--\n        }\n        else if(/^[aeiou]$/i.test(s[i]) && !/^[aeiou]$/i.test(s[j])){\n            j--\n        }\n        else if(!/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            i++\n        }\n        else {\n            i++\n            j--\n        }\n    }\n  s=s.join('')\n  return s\n};",
           "k": "s",
           "ts": 1791870547000
+        },
+        {
+          "at": 1794466982619,
+          "g": "synced",
+          "s": 14,
+          "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let start=0\n    let end=s.length-1\n\n    while(start<end){\n        if(/[aeiou]/i.test(s[start]) && /[aeiou]/i.test(s[end])){\n            let temp=s[start]\n            s[start]=s[end]\n            s[end]=temp\n            start++\n            end--\n        }\n        else if(!/[aeiou]/i.test(s[start])){\n            start++\n        }\n        else if(!/[aeiou]/i.test(s[end])){\n            end--\n        }\n    }\n    return s.join('')\n};",
+          "k": "s",
+          "ts": 1794466959000,
+          "src": "lc"
         }
       ],
       "b": 0,
@@ -547,7 +556,7 @@
       "fromLc": 1,
       "first": "before",
       "due": "2026-10-16",
-      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let i=0, j=s.length-1\n    while(i<=j){\n        if(/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            [s[i],s[j]]=[s[j],s[i]]\n            i++\n            j--\n        }\n        else if(/^[aeiou]$/i.test(s[i]) && !/^[aeiou]$/i.test(s[j])){\n            j--\n        }\n        else if(!/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            i++\n        }\n        else {\n            i++\n            j--\n        }\n    }\n  s=s.join('')\n  return s\n};"
+      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let start=0\n    let end=s.length-1\n\n    while(start<end){\n        if(/[aeiou]/i.test(s[start]) && /[aeiou]/i.test(s[end])){\n            let temp=s[start]\n            s[start]=s[end]\n            s[end]=temp\n            start++\n            end--\n        }\n        else if(!/[aeiou]/i.test(s[start])){\n            start++\n        }\n        else if(!/[aeiou]/i.test(s[end])){\n            end--\n        }\n    }\n    return s.join('')\n};"
     },
     "350": {
       "id": 350,
@@ -1185,7 +1194,8 @@
       ],
       "f": 3000,
       "qids": [
-        917
+        917,
+        345
       ]
     }
   },
@@ -1205,6 +1215,14 @@
     "1": 0
   },
   "lc": {
+    "345": {
+      "id": 345,
+      "lang": "JavaScript",
+      "runtime": "12 ms",
+      "ts": 1794466959000,
+      "at": 1794466982618,
+      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let start=0\n    let end=s.length-1\n\n    while(start<end){\n        if(/[aeiou]/i.test(s[start]) && /[aeiou]/i.test(s[end])){\n            let temp=s[start]\n            s[start]=s[end]\n            s[end]=temp\n            start++\n            end--\n        }\n        else if(!/[aeiou]/i.test(s[start])){\n            start++\n        }\n        else if(!/[aeiou]/i.test(s[end])){\n            end--\n        }\n    }\n    return s.join('')\n};"
+    },
     "917": {
       "id": 917,
       "lang": "JavaScript",
@@ -2762,6 +2780,64 @@
         "lang": "JavaScript",
         "timestamp": "1692127649",
         "runtime": "N/A"
+      }
+    ],
+    "345": [
+      {
+        "id": "2194416989",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1794466958",
+        "runtime": "12 ms"
+      },
+      {
+        "id": "2170858085",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1791870546",
+        "runtime": "7 ms"
+      },
+      {
+        "id": "2170857924",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1791870537",
+        "runtime": "16 ms"
+      },
+      {
+        "id": "2170857758",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1791870525",
+        "runtime": "11 ms"
+      },
+      {
+        "id": "2170857563",
+        "statusDisplay": "Runtime Error",
+        "lang": "JavaScript",
+        "timestamp": "1791870513",
+        "runtime": "N/A"
+      },
+      {
+        "id": "2170856478",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1791870444",
+        "runtime": "12 ms"
+      },
+      {
+        "id": "2170855854",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1791870403",
+        "runtime": "16 ms"
+      },
+      {
+        "id": "1025841092",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1692458012",
+        "runtime": "65 ms"
       }
     ],
     "443": [
