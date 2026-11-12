@@ -549,14 +549,23 @@
           "k": "s",
           "ts": 1794466959000,
           "src": "lc"
+        },
+        {
+          "at": 1794466987517,
+          "g": "easy",
+          "s": 5,
+          "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let start=0\n    let end=s.length-1\n\n    while(start<end){\n        if(/[aeiou]/i.test(s[start]) && /[aeiou]/i.test(s[end])){\n            let temp=s[start]\n            s[start]=s[end]\n            s[end]=temp\n            start++\n            end--\n        }\n        else if(!/[aeiou]/i.test(s[start])){\n            start++\n        }\n        else if(!/[aeiou]/i.test(s[end])){\n            end--\n        }\n    }\n    return s.join('')\n};",
+          "k": "r",
+          "src": "local"
         }
       ],
-      "b": 0,
+      "b": 2,
       "old": 1,
       "fromLc": 1,
       "first": "before",
-      "due": "2026-10-16",
-      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let start=0\n    let end=s.length-1\n\n    while(start<end){\n        if(/[aeiou]/i.test(s[start]) && /[aeiou]/i.test(s[end])){\n            let temp=s[start]\n            s[start]=s[end]\n            s[end]=temp\n            start++\n            end--\n        }\n        else if(!/[aeiou]/i.test(s[start])){\n            start++\n        }\n        else if(!/[aeiou]/i.test(s[end])){\n            end--\n        }\n    }\n    return s.join('')\n};"
+      "due": "2026-11-19",
+      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let start=0\n    let end=s.length-1\n\n    while(start<end){\n        if(/[aeiou]/i.test(s[start]) && /[aeiou]/i.test(s[end])){\n            let temp=s[start]\n            s[start]=s[end]\n            s[end]=temp\n            start++\n            end--\n        }\n        else if(!/[aeiou]/i.test(s[start])){\n            start++\n        }\n        else if(!/[aeiou]/i.test(s[end])){\n            end--\n        }\n    }\n    return s.join('')\n};",
+      "time": 19
     },
     "350": {
       "id": 350,
@@ -1176,8 +1185,8 @@
     },
     "2026-11-12": {
       "n": 0,
-      "r": 2,
-      "s": 232,
+      "r": 3,
+      "s": 251,
       "ids": [
         {
           "id": 344,
@@ -1189,6 +1198,14 @@
         },
         {
           "id": 917,
+          "k": "r"
+        },
+        {
+          "id": 345,
+          "k": "r"
+        },
+        {
+          "id": 345,
           "k": "r"
         }
       ],
@@ -1281,9 +1298,9 @@
       "at": 1794236167572
     },
     "345": {
-      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let i=0, j=s.length-1\n    while(i<=j){\n        if(/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            [s[i],s[j]]=[s[j],s[i]]\n            i++\n            j--\n        }\n        else if(/^[aeiou]$/i.test(s[i]) && !/^[aeiou]$/i.test(s[j])){\n            j--\n        }\n        else if(!/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            i++\n        }\n        else {\n            i++\n            j--\n        }\n    }\n  s=s.join('')\n  return s\n};",
+      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let start=0\n    let end=s.length-1\n\n    while(start<end){\n        if(/[aeiou]/i.test(s[start]) && /[aeiou]/i.test(s[end])){\n            let temp=s[start]\n            s[start]=s[end]\n            s[end]=temp\n            start++\n            end--\n        }\n        else if(!/[aeiou]/i.test(s[start])){\n            start++\n        }\n        else if(!/[aeiou]/i.test(s[end])){\n            end--\n        }\n    }\n    return s.join('')\n};",
       "note": "",
-      "at": 1794466967065
+      "at": 1794466983042
     },
     "350": {
       "code": "/**\n * @param {number[]} nums1\n * @param {number[]} nums2\n * @return {number[]}\n */\nvar intersect = function(nums1, nums2) {\n    let nums3=[]\n     for(let i=0;i<nums1.length;i++){\n         for(let j=0;j<nums2.length;j++){\n             if(nums1[i]==nums2[j]){\n                 nums3.push(nums1[i])\n                 nums2.splice(j,1)\n                 break\n             }\n         }\n     }\n     return nums3\n};",
