@@ -687,6 +687,14 @@
           "k": "s",
           "ts": 1794472838000,
           "src": "lc"
+        },
+        {
+          "at": 1794472869662,
+          "g": "local",
+          "s": 5,
+          "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let count=0\n    s=s.split(' ')\n    let start=0\n    let end=s[0].length-1\n    \n    while(count<s.length){\n        let arr=s[count].split('')\n        while(start<end){\n            let temp=arr[start]\n            arr[start]=arr[end]\n            arr[end]=temp\n            start++\n            end--\n        }\n            s[count]=arr.join('')\n            start=0\n            count++\n            if (count < s.length) {\n                end = s[count].length - 1\n            }\n        \n    }\n    return s.join(' ')\n};",
+          "k": "r",
+          "src": "local"
         }
       ],
       "b": 0,
@@ -695,7 +703,7 @@
       "first": "before",
       "due": "2026-10-16",
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let count=0\n    s=s.split(' ')\n    let start=0\n    let end=s[0].length-1\n    \n    while(count<s.length){\n        let arr=s[count].split('')\n        while(start<end){\n            let temp=arr[start]\n            arr[start]=arr[end]\n            arr[end]=temp\n            start++\n            end--\n        }\n            s[count]=arr.join('')\n            start=0\n            count++\n            if (count < s.length) {\n                end = s[count].length - 1\n            }\n        \n    }\n    return s.join(' ')\n};",
-      "time": 4288
+      "time": 4488
     },
     "643": {
       "id": 643,
@@ -1196,7 +1204,7 @@
     "2026-11-12": {
       "n": 0,
       "r": 3,
-      "s": 4539,
+      "s": 4739,
       "ids": [
         {
           "id": 344,
@@ -1216,6 +1224,14 @@
         },
         {
           "id": 345,
+          "k": "r"
+        },
+        {
+          "id": 557,
+          "k": "r"
+        },
+        {
+          "id": 557,
           "k": "r"
         },
         {
@@ -1343,11 +1359,6 @@
       "code": "/**\n * @param {number[]} nums\n * @param {number} k\n * @return {number}\n */\nvar findPairs = function(nums, k) {\n    let map = new Map()\n    let count = 0\n\n    if(k < 0) return 0\n\n    for(let i = 0; i < nums.length; i++){\n        if(!map.has(nums[i])) {\n            map.set(nums[i], 1)\n        }\n        else {\n            map.set(nums[i], map.get(nums[i]) + 1)\n        }\n    }\n\n    for(let [key, value] of map.entries()){\n        if(k === 0 && value > 1) {\n            count++\n        }\n        else if(k > 0 && map.has(key + k)) {\n            count++\n        }\n    }\n\n    return count\n};",
       "note": "",
       "at": 1792937903501
-    },
-    "557": {
-      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};",
-      "note": "",
-      "at": 1794472851147
     },
     "844": {
       "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar backspaceCompare = function(s, t) {\n    function compare(str){\n        let hash=0\n        let returnstr=''\n\n        for(let i=str.length-1;i>=0;i--){\n            if(str[i]=='#'){\n                hash++\n            }\n            else {\n                if(hash<=0){\n                    returnstr+=str[i]\n                }\n                else if(hash>0){\n                    hash--\n                    continue\n                }\n            }\n        }\n        return returnstr\n    }\n\n    return compare(s)==compare(t)\n};",
