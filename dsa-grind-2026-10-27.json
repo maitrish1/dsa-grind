@@ -678,6 +678,15 @@
           "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};",
           "k": "s",
           "ts": 1791874648000
+        },
+        {
+          "at": 1794472864750,
+          "g": "synced",
+          "s": 195,
+          "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let count=0\n    s=s.split(' ')\n    let start=0\n    let end=s[0].length-1\n    \n    while(count<s.length){\n        let arr=s[count].split('')\n        while(start<end){\n            let temp=arr[start]\n            arr[start]=arr[end]\n            arr[end]=temp\n            start++\n            end--\n        }\n            s[count]=arr.join('')\n            start=0\n            count++\n            if (count < s.length) {\n                end = s[count].length - 1\n            }\n        \n    }\n    return s.join(' ')\n};",
+          "k": "s",
+          "ts": 1794472838000,
+          "src": "lc"
         }
       ],
       "b": 0,
@@ -685,7 +694,7 @@
       "fromLc": 1,
       "first": "before",
       "due": "2026-10-16",
-      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};",
+      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let count=0\n    s=s.split(' ')\n    let start=0\n    let end=s[0].length-1\n    \n    while(count<s.length){\n        let arr=s[count].split('')\n        while(start<end){\n            let temp=arr[start]\n            arr[start]=arr[end]\n            arr[end]=temp\n            start++\n            end--\n        }\n            s[count]=arr.join('')\n            start=0\n            count++\n            if (count < s.length) {\n                end = s[count].length - 1\n            }\n        \n    }\n    return s.join(' ')\n};",
       "time": 4288
     },
     "643": {
@@ -1259,9 +1268,9 @@
       "id": 557,
       "lang": "JavaScript",
       "runtime": "13 ms",
-      "ts": 1791874648000,
-      "at": 1794472669454,
-      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};"
+      "ts": 1794472838000,
+      "at": 1794472864750,
+      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let count=0\n    s=s.split(' ')\n    let start=0\n    let end=s[0].length-1\n    \n    while(count<s.length){\n        let arr=s[count].split('')\n        while(start<end){\n            let temp=arr[start]\n            arr[start]=arr[end]\n            arr[end]=temp\n            start++\n            end--\n        }\n            s[count]=arr.join('')\n            start=0\n            count++\n            if (count < s.length) {\n                end = s[count].length - 1\n            }\n        \n    }\n    return s.join(' ')\n};"
     },
     "917": {
       "id": 917,
@@ -2900,6 +2909,20 @@
       }
     ],
     "557": [
+      {
+        "id": "2194472320",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1794472838",
+        "runtime": "13 ms"
+      },
+      {
+        "id": "2194470908",
+        "statusDisplay": "Wrong Answer",
+        "lang": "JavaScript",
+        "timestamp": "1794472685",
+        "runtime": "N/A"
+      },
       {
         "id": "2170924819",
         "statusDisplay": "Accepted",
