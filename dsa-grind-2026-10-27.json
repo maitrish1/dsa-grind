@@ -685,7 +685,8 @@
       "fromLc": 1,
       "first": "before",
       "due": "2026-10-16",
-      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};"
+      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};",
+      "time": 4288
     },
     "643": {
       "id": 643,
@@ -1186,7 +1187,7 @@
     "2026-11-12": {
       "n": 0,
       "r": 3,
-      "s": 251,
+      "s": 4539,
       "ids": [
         {
           "id": 344,
@@ -1206,6 +1207,10 @@
         },
         {
           "id": 345,
+          "k": "r"
+        },
+        {
+          "id": 557,
           "k": "r"
         }
       ],
@@ -1333,7 +1338,7 @@
     "557": {
       "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseWords = function(s) {\n    let res=[]\n    s=s.split(' ')\n    for(let i=0;i<s.length;i++){\n        res.push(reverseStr(s[i]))\n    }\n\n    function reverseStr(str){\n        str=str.split('')\n        let i=0, j=str.length-1\n        while(i<j){\n            [str[i],str[j]]=[str[j],str[i]]\n            i++\n            j--\n        }\n        return str.join('')\n    }\n    return res.join(' ')\n};",
       "note": "",
-      "at": 1794468361620
+      "at": 1794472733394
     },
     "844": {
       "code": "/**\n * @param {string} s\n * @param {string} t\n * @return {boolean}\n */\nvar backspaceCompare = function(s, t) {\n    function compare(str){\n        let hash=0\n        let returnstr=''\n\n        for(let i=str.length-1;i>=0;i--){\n            if(str[i]=='#'){\n                hash++\n            }\n            else {\n                if(hash<=0){\n                    returnstr+=str[i]\n                }\n                else if(hash>0){\n                    hash--\n                    continue\n                }\n            }\n        }\n        return returnstr\n    }\n\n    return compare(s)==compare(t)\n};",
@@ -2892,6 +2897,15 @@
         "lang": "JavaScript",
         "timestamp": "1794305771",
         "runtime": "0 ms"
+      }
+    ],
+    "557": [
+      {
+        "id": "2170924819",
+        "statusDisplay": "Accepted",
+        "lang": "JavaScript",
+        "timestamp": "1791874647",
+        "runtime": "13 ms"
       }
     ],
     "917": [
