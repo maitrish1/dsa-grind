@@ -1262,6 +1262,11 @@
       "note": "",
       "at": 1794236167572
     },
+    "345": {
+      "code": "/**\n * @param {string} s\n * @return {string}\n */\nvar reverseVowels = function(s) {\n    s=s.split('')\n    let i=0, j=s.length-1\n    while(i<=j){\n        if(/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            [s[i],s[j]]=[s[j],s[i]]\n            i++\n            j--\n        }\n        else if(/^[aeiou]$/i.test(s[i]) && !/^[aeiou]$/i.test(s[j])){\n            j--\n        }\n        else if(!/^[aeiou]$/i.test(s[i]) && /^[aeiou]$/i.test(s[j])){\n            i++\n        }\n        else {\n            i++\n            j--\n        }\n    }\n  s=s.join('')\n  return s\n};",
+      "note": "",
+      "at": 1794466967065
+    },
     "350": {
       "code": "/**\n * @param {number[]} nums1\n * @param {number[]} nums2\n * @return {number[]}\n */\nvar intersect = function(nums1, nums2) {\n    let nums3=[]\n     for(let i=0;i<nums1.length;i++){\n         for(let j=0;j<nums2.length;j++){\n             if(nums1[i]==nums2[j]){\n                 nums3.push(nums1[i])\n                 nums2.splice(j,1)\n                 break\n             }\n         }\n     }\n     return nums3\n};",
       "note": "",
@@ -2317,21 +2322,6 @@
     },
     {
       "at": 1794466064383,
-      "ph": "rest",
-      "du": 300
-    },
-    {
-      "at": 1794466077177,
-      "ph": "rest",
-      "du": 300
-    },
-    {
-      "at": 1794466089299,
-      "ph": "rest",
-      "du": 300
-    },
-    {
-      "at": 1794466099977,
       "ph": "rest",
       "du": 300
     }
